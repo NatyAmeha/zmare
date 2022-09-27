@@ -1,0 +1,34 @@
+class Constants {
+  // preference constants
+  static const REGISTERED = "REGISTEREND";
+  static const LOGGED_IN = "LOGGED_IN";
+
+  static const TOKEN = "TOKEN";
+}
+
+enum AlbumListType { ALBUM_GRID_LIST, ALBUM_HORIZONTAL_LIST }
+
+enum ArtistListType {
+  ARTIST_HORIZONTAL_LIST,
+  ARTIST_VERTICAL_LIST,
+  ARTIST_GRID_LIST
+}
+
+enum SongTypeEnum { SINGLE, EP, ALBUM }
+
+enum PlaylistFilter { TODAY, MONTH, LIKED }
+
+enum DownloadStatus {
+  DOWNLOAD_COMPLETED,
+  DOWNLOAD_PAUSED,
+  DOWNLOAD_NOT_STARTED,
+  DOWNLOAD_IN_PROGRESS
+}
+
+enum ButtonType {
+  ROUND_OUTLINED_BUTTON,
+  ROUND_ELEVATED_BUTTON,
+  NORMAL_OUTLINED_BUTTON,
+  NORMAL_ELEVATED_BUTTON,
+  TEXT_BUTTON
+}
