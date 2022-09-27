@@ -76,21 +76,16 @@ class HomeScreen extends StatelessWidget {
                   "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
                 ],
               ),
-              InkWell(
-                onTap: () {
-                  Get.toNamed(PlayerScreen.routeName);
-                },
-                child: Container(
-                  height: 250,
-                  child: ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: appController.homeResult.topCharts!.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 16),
-                    itemBuilder: (context, index) => LargePlaylistTile(
-                        appController.homeResult.topCharts![index]),
-                  ),
+              Container(
+                height: 250,
+                child: ListView.separated(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: appController.homeResult.topCharts!.length,
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 16),
+                  itemBuilder: (context, index) => LargePlaylistTile(
+                      appController.homeResult.topCharts![index]),
                 ),
               ),
             ],

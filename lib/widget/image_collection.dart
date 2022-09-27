@@ -33,7 +33,7 @@ class GridImageCollection extends StatelessWidget {
                 StaggeredGridTile.count(
                   crossAxisCellCount: 1,
                   mainAxisCellCount: 2,
-                  child: CustomImage(images[1],
+                  child: CustomImage(images[0],
                       width: double.infinity,
                       height: double.infinity,
                       roundImage: true),
@@ -52,7 +52,7 @@ class GridImageCollection extends StatelessWidget {
                   child: Stack(
                     children: [
                       CustomImage(
-                        images[1],
+                        images[2],
                         width: double.infinity,
                         height: double.infinity,
                         roundImage: true,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:zema/modals/playlist.dart';
+import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/custom_container.dart';
 import 'package:zema/widget/custom_image.dart';
 import 'package:zema/widget/custom_text.dart';
@@ -15,6 +16,9 @@ class LargePlaylistTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
+        onTap: () {
+          UIHelper.moveToPlaylistScreen(playlistInfo.id!);
+        },
         width: 200,
         height: 250,
         padding: 0,

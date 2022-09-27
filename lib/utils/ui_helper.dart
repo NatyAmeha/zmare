@@ -19,13 +19,23 @@ class UIHelper {
     );
   }
 
-  // Widget displayContent(Widget conent,
-  //     {required AppException exception, bool isLoading = false}) {
-  //   if (isLoading) {
-  //     return LoadingProgressbar(loadingState: isLoading);
-  //   } else if (exception.message != null) {
-  //     ErrorPage(exception: exception);
-  //   }
-  //   else if()
-  // }
+  static Widget displayContent(
+      {required Widget content,
+      required bool showWhen,
+      required AppException exception,
+      bool isLoading = false}) {
+    if (isLoading) {
+      return LoadingProgressbar(loadingState: isLoading);
+    } else if (exception.message != null) {
+      return ErrorPage(exception: exception);
+    } else if (showWhen) {
+      return content;
+    } else {
+      return Container();
+    }
+  }
+
+  static moveToPlaylistScreen(String playlistId) {
+    Get.toNamed("/playlist/${playlistId}");
+  }
 }
