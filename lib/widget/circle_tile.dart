@@ -95,10 +95,11 @@ class CircleVerticalListTile extends StatelessWidget {
 }
 
 class CircleTileList extends StatelessWidget {
+  List<String>? id;
   List<String>? text;
   List<String>? subtitle;
   List<String> image;
-  Function? onclick;
+  Function(String?)? onclick;
   double circleRadius;
   double height;
   ArtistListType? listType;
@@ -106,6 +107,7 @@ class CircleTileList extends StatelessWidget {
   Function? onClick;
   CircleTileList({
     required this.image,
+    this.id,
     this.text,
     this.subtitle,
     this.circleRadius = 40,
@@ -117,19 +119,22 @@ class CircleTileList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (listType == ArtistListType.ARTIST_HORIZONTAL_LIST) {
-      return Container(
-          height: height,
-          child: ListView.separated(
-            itemCount: image.length,
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) => const SizedBox(width: 8),
-            itemBuilder: (context, index) => CircleTile(
-              image: image[index],
-              text: text?.elementAt(index),
-              radius: circleRadius,
-              onClick: onclick,
-            ),
-          ));
+      return SizedBox(
+        height: height,
+        child: ListView.separated(
+          itemCount: image.length,
+          scrollDirection: Axis.horizontal,
+          separatorBuilder: (context, index) => const SizedBox(width: 8),
+          itemBuilder: (context, index) => CircleTile(
+            image: image[index],
+            text: text?.elementAt(index),
+            radius: circleRadius,
+            onClick: () {
+              onclick?.call(id![index]);
+            },
+          ),
+        ),
+      );
     } else if (listType == ArtistListType.ARTIST_GRID_LIST) {
       return GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -142,7 +147,7 @@ class CircleTileList extends StatelessWidget {
         ),
       );
     } else {
-      return Container(
+      return SizedBox(
         height: height,
         child: ListView.separated(
           itemCount: image.length,

@@ -8,7 +8,9 @@ import 'package:zema/utils/constants.dart';
 import 'package:zema/widget/album_widget/album_list.dart';
 import 'package:zema/widget/artist_widget/artist_list.dart';
 import 'package:zema/widget/circle_tile.dart';
+import 'package:zema/widget/custom_button.dart';
 import 'package:zema/widget/custom_carousel.dart';
+import 'package:zema/widget/custom_tab_view.dart';
 import 'package:zema/widget/custom_text.dart';
 import 'package:zema/widget/list_header.dart';
 import 'package:zema/widget/search_widget.dart';
@@ -101,93 +103,141 @@ class BrowseScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-              child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: SearchBar(
-                    borderRadius: 16,
-                    hintText: "Search music, albums and playlist"),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                height: 250,
-                child: Categorylist(),
-              ),
-              CustomCarousel(
-                widgets: [
-                  SongList(songLists.take(4).toList(),
-                      isSliver: false, shrinkWrap: true),
-                  SongList(songLists.take(4).toList(),
-                      isSliver: false, shrinkWrap: true),
-                ],
-                headers: [
-                  ListHeader(
-                    "Top Songs",
-                    isSliver: false,
-                    showMore: songLists.length > 4,
-                  ),
-                  ListHeader(
-                    "New Songs",
-                    isSliver: false,
-                    showMore: songLists.length > 4,
-                  )
-                ],
-                height: 400,
-              ),
-              CustomCarousel(
-                widgets: [
-                  AlbumList(albums.take(4).toList(),
-                      listType: AlbumListType.ALBUM_GRID_LIST,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SearchBar(
+                      borderRadius: 16,
+                      hintText: "Search music, albums and playlist"),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  height: 250,
+                  child: Categorylist(),
+                ),
+                CustomCarousel(
+                  widgets: [
+                    SongList(songLists.take(4).toList(),
+                        isSliver: false, shrinkWrap: true),
+                    SongList(songLists.take(4).toList(),
+                        isSliver: false, shrinkWrap: true),
+                  ],
+                  headers: [
+                    ListHeader(
+                      "Top Songs",
                       isSliver: false,
-                      height: 300,
-                      shrinkWrap: true),
-                  AlbumList(albums.take(4).toList(),
-                      listType: AlbumListType.ALBUM_GRID_LIST,
+                      showMore: songLists.length > 4,
+                    ),
+                    ListHeader(
+                      "New Songs",
                       isSliver: false,
-                      height: 300,
-                      shrinkWrap: true),
-                ],
-                headers: [
-                  ListHeader(
-                    "top Albums",
-                    isSliver: false,
-                    showMore: albums.length > 4,
-                  ),
-                  ListHeader(
-                    "New Albums",
-                    isSliver: false,
-                    showMore: songLists.length > 4,
-                  )
-                ],
-                height: 400,
-              ),
-              CustomCarousel(
-                widgets: [
-                  ArtistList(artist,
-                      height: 400, type: ArtistListType.ARTIST_VERTICAL_LIST),
-                  ArtistList(
-                    artist,
-                    height: 400,
-                    type: ArtistListType.ARTIST_VERTICAL_LIST,
-                  ),
-                ],
-                headers: [
-                  ListHeader(
-                    "Top Artists ",
-                    isSliver: false,
-                    showMore: albums.length > 4,
-                  ),
-                  ListHeader(
-                    "New Artists",
-                    isSliver: false,
-                    showMore: songLists.length > 4,
-                  )
-                ],
-                height: 800,
-              )
+                      showMore: songLists.length > 4,
+                    )
+                  ],
+                  height: 400,
+                ),
+                CustomCarousel(
+                  widgets: [
+                    AlbumList(albums.take(4).toList(),
+                        listType: AlbumListType.ALBUM_GRID_LIST,
+                        isSliver: false,
+                        height: 300,
+                        shrinkWrap: true),
+                    AlbumList(albums.take(4).toList(),
+                        listType: AlbumListType.ALBUM_GRID_LIST,
+                        isSliver: false,
+                        height: 300,
+                        shrinkWrap: true),
+                  ],
+                  headers: [
+                    ListHeader(
+                      "top Albums",
+                      isSliver: false,
+                      showMore: albums.length > 4,
+                    ),
+                    ListHeader(
+                      "New Albums",
+                      isSliver: false,
+                      showMore: songLists.length > 4,
+                    )
+                  ],
+                  height: 400,
+                ),
+                CustomCarousel(
+                  widgets: [
+                    ArtistList(artist,
+                        height: 400, type: ArtistListType.ARTIST_VERTICAL_LIST),
+                    ArtistList(
+                      artist,
+                      height: 400,
+                      type: ArtistListType.ARTIST_VERTICAL_LIST,
+                    ),
+                  ],
+                  headers: [
+                    ListHeader(
+                      "Top Artists ",
+                      isSliver: false,
+                      showMore: albums.length > 4,
+                    ),
+                    ListHeader(
+                      "New Artists",
+                      isSliver: false,
+                      showMore: songLists.length > 4,
+                    )
+                  ],
+                  height: 800,
+                )
+              ],
+            ),
+          ),
+          CustomTabView(
+            height: 500,
+            tabs: const [
+              Tab(text: "Top songs"),
+              Tab(text: "New  songs"),
+              Tab(text: "Most liked songs"),
             ],
-          )),
+            contents: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SongList(songLists.take(5).toList(),
+                      isSliver: false, shrinkWrap: true),
+                  const SizedBox(height: 16),
+                  CustomText("See more")
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SongList(songLists.take(5).toList(),
+                      isSliver: false, shrinkWrap: true),
+                  const SizedBox(height: 16),
+                  CustomText("See more")
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SongList(songLists.take(5).toList(),
+                      isSliver: false, shrinkWrap: true),
+                  const SizedBox(height: 16),
+                  CustomButton(
+                    "See more",
+                    buttonType: ButtonType.TEXT_BUTTON,
+                    wrapContent: true,
+                    icon: Icons.arrow_forward,
+                    textColor: Colors.black,
+                    onPressed: () {},
+                  )
+                ],
+              ),
+            ],
+          ),
+          SliverToBoxAdapter(
+            child: const SizedBox(height: 100),
+          )
         ],
       ),
     );

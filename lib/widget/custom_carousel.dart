@@ -19,7 +19,7 @@ class CustomCarousel extends StatefulWidget {
 }
 
 class _CustomCarouselState extends State<CustomCarousel> {
-  var viewPort = 1.0;
+  var viewPort = 0.9;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,7 +52,7 @@ class _CustomCarouselState extends State<CustomCarousel> {
                         if (widget.headers?.isNotEmpty == true)
                           widget.headers![index],
                         const SizedBox(
-                          height: 8,
+                          height: 0,
                         ),
                         widget.widgets[index],
                       ],

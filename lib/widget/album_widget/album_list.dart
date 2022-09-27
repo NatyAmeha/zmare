@@ -38,11 +38,19 @@ class AlbumList extends StatelessWidget {
   Widget buildListview(Axis direction) {
     return Container(
       height: height,
-      child: ListView.builder(
+      child: ListView.separated(
         itemCount: albums.length,
+        separatorBuilder: (context, item) => direction == Axis.horizontal
+            ? const SizedBox(
+                width: 8,
+              )
+            : const SizedBox(
+                height: 8,
+              ),
         shrinkWrap: shrinkWrap,
         scrollDirection: direction,
-        itemExtent: height,
+        padding: const EdgeInsets.all(8),
+        // itemExtent: height,
         itemBuilder: (context, index) =>
             AlbumListItem(albums[index], width: width, height: height),
       ),

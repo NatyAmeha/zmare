@@ -33,68 +33,9 @@ class HomeScreen extends StatelessWidget {
     Song(title: "short song title", artistsName: ["singers name info"]),
   ];
 
-  var albums = [
-    Album(name: "Album 1", songs: [
-      Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-      Song(title: "song no 2", artistsName: ["artist 2"]),
-      Song(title: "short song title", artistsName: ["singers name info"]),
-    ]),
-    Album(name: "Long Album Name with artist", artistsName: [
-      "Artist name one"
-    ], songs: [
-      Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-      Song(title: "song no 2", artistsName: ["artist 2"]),
-      Song(title: "short song title", artistsName: ["singers name info"]),
-    ]),
-    Album(name: "Album 1", artistsName: [
-      "LOng Artist name with description"
-    ], songs: [
-      Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-      Song(title: "song no 2", artistsName: ["artist 2"]),
-      Song(title: "short song title", artistsName: ["singers name info"]),
-    ]),
-    Album(name: "Album 1", artistsName: [
-      "bereket tesfaye"
-    ], songs: [
-      Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-      Song(title: "song no 2", artistsName: ["artist 2"]),
-      Song(title: "short song title", artistsName: ["singers name info"]),
-    ]),
-  ];
   var images = [
     "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
     "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop"
-  ];
-
-  var artist = [
-    Artist(
-      name: "Artist name",
-      profileImagePath: [
-        "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-        "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-      ],
-    ),
-    Artist(
-      name: "Artist name",
-      profileImagePath: [
-        "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-        "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-      ],
-    ),
-    Artist(
-      name: "Artist name",
-      profileImagePath: [
-        "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-        "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-      ],
-    ),
-    Artist(
-      name: "Artist name",
-      profileImagePath: [
-        "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-        "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-      ],
-    )
   ];
 
   @override
@@ -144,10 +85,11 @@ class HomeScreen extends StatelessWidget {
                   child: ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     scrollDirection: Axis.horizontal,
-                    itemCount: 5,
+                    itemCount: appController.homeResult.topCharts!.length,
                     separatorBuilder: (context, index) =>
                         const SizedBox(width: 16),
-                    itemBuilder: (context, index) => LargePlaylistTile(),
+                    itemBuilder: (context, index) => LargePlaylistTile(
+                        appController.homeResult.topCharts![index]),
                   ),
                 ),
               ),
@@ -157,7 +99,9 @@ class HomeScreen extends StatelessWidget {
         if (appController.homeResult.popularArtist?.isNotEmpty == true) ...[
           ListHeader("Artists you might like", topPadding: 32),
           SliverToBoxAdapter(
-              child: ArtistList(appController.homeResult.popularArtist!)),
+              child: ArtistList(
+            appController.homeResult.popularArtist!,
+          )),
         ],
         SliverToBoxAdapter(
           child: InkWell(

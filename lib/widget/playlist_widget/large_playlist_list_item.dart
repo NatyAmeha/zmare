@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:zema/modals/playlist.dart';
 import 'package:zema/widget/custom_container.dart';
 import 'package:zema/widget/custom_image.dart';
 import 'package:zema/widget/custom_text.dart';
+import 'package:zema/widget/song_widget.dart/play_pause_icon.dart';
 
 class LargePlaylistTile extends StatelessWidget {
-  const LargePlaylistTile({super.key});
+  Playlist playlistInfo;
+  LargePlaylistTile(this.playlistInfo);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class LargePlaylistTile extends StatelessWidget {
         child: Stack(
           children: [
             CustomImage(
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0rXLxvzsiu1TFgCZW1H5j0QKRTW4SA3iUp-2ykco4teeM8GqQBlBpNxu-ikhhlcDafgc&usqp=CAU",
+              playlistInfo.coverImagePath?.elementAt(0),
               width: 200,
               height: 250,
               roundImage: true,
@@ -40,19 +43,23 @@ class LargePlaylistTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CustomText(
-                          "Daily mix",
+                          playlistInfo.name ?? "",
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
+                        const SizedBox(height: 4),
                         CustomText(
-                          "artist 1 - artist 2",
+                          "${playlistInfo.songs?.length} songs",
                           fontSize: 12,
                         ),
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            Icon(Icons.play_circle),
+                            PlayPauseIcon(
+                              isPlaying: true,
+                              size: 30,
+                            ),
                             const SizedBox(width: 8),
                             CustomText("Now playing", fontSize: 15)
                           ],

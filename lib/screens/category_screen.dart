@@ -61,18 +61,18 @@ class CategoryScreen extends StatelessWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(
-            child: Container(
-              height: 250,
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                scrollDirection: Axis.horizontal,
-                itemCount: 5,
-                separatorBuilder: (context, index) => const SizedBox(width: 16),
-                itemBuilder: (context, index) => LargePlaylistTile(),
-              ),
-            ),
-          ),
+          // SliverToBoxAdapter(
+          //   child: Container(
+          //     height: 250,
+          //     child: ListView.separated(
+          //       padding: const EdgeInsets.symmetric(horizontal: 16),
+          //       scrollDirection: Axis.horizontal,
+          //       itemCount: 5,
+          //       separatorBuilder: (context, index) => const SizedBox(width: 16),
+          //       itemBuilder: (context, index) => LargePlaylistTile(),
+          //     ),
+          //   ),
+          // ),
           ListHeader("Albums"),
           AlbumList(
             albums,
