@@ -12,13 +12,13 @@ SearchViewmodel _$SearchViewmodelFromJson(Map<String, dynamic> json) =>
           ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
           .toList(),
       albums: (json['albums'] as List<dynamic>?)
-          ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
           .toList(),
       artists: (json['artists'] as List<dynamic>?)
-          ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
           .toList(),
       playlists: (json['playlists'] as List<dynamic>?)
-          ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => Playlist.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

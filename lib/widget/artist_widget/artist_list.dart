@@ -11,10 +11,12 @@ class ArtistList extends StatelessWidget {
   List<Artist>? artistList;
   double height;
   ArtistListType type;
+  bool shrinkWrap;
 
   ArtistList(
     this.artistList, {
     this.type = ArtistListType.ARTIST_HORIZONTAL_LIST,
+    this.shrinkWrap = false,
     this.height = 200,
   });
 
@@ -41,12 +43,17 @@ class ArtistList extends StatelessWidget {
       } else if (type == ArtistListType.ARTIST_GRID_LIST) {
         return GridView.builder(
           itemCount: artistList!.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 8),
+          shrinkWrap: shrinkWrap,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              mainAxisExtent: 170,
+              crossAxisCount: 3,
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8),
           itemBuilder: (context, index) => CircleTile(
             image: artistList![index].profileImagePath!.elementAt(0),
             text: artistList![index].name,
-            radius: 40,
+            radius: 60,
+            height: 160,
             onClick: () {
               Get.toNamed("/artist/${artistList![index].id}");
             },

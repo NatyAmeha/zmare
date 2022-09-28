@@ -6,6 +6,7 @@ import 'package:zema/controller/app_controller.dart';
 import 'package:zema/modals/album.dart';
 import 'package:zema/modals/artist.dart';
 import 'package:zema/modals/song.dart';
+import 'package:zema/screens/search_screen.dart';
 import 'package:zema/utils/constants.dart';
 import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/album_widget/album_list.dart';
@@ -13,6 +14,7 @@ import 'package:zema/widget/artist_widget/artist_list.dart';
 import 'package:zema/widget/circle_tile.dart';
 import 'package:zema/widget/custom_button.dart';
 import 'package:zema/widget/custom_carousel.dart';
+import 'package:zema/widget/custom_container.dart';
 import 'package:zema/widget/custom_tab_view.dart';
 import 'package:zema/widget/custom_text.dart';
 import 'package:zema/widget/list_header.dart';
@@ -52,8 +54,12 @@ class BrowseScreen extends StatelessWidget {
               SliverToBoxAdapter(
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(16),
+                    CustomContainer(
+                      onTap: () {
+                        showSearch(
+                            context: context, delegate: CustomSearchDeligate());
+                      },
+                      padding: 16,
                       child: SearchBar(
                           borderRadius: 16,
                           hintText: "Search music, albums and playlist"),
@@ -91,68 +97,6 @@ class BrowseScreen extends StatelessWidget {
                       ],
                       height: 400,
                     ),
-                    // CustomCarousel(
-                    //   widgets: [
-                    //     AlbumList(
-                    //         appController.browseResult.newAlbum!
-                    //             .take(4)
-                    //             .toList(),
-                    //         listType: AlbumListType.ALBUM_GRID_LIST,
-                    //         isSliver: false,
-                    //         height: 220,
-                    //         shrinkWrap: true),
-                    //     AlbumList(
-                    //         appController.browseResult.newAlbum!
-                    //             .take(4)
-                    //             .toList(),
-                    //         listType: AlbumListType.ALBUM_GRID_LIST,
-                    //         isSliver: false,
-                    //         height: 220,
-                    //         shrinkWrap: true),
-                    //   ],
-                    //   headers: [
-                    //     ListHeader(
-                    //       "top Albums",
-                    //       isSliver: false,
-                    //       showMore:
-                    //           appController.browseResult.newAlbum!.length > 4,
-                    //     ),
-                    //     ListHeader(
-                    //       "New Albums",
-                    //       isSliver: false,
-                    //       showMore:
-                    //           appController.browseResult.newAlbum!.length > 4,
-                    //     )
-                    //   ],
-                    //   height: 510,
-                    // ),
-                    // CustomCarousel(
-                    //   widgets: [
-                    //     ArtistList(appController.browseResult.artist!,
-                    //         height: 400,
-                    //         type: ArtistListType.ARTIST_VERTICAL_LIST),
-                    //     ArtistList(
-                    //       appController.browseResult.artist!,
-                    //       height: 400,
-                    //       type: ArtistListType.ARTIST_VERTICAL_LIST,
-                    //     ),
-                    //   ],
-                    //   headers: [
-                    //     ListHeader(
-                    //       "Top Artists ",
-                    //       isSliver: false,
-                    //       showMore:
-                    //           appController.browseResult.artist!.length > 4,
-                    //     ),
-                    //     ListHeader(
-                    //       "New Artists",
-                    //       isSliver: false,
-                    //       showMore:
-                    //           appController.browseResult.artist!.length > 4,
-                    //     )
-                    //   ],
-                    //   height: 800,
-                    // )
                   ],
                 ),
               ),

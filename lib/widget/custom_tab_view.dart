@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:zema/widget/custom_tab_bar.dart';
 import 'package:zema/widget/custom_text.dart';
 
 class CustomTabView extends StatelessWidget {
@@ -29,16 +30,7 @@ class CustomTabView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                TabBar(
-                  tabs: tabs,
-                  // indicatorSize: TabBarIndicatorSize.label,
-                  indicator: BoxDecoration(
-                      borderRadius: BorderRadius.circular(25),
-                      color: Colors.blue),
-                  unselectedLabelColor: Colors.black,
-                  isScrollable: true,
-                  labelColor: Colors.white,
-                ),
+                CustomTabbar(tabs),
                 const SizedBox(height: 16),
                 SizedBox(
                   height: height,
@@ -74,9 +66,9 @@ class CustomTabView extends StatelessWidget {
 
 class CustomTabContent extends StatelessWidget {
   Widget body;
-  bool showMore;
+  Widget? trailing;
 
-  CustomTabContent(this.body, {this.showMore = true});
+  CustomTabContent(this.body, {this.trailing});
 
   @override
   Widget build(BuildContext context) {
@@ -84,10 +76,7 @@ class CustomTabContent extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         body,
-        if (showMore) ...[
-          const SizedBox(height: 16),
-          CustomText("See more"),
-        ]
+        if (trailing != null) trailing!,
       ],
     );
   }

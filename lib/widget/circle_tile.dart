@@ -12,17 +12,20 @@ class CircleTile extends StatelessWidget {
   String image;
   String? text;
   double radius;
+  double height;
   Function? onClick;
   CircleTile({
     required this.image,
     this.text,
     required this.radius,
+    this.height = 200,
     this.onClick,
   });
 
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
+      height: height,
       onTap: () {
         onClick?.call();
       },
@@ -30,6 +33,7 @@ class CircleTile extends StatelessWidget {
       padding: 8,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           CircleAvatar(
             radius: radius,
