@@ -46,6 +46,13 @@ class ErrorPage extends StatelessWidget {
           Get.back();
         };
         break;
+      case AppException.SERVER_EXCEPTION:
+        btnText = "Try again";
+        errorMessage = "Server error ${exception?.message}";
+        onClick = () {
+          Get.back();
+        };
+        break;
       default:
         btnText = actionText;
         errorMessage = message ?? exception?.message ?? "";

@@ -1,4 +1,5 @@
 import 'package:zema/repo/repository.dart';
+import 'package:zema/viewmodels/browse_viewmodel.dart';
 import 'package:zema/viewmodels/home_viewmodel.dart';
 
 class HomeUsecase {
@@ -8,8 +9,12 @@ class HomeUsecase {
   });
   Future<HomeViewmodel?> getHomeData() async {
     var result = await repo?.get("/homenew") as HomeViewmodel?;
-    print("featured playlist");
-    print(result?.popularArtist?.elementAt(0).profileImagePath);
+
+    return result;
+  }
+
+  Future<BrowseViewmodel> getBrowseResult(String category) async {
+    var result = await repo?.get("/browse/$category") as BrowseViewmodel;
     return result;
   }
 }

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:zema/controller/app_controller.dart';
 import 'package:zema/modals/album.dart';
 import 'package:zema/modals/artist.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/utils/constants.dart';
+import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/album_widget/album_list.dart';
 import 'package:zema/widget/artist_widget/artist_list.dart';
 import 'package:zema/widget/circle_tile.dart';
@@ -18,227 +21,227 @@ import 'package:zema/widget/song_widget.dart/category_list.dart';
 import 'package:zema/widget/song_widget.dart/song_list.dart';
 
 class BrowseScreen extends StatelessWidget {
-  static const routeName = "/browse";
+  static const routeName = "/browse/:category";
   BrowseScreen({super.key});
 
-  var songLists = [
-    Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-    Song(title: "song no 2", artistsName: ["artist 2"]),
-    Song(title: "short song title", artistsName: ["singers name info"]),
-    Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-    Song(title: "song no 2", artistsName: ["artist 2"]),
-    Song(title: "short song title", artistsName: ["singers name info"]),
-    Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-    Song(title: "song no 2", artistsName: ["artist 2"]),
-    Song(title: "short song title", artistsName: ["singers name info"]),
-  ];
-
-  var albums = [
-    Album(name: "Album 1", songs: [
-      Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-      Song(title: "song no 2", artistsName: ["artist 2"]),
-      Song(title: "short song title", artistsName: ["singers name info"]),
-    ]),
-    Album(name: "Long Album Name with artist", artistsName: [
-      "Artist name one"
-    ], songs: [
-      Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-      Song(title: "song no 2", artistsName: ["artist 2"]),
-      Song(title: "short song title", artistsName: ["singers name info"]),
-    ]),
-    Album(name: "Album 1", artistsName: [
-      "LOng Artist name with description"
-    ], songs: [
-      Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-      Song(title: "song no 2", artistsName: ["artist 2"]),
-      Song(title: "short song title", artistsName: ["singers name info"]),
-    ]),
-    Album(name: "Album 1", artistsName: [
-      "bereket tesfaye"
-    ], songs: [
-      Song(title: "Song title 1", artistsName: ["Artist title 1"]),
-      Song(title: "song no 2", artistsName: ["artist 2"]),
-      Song(title: "short song title", artistsName: ["singers name info"]),
-    ]),
-  ];
-
-  var artist = [
-    Artist(
-      name: "Artist name",
-      profileImagePath: [
-        "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-        "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-      ],
-    ),
-    Artist(
-      name: "Artist name",
-      profileImagePath: [
-        "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-        "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-      ],
-    ),
-    Artist(
-      name: "Artist name",
-      profileImagePath: [
-        "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-        "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-      ],
-    ),
-    Artist(
-      name: "Artist name",
-      profileImagePath: [
-        "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-        "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-      ],
-    )
-  ];
+  var appController = Get.find<AppController>();
 
   @override
   Widget build(BuildContext context) {
+    var category = "GOSPEL";
+    print(
+        "Browse screen called ${appController.browseResult.artist?.isNotEmpty}");
+
+    if (appController.browseResult.browseCommand == null) {
+      appController.getBrowseResult(category);
+    }
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         title: CustomText("Browse", color: Colors.black),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: SearchBar(
-                      borderRadius: 16,
-                      hintText: "Search music, albums and playlist"),
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  height: 250,
-                  child: Categorylist(),
-                ),
-                CustomCarousel(
-                  widgets: [
-                    SongList(songLists.take(4).toList(),
-                        isSliver: false, shrinkWrap: true),
-                    SongList(songLists.take(4).toList(),
-                        isSliver: false, shrinkWrap: true),
-                  ],
-                  headers: [
-                    ListHeader(
-                      "Top Songs",
-                      isSliver: false,
-                      showMore: songLists.length > 4,
+      body: Obx(
+        () => UIHelper.displayContent(
+          showWhen:
+              appController.browseResult.browseCommand?.isNotEmpty == true,
+          exception: appController.exception,
+          isLoading: appController.isDataLoading,
+          content: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: SearchBar(
+                          borderRadius: 16,
+                          hintText: "Search music, albums and playlist"),
                     ),
-                    ListHeader(
-                      "New Songs",
-                      isSliver: false,
-                      showMore: songLists.length > 4,
-                    )
-                  ],
-                  height: 400,
-                ),
-                CustomCarousel(
-                  widgets: [
-                    AlbumList(albums.take(4).toList(),
-                        listType: AlbumListType.ALBUM_GRID_LIST,
-                        isSliver: false,
-                        height: 300,
-                        shrinkWrap: true),
-                    AlbumList(albums.take(4).toList(),
-                        listType: AlbumListType.ALBUM_GRID_LIST,
-                        isSliver: false,
-                        height: 300,
-                        shrinkWrap: true),
-                  ],
-                  headers: [
-                    ListHeader(
-                      "top Albums",
-                      isSliver: false,
-                      showMore: albums.length > 4,
+                    const SizedBox(height: 16),
+                    Container(
+                      height: 250,
+                      child: Categorylist(
+                        browseInfo: appController.browseResult.browseCommand,
+                      ),
                     ),
-                    ListHeader(
-                      "New Albums",
-                      isSliver: false,
-                      showMore: songLists.length > 4,
-                    )
-                  ],
-                  height: 400,
-                ),
-                CustomCarousel(
-                  widgets: [
-                    ArtistList(artist,
-                        height: 400, type: ArtistListType.ARTIST_VERTICAL_LIST),
-                    ArtistList(
-                      artist,
+                    CustomCarousel(
+                      widgets: [
+                        SongList(
+                            appController.browseResult.topSongs
+                                ?.take(4)
+                                .toList(),
+                            isSliver: false,
+                            shrinkWrap: true),
+                        SongList(
+                            appController.browseResult.newSongs
+                                ?.take(4)
+                                .toList(),
+                            isSliver: false,
+                            shrinkWrap: true),
+                      ],
+                      headers: [
+                        ListHeader("Top Songs",
+                            isSliver: false, showMore: false),
+                        ListHeader(
+                          "New Songs",
+                          isSliver: false,
+                          showMore: false,
+                        )
+                      ],
                       height: 400,
-                      type: ArtistListType.ARTIST_VERTICAL_LIST,
                     ),
+                    // CustomCarousel(
+                    //   widgets: [
+                    //     AlbumList(
+                    //         appController.browseResult.newAlbum!
+                    //             .take(4)
+                    //             .toList(),
+                    //         listType: AlbumListType.ALBUM_GRID_LIST,
+                    //         isSliver: false,
+                    //         height: 220,
+                    //         shrinkWrap: true),
+                    //     AlbumList(
+                    //         appController.browseResult.newAlbum!
+                    //             .take(4)
+                    //             .toList(),
+                    //         listType: AlbumListType.ALBUM_GRID_LIST,
+                    //         isSliver: false,
+                    //         height: 220,
+                    //         shrinkWrap: true),
+                    //   ],
+                    //   headers: [
+                    //     ListHeader(
+                    //       "top Albums",
+                    //       isSliver: false,
+                    //       showMore:
+                    //           appController.browseResult.newAlbum!.length > 4,
+                    //     ),
+                    //     ListHeader(
+                    //       "New Albums",
+                    //       isSliver: false,
+                    //       showMore:
+                    //           appController.browseResult.newAlbum!.length > 4,
+                    //     )
+                    //   ],
+                    //   height: 510,
+                    // ),
+                    // CustomCarousel(
+                    //   widgets: [
+                    //     ArtistList(appController.browseResult.artist!,
+                    //         height: 400,
+                    //         type: ArtistListType.ARTIST_VERTICAL_LIST),
+                    //     ArtistList(
+                    //       appController.browseResult.artist!,
+                    //       height: 400,
+                    //       type: ArtistListType.ARTIST_VERTICAL_LIST,
+                    //     ),
+                    //   ],
+                    //   headers: [
+                    //     ListHeader(
+                    //       "Top Artists ",
+                    //       isSliver: false,
+                    //       showMore:
+                    //           appController.browseResult.artist!.length > 4,
+                    //     ),
+                    //     ListHeader(
+                    //       "New Artists",
+                    //       isSliver: false,
+                    //       showMore:
+                    //           appController.browseResult.artist!.length > 4,
+                    //     )
+                    //   ],
+                    //   height: 800,
+                    // )
                   ],
-                  headers: [
-                    ListHeader(
-                      "Top Artists ",
+                ),
+              ),
+              CustomTabView(
+                height: 500,
+                tabs: const [
+                  Tab(text: "Top songs"),
+                  Tab(text: "New songs"),
+                  Tab(text: "Most liked songs"),
+                ],
+                contents: [
+                  CustomTabContent(
+                    SongList(
+                        appController.browseResult.topSongs?.take(5).toList(),
+                        isSliver: false,
+                        shrinkWrap: true),
+                  ),
+                  CustomTabContent(
+                    SongList(
+                        appController.browseResult.newSongs?.take(5).toList(),
+                        isSliver: false,
+                        shrinkWrap: true),
+                  ),
+                  CustomTabContent(
+                    SongList(
+                      appController.browseResult.likedSongs?.take(5).toList(),
                       isSliver: false,
-                      showMore: albums.length > 4,
+                      shrinkWrap: true,
                     ),
-                    ListHeader(
-                      "New Artists",
-                      isSliver: false,
-                      showMore: songLists.length > 4,
-                    )
-                  ],
-                  height: 800,
-                )
-              ],
-            ),
-          ),
-          CustomTabView(
-            height: 500,
-            tabs: const [
-              Tab(text: "Top songs"),
-              Tab(text: "New  songs"),
-              Tab(text: "Most liked songs"),
-            ],
-            contents: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SongList(songLists.take(5).toList(),
-                      isSliver: false, shrinkWrap: true),
-                  const SizedBox(height: 16),
-                  CustomText("See more")
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SongList(songLists.take(5).toList(),
-                      isSliver: false, shrinkWrap: true),
-                  const SizedBox(height: 16),
-                  CustomText("See more")
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SongList(songLists.take(5).toList(),
-                      isSliver: false, shrinkWrap: true),
-                  const SizedBox(height: 16),
-                  CustomButton(
-                    "See more",
-                    buttonType: ButtonType.TEXT_BUTTON,
-                    wrapContent: true,
-                    icon: Icons.arrow_forward,
-                    textColor: Colors.black,
-                    onPressed: () {},
                   )
                 ],
               ),
+              CustomTabView(
+                height: 600,
+                tabs: const [
+                  Tab(text: "Top Albums"),
+                  Tab(text: "New Albums"),
+                ],
+                contents: [
+                  if (appController.browseResult.newAlbum?.isNotEmpty == true)
+                    CustomTabContent(
+                      AlbumList(
+                          appController.browseResult.newAlbum!.take(4).toList(),
+                          listType: AlbumListType.ALBUM_GRID_LIST,
+                          isSliver: false,
+                          height: 220,
+                          shrinkWrap: true),
+                    ),
+                  if (appController.browseResult.popularAlbum?.isNotEmpty ==
+                      true)
+                    CustomTabContent(
+                      AlbumList(
+                          appController.browseResult.popularAlbum!
+                              .take(4)
+                              .toList(),
+                          listType: AlbumListType.ALBUM_GRID_LIST,
+                          isSliver: false,
+                          height: 220,
+                          shrinkWrap: true),
+                    ),
+                ],
+              ),
+              CustomTabView(
+                height: 500,
+                tabs: const [
+                  Tab(text: "Popular artist"),
+                  Tab(text: "New Artists "),
+                ],
+                contents: [
+                  if (appController.browseResult.artist?.isNotEmpty == true)
+                    CustomTabContent(
+                      ArtistList(appController.browseResult.artist!,
+                          height: 400,
+                          type: ArtistListType.ARTIST_VERTICAL_LIST),
+                    ),
+                  if (appController.browseResult.artist?.isNotEmpty == true)
+                    CustomTabContent(
+                      ArtistList(appController.browseResult.artist!,
+                          height: 400,
+                          type: ArtistListType.ARTIST_VERTICAL_LIST),
+                    ),
+                ],
+              ),
+              const SliverToBoxAdapter(
+                child: SizedBox(height: 100),
+              )
             ],
           ),
-          SliverToBoxAdapter(
-            child: const SizedBox(height: 100),
-          )
-        ],
+        ),
       ),
     );
   }

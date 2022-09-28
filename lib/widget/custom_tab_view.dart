@@ -26,10 +26,12 @@ class CustomTabView extends StatelessWidget {
             initialIndex: 0,
             length: tabs.length,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 TabBar(
                   tabs: tabs,
+                  // indicatorSize: TabBarIndicatorSize.label,
                   indicator: BoxDecoration(
                       borderRadius: BorderRadius.circular(25),
                       color: Colors.blue),
@@ -67,5 +69,26 @@ class CustomTabView extends StatelessWidget {
         ),
       );
     }
+  }
+}
+
+class CustomTabContent extends StatelessWidget {
+  Widget body;
+  bool showMore;
+
+  CustomTabContent(this.body, {this.showMore = true});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        body,
+        if (showMore) ...[
+          const SizedBox(height: 16),
+          CustomText("See more"),
+        ]
+      ],
+    );
   }
 }

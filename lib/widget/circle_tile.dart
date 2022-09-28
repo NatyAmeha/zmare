@@ -56,6 +56,7 @@ class CircleVerticalListTile extends StatelessWidget {
   String? text;
   String? subtitle;
   double radius;
+  Widget? trailing;
   Function? onClick;
 
   CircleVerticalListTile({
@@ -63,34 +64,48 @@ class CircleVerticalListTile extends StatelessWidget {
     this.text,
     this.subtitle,
     required this.radius,
+    this.trailing,
     this.onClick,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {},
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-      horizontalTitleGap: 0,
-      dense: true,
-      minLeadingWidth: 70,
-      leading: CustomImage(
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ0rXLxvzsiu1TFgCZW1H5j0QKRTW4SA3iUp-2ykco4teeM8GqQBlBpNxu-ikhhlcDafgc&usqp=CAU",
-          height: 50,
-          width: 50,
-          roundImage: true),
-      title: CustomText(text!, fontSize: 18, fontWeight: FontWeight.bold),
-      subtitle: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: CustomText(subtitle!, fontSize: 14)),
-      trailing: CustomButton(
-        "Follow",
-        textSize: 12,
-        wrapContent: true,
-        buttonType: ButtonType.ROUND_ELEVATED_BUTTON,
-        onPressed: () {},
-      ),
-    );
+    return CustomContainer(
+        height: (radius * 2) + 30,
+        onTap: () {
+          onClick?.call();
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CircleAvatar(
+              backgroundImage: NetworkImage(image),
+              radius: radius,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text!,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    maxLine: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (subtitle != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: CustomText(subtitle!, fontSize: 14),
+                    ),
+                ],
+              ),
+            ),
+            if (trailing != null) trailing!
+          ],
+        ));
   }
 }
 

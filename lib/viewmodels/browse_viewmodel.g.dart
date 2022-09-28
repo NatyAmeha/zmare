@@ -23,6 +23,18 @@ BrowseViewmodel _$BrowseViewmodelFromJson(Map<String, dynamic> json) =>
       newAlbum: (json['newAlbum'] as List<dynamic>?)
           ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
           .toList(),
+      browseCommand: (json['browseCommand'] as List<dynamic>?)
+          ?.map((e) => BrowseCommand.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      newSongs: (json['newSongs'] as List<dynamic>?)
+          ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      topSongs: (json['topSongs'] as List<dynamic>?)
+          ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      likedSongs: (json['likedSongs'] as List<dynamic>?)
+          ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$BrowseViewmodelToJson(BrowseViewmodel instance) =>
@@ -32,4 +44,24 @@ Map<String, dynamic> _$BrowseViewmodelToJson(BrowseViewmodel instance) =>
       'playlist': instance.playlist?.map((e) => e.toJson()).toList(),
       'popularAlbum': instance.popularAlbum?.map((e) => e.toJson()).toList(),
       'newAlbum': instance.newAlbum?.map((e) => e.toJson()).toList(),
+      'browseCommand': instance.browseCommand?.map((e) => e.toJson()).toList(),
+      'newSongs': instance.newSongs?.map((e) => e.toJson()).toList(),
+      'topSongs': instance.topSongs?.map((e) => e.toJson()).toList(),
+      'likedSongs': instance.likedSongs?.map((e) => e.toJson()).toList(),
+    };
+
+BrowseCommand _$BrowseCommandFromJson(Map<String, dynamic> json) =>
+    BrowseCommand(
+      name: json['name'] as String?,
+      category: json['category'] as String?,
+      contentType: json['contentType'] as String?,
+      imagePath: json['imagePath'] as String?,
+    );
+
+Map<String, dynamic> _$BrowseCommandToJson(BrowseCommand instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'category': instance.category,
+      'contentType': instance.contentType,
+      'imagePath': instance.imagePath,
     };
