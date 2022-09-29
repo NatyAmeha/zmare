@@ -12,4 +12,20 @@ class AlbumUsecase {
 
     return result;
   }
+
+  Future<bool> likeAlbum(String albumId) async {
+    var result = await repo!.update("/library/likealbum", body: [albumId]);
+    return result;
+  }
+
+  Future<bool> unlikeAlbum(String albumId) async {
+    var result = await repo!.update("/library/removefavalbum", body: [albumId]);
+    return result;
+  }
+
+  Future<bool> isAlbumInFavorite(String albumId) async {
+    var result = await repo!.update("/library/checkalbuminfavorite",
+        queryParameters: {"albumid": albumId});
+    return result;
+  }
 }

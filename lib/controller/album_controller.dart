@@ -12,11 +12,17 @@ class AlbumController extends GetxController {
   var _isDataLoading = true.obs;
   get isDataLoading => _isDataLoading.value;
 
+  var _isLoading = false.obs;
+  get isLoading => _isLoading.value;
+
   var _exception = AppException().obs;
   AppException get exception => _exception.value;
 
   var _albumResult = Album().obs;
   Album get albumResult => _albumResult.value;
+
+  var _isFavoriteAlbum = false.obs;
+  bool get isFavoriteAlbum => _isFavoriteAlbum.value;
 
   @override
   void onInit() {
@@ -35,6 +41,48 @@ class AlbumController extends GetxController {
     } catch (ex) {
       print("error ${ex.toString()}");
       _isDataLoading(false);
+      _exception(ex as AppException);
+    }
+  }
+
+  likeAlbum(String albumId) async {
+    try {
+      _isLoading(true);
+      var albumUsecase = AlbumUsecase(repo: ApiRepository<Album>());
+      var result = await albumUsecase.likeAlbum(albumId);
+      _isLoading(false);
+      _isFavoriteAlbum(true);
+    } catch (ex) {
+      print("error ${ex.toString()}");
+      _isLoading(false);
+      _exception(ex as AppException);
+    }
+  }
+
+  unlikeAlbum(String albumId) async {
+    try {
+      _isLoading(true);
+      var albumUsecase = AlbumUsecase(repo: ApiRepository<Album>());
+      var result = await albumUsecase.unlikeAlbum(albumId);
+      _isLoading(false);
+      _isFavoriteAlbum(false);
+    } catch (ex) {
+      print("error ${ex.toString()}");
+      _isLoading(false);
+      _exception(ex as AppException);
+    }
+  }
+
+  checkAlbumFavorite(String albumId) async {
+    try {
+      _isLoading(true);
+      var albumUsecase = AlbumUsecase(repo: ApiRepository<Album>());
+      var result = await albumUsecase.isAlbumInFavorite(albumId);
+      _isLoading(false);
+      _isFavoriteAlbum(result);
+    } catch (ex) {
+      print("error ${ex.toString()}");
+      _isLoading(false);
       _exception(ex as AppException);
     }
   }

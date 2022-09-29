@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:zema/controller/album_controller.dart';
 import 'package:zema/modals/song.dart';
+import 'package:zema/widget/album_widget/album_like_unlike_btn.dart';
 import 'package:zema/widget/album_widget/album_playlist_header.dart';
 import 'package:zema/widget/custom_text.dart';
 import 'package:zema/widget/error_page.dart';
@@ -21,6 +22,7 @@ class AlbumScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var albumId = Get.parameters["id"]!;
     albumController.getAlbum(albumId);
+    albumController.checkAlbumFavorite(albumId);
 
     return Scaffold(
       body: Obx(() {
@@ -30,7 +32,7 @@ class AlbumScreen extends StatelessWidget {
           );
         } else if (albumController.exception.message != null) {
           return ErrorPage(exception: albumController.exception);
-        } else if (albumController.albumResult.name != null) {
+        } else if (albumController.albumResult.id != null) {
           return buildPage();
         } else {
           return Container();
@@ -53,18 +55,17 @@ class AlbumScreen extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
           ),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.download,
-                color: Colors.grey,
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.favorite,
-                color: Colors.grey,
+            Obx(
+              () => AlbumLikeUnlikeBtn(
+                albumId: albumController.albumResult.id!,
+                positiveAction: () {
+                  albumController.likeAlbum(albumController.albumResult.id!);
+                },
+                negetiveAction: () {
+                  albumController.unlikeAlbum(albumController.albumResult.id!);
+                },
+                isLoading: albumController.isLoading,
+                state: albumController.isFavoriteAlbum,
               ),
             ),
             IconButton(
