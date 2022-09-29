@@ -3,15 +3,22 @@ import 'package:zema/modals/exception.dart';
 import 'package:zema/modals/user.dart';
 import 'package:zema/repo/api_repository.dart';
 import 'package:zema/usecase/home_usecase.dart';
+import 'package:zema/usecase/user_usecase.dart';
 import 'package:zema/viewmodels/browse_viewmodel.dart';
 import 'package:zema/viewmodels/home_viewmodel.dart';
 import 'package:zema/viewmodels/search_viewmodel.dart';
+
+import '../repo/shared_pref_repo.dart';
 
 class AppController extends GetxController {
   var _isDataLoading = true.obs;
 
   var _exception = AppException().obs;
   AppException get exception => _exception.value;
+
+  removeException() {
+    _exception(AppException());
+  }
 
   get isDataLoading => _isDataLoading.value;
 
@@ -74,5 +81,12 @@ class AppController extends GetxController {
       _isDataLoading(false);
       _exception(ex as AppException);
     }
+  }
+
+  Future<String?> getUserId() async {
+    var userUsecase =
+        UserUsecase(sharedPrefRepo: const SharedPreferenceRepository<String>());
+    var userIdResult = await userUsecase.getUserIdFromPref();
+    return userIdResult;
   }
 }

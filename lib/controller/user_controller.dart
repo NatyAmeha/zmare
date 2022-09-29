@@ -12,7 +12,7 @@ import 'package:zema/utils/ui_helper.dart';
 class UserController extends GetxController {
   var appController = Get.find<AppController>();
 
-  var _isDataLoading = true.obs;
+  var _isDataLoading = false.obs;
   get isDataLoading => _isDataLoading.value;
 
   var _exception = AppException().obs;

@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 
 class AppException implements Exception {
   final int? type;
-  final String? message;
+  String? message;
   final int? statusCode;
   AppException({this.type, this.message, this.statusCode});
 

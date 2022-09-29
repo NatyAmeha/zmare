@@ -6,8 +6,8 @@ abstract class IRepositroy<T> {
   Future<R> create<R, S>(String path, S body,
       {Map<String, dynamic>? queryParameters});
 
-  Future<R> update<R>(String path, T? body,
-      {Map<String, dynamic>? queryParameters});
+  Future<R> update<R, S>(String path,
+      {S? body, Map<String, dynamic>? queryParameters});
 
   Future<bool> delete(String path, {Map<String, dynamic>? queryParameters});
 }

@@ -14,7 +14,7 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
   Future<R> create<R, S>(String path, S body,
       {Map<String, dynamic>? queryParameters}) async {
     var sharedPref = await SharedPreferences.getInstance();
-    print("pref type ${S.runtimeType}");
+    print("pref type ${S.toString()}");
     try {
       switch (S) {
         case String:
@@ -102,8 +102,8 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
   }
 
   @override
-  Future<R> update<R>(String path, T? body,
-      {Map<String, dynamic>? queryParameters}) async {
+  Future<R> update<R, S>(String path,
+      {S? body, Map<String, dynamic>? queryParameters}) async {
     return true as R;
   }
 
@@ -125,18 +125,19 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
   @override
   Future<bool> saveUserInfo(User userInfo, String token) async {
     try {
+      var tokenSaveREsult = await create<bool, String>(Constants.TOKEN, token);
+      var loginState = await create<bool, bool>(Constants.LOGGED_IN, true);
       var userNameSave =
           await create<bool, String>(Constants.USERNAME, userInfo.username!);
       var PhoneSave = await create<bool, String>(
           Constants.PHONE_NUMBER, userInfo.phoneNumber!);
-      var userIdSave = await create(Constants.USER_ID, userInfo.id);
+      var userIdSave =
+          await create<bool, String>(Constants.USER_ID, userInfo.id!);
       if (userInfo.profileImagePath != null) {
         var profileImageSave = await create<bool, String>(
             Constants.PROFILE_IMAGE, userInfo.profileImagePath!);
       }
 
-      var loginState = await create<bool, bool>(Constants.LOGGED_IN, true);
-      var tokenSaveREsult = await create<bool, String>(Constants.TOKEN, token);
       return true;
     } catch (ex) {
       print(ex.toString());

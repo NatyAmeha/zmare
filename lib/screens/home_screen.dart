@@ -48,6 +48,7 @@ class HomeScreen extends StatelessWidget {
           return ErrorPage(
             exception: appController.exception,
             action: () {
+              appController.removeException();
               appController.getHomeData();
             },
           );

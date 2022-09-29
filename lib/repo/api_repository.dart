@@ -49,9 +49,19 @@ class ApiRepository<T> extends IRepositroy<T> {
   }
 
   @override
-  Future<R> update<R>(String path, T? body,
-      {Map<String, dynamic>? queryParameters}) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<R> update<R, S>(String path,
+      {S? body, Map<String, dynamic>? queryParameters}) async {
+    try {
+      var result = await dioClient.put(path,
+          data: body, queryParameters: queryParameters);
+      print(result.data);
+
+      var mapResult = result.data as bool;
+      // var finalResult = await mapResult.toObject(S.toString());
+      return mapResult as R;
+    } on DioError catch (ex) {
+      print(ex.toString());
+      return Future.error(AppException.handleerror(ex));
+    }
   }
 }

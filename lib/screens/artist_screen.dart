@@ -9,7 +9,9 @@ import 'package:zema/modals/album.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/screens/category_screen.dart';
 import 'package:zema/utils/constants.dart';
+import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/album_widget/album_list.dart';
+import 'package:zema/widget/artist_widget/follow_unfollow_btn.dart';
 import 'package:zema/widget/custom_button.dart';
 import 'package:zema/widget/custom_carousel.dart';
 import 'package:zema/widget/custom_container.dart';
@@ -32,18 +34,12 @@ class ArtistScreen extends StatelessWidget {
     artistController.getArtist(artistId!);
     return Scaffold(
       body: Obx(
-        () {
-          if (artistController.isDataLoading) {
-            return LoadingProgressbar(
-                loadingState: artistController.isDataLoading);
-          } else if (artistController.exception.message != null) {
-            return ErrorPage(exception: artistController.exception);
-          } else if (artistController.artistResult.artist != null) {
-            return buildContent();
-          } else {
-            return Container();
-          }
-        },
+        () => UIHelper.displayContent(
+          content: buildContent(),
+          showWhen: artistController.artistResult.artist != null,
+          exception: artistController.exception,
+          isLoading: artistController.isDataLoading,
+        ),
       ),
     );
   }
@@ -98,11 +94,11 @@ class ArtistScreen extends StatelessWidget {
                                   ],
                                 ],
                               ),
-                              CustomButton("Follow",
-                                  buttonType: ButtonType.ROUND_ELEVATED_BUTTON,
-                                  onPressed: () {
-                                Get.toNamed(CategoryScreen.routeName);
-                              })
+                              if (artistController.artistResult.artist?.id !=
+                                  null)
+                                FollowUnfollowArtistBtn(
+                                    artistId: artistController
+                                        .artistResult.artist!.id!)
                             ],
                           ),
                         ],

@@ -30,15 +30,18 @@ class UIHelper {
       required bool showWhen,
       required AppException exception,
       bool isLoading = false}) {
+    Widget widget;
     if (isLoading) {
-      return LoadingProgressbar(loadingState: isLoading);
-    } else if (exception.message != null) {
-      return ErrorPage(exception: exception);
-    } else if (showWhen) {
-      return content;
-    } else {
-      return Container();
+      widget = LoadingProgressbar(loadingState: isLoading);
     }
+    if (exception.message != null) {
+      widget = ErrorPage(exception: exception);
+    } else if (showWhen) {
+      widget = content;
+    } else {
+      widget = Container();
+    }
+    return widget;
   }
 
   static moveToPlaylistScreen(String playlistId) {

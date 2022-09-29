@@ -34,6 +34,11 @@ class UserUsecase {
     return result;
   }
 
+  Future<String?> getUserIdFromPref() async {
+    var result = await sharedPrefRepo!.get(Constants.USER_ID) as String?;
+    return result;
+  }
+
   Future<String?> getSavedToken() async {
     var result = await sharedPrefRepo!.get(Constants.TOKEN) as String?;
     return result;
