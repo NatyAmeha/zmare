@@ -4,6 +4,9 @@ class Constants {
   static const LOGGED_IN = "LOGGED_IN";
 
   static const TOKEN = "TOKEN";
+  static const USERNAME = "USER_NAME";
+  static const PHONE_NUMBER = "PHONE_NUMBER";
+  static const PROFILE_IMAGE = "PROFILE_IMAGE";
 }
 
 enum AlbumListType { ALBUM_GRID_LIST, ALBUM_HORIZONTAL_LIST }

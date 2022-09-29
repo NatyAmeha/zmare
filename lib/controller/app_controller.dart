@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:zema/modals/exception.dart';
+import 'package:zema/modals/user.dart';
 import 'package:zema/repo/api_repository.dart';
 import 'package:zema/usecase/home_usecase.dart';
 import 'package:zema/viewmodels/browse_viewmodel.dart';
@@ -13,6 +14,9 @@ class AppController extends GetxController {
   AppException get exception => _exception.value;
 
   get isDataLoading => _isDataLoading.value;
+
+  var loggedInUser = User().obs;
+  User get loggedInUserResult => loggedInUser.value;
 
   var _homeResult = HomeViewmodel().obs;
   HomeViewmodel get homeResult => _homeResult.value;

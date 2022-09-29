@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zema/modals/exception.dart';
@@ -37,5 +39,21 @@ class UIHelper {
 
   static moveToPlaylistScreen(String playlistId) {
     Get.toNamed("/playlist/${playlistId}");
+  }
+
+  static Future<T?> moveToScreen<T>(String routeName,
+      {bool waitForRespnse = false}) async {
+    if (waitForRespnse) {
+      var result = await Get.toNamed<T>(routeName);
+      return result;
+    } else {
+      Get.toNamed(routeName);
+      print("NO response");
+      return null;
+    }
+  }
+
+  static moveBack({dynamic? result}) {
+    Get.back(result: result);
   }
 }

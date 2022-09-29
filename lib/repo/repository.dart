@@ -3,7 +3,7 @@ abstract class IRepositroy<T> {
 
   Future<T?> get(String path, {Map<String, dynamic>? queryParameters});
 
-  Future<R> create<R>(String path, T body,
+  Future<R> create<R, S>(String path, S body,
       {Map<String, dynamic>? queryParameters});
 
   Future<R> update<R>(String path, T? body,

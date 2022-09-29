@@ -3,7 +3,10 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:zema/controller/user_controller.dart';
+import 'package:zema/modals/user.dart';
 import 'package:zema/utils/constants.dart';
+import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/custom_button.dart';
 import 'package:zema/widget/custom_container.dart';
 import 'package:zema/widget/custom_image.dart';
@@ -11,30 +14,32 @@ import 'package:zema/widget/custom_text.dart';
 import 'package:zema/widget/custom_text_field.dart';
 import 'package:zema/widget/loading_progressbar.dart';
 
-class RegistrationScreen extends StatelessWidget {
+class RegistrationScreen extends StatefulWidget {
   static const routeName = "/register";
+
+  var phoneNumberController = TextEditingController();
+  var userNameController = TextEditingController();
+
+  @override
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
+}
+
+class _RegistrationScreenState extends State<RegistrationScreen> {
+  var userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
-    var phoneNumberController = TextEditingController();
-    var userNameController = TextEditingController();
     var completePhoneNumber = "";
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Get.back();
+            UIHelper.moveBack();
           },
         ),
-        title: CustomText(
-          "Register",
-          color: Colors.black,
-        ),
+        title: CustomText("Register", color: Colors.black),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -59,7 +64,7 @@ class RegistrationScreen extends StatelessWidget {
                   IntlPhoneField(
                     autofocus: false,
                     disableLengthCheck: true,
-                    controller: phoneNumberController,
+                    controller: widget.phoneNumberController,
                     decoration: const InputDecoration(
                       fillColor: Colors.grey,
                       labelText: 'Phone Number',
@@ -72,7 +77,7 @@ class RegistrationScreen extends StatelessWidget {
                   CustomTextField(
                     label: "Name",
                     autoFocus: false,
-                    controller: userNameController,
+                    controller: widget.userNameController,
                     onchanged: (value) {},
                   ),
                   const SizedBox(height: 32),
@@ -94,7 +99,15 @@ class RegistrationScreen extends StatelessWidget {
           child: CustomButton(
             "Register",
             buttonType: ButtonType.NORMAL_ELEVATED_BUTTON,
-            onPressed: () {},
+            onPressed: () async {
+              var user = User(
+                username: widget.userNameController.text,
+                phoneNumber: widget.phoneNumberController.text,
+                category: ["GOSPEL"],
+              );
+
+              userController.sendCode(user);
+            },
           ),
         ),
       ],

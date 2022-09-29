@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:zema/controller/app_controller.dart';
+import 'package:zema/screens/account_onboarding_screen.dart';
+import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/custom_text.dart';
 import 'package:zema/widget/song_widget.dart/category_list.dart';
 
 class AccountScreen extends StatelessWidget {
   static const routName = "/account";
 
-  const AccountScreen({super.key});
+  var appController = Get.find<AppController>();
+
+  AccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +25,13 @@ class AccountScreen extends StatelessWidget {
             SliverAppBar(
               title: CustomText("Account"),
               leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios_new),
-                onPressed: () {},
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  UIHelper.moveToScreen(AccountOnboardingScreen.routName);
+                },
               ),
               backgroundColor: Colors.white,
             ),
@@ -35,8 +46,10 @@ class AccountScreen extends StatelessWidget {
                     ),
                     radius: 30,
                   ),
-                  title: CustomText("Natnael Ameha",
-                      fontSize: 19, fontWeight: FontWeight.bold),
+                  title: CustomText(
+                      appController.loggedInUserResult.username ?? "",
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold),
                   subtitle: CustomText("Manage account", fontSize: 13),
                   trailing: const Icon(Icons.arrow_forward_ios),
                 ),

@@ -44,7 +44,7 @@ class ArtistList extends StatelessWidget {
         return GridView.builder(
           itemCount: artistList!.length,
           shrinkWrap: shrinkWrap,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               mainAxisExtent: 170,
               crossAxisCount: 3,
               crossAxisSpacing: 8,

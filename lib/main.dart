@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:zema/screens/account_onboarding_screen.dart';
 import 'package:zema/screens/album_screen.dart';
 import 'package:zema/screens/artist_screen.dart';
 import 'package:zema/screens/browse_screen.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
       ),
       home: MainScreen(),
       getPages: [
-        GetPage(name: "/", page: () => MainScreen()),
+        GetPage(name: MainScreen.routName, page: () => MainScreen()),
         GetPage(name: PlayerScreen.routeName, page: () => PlayerScreen()),
         GetPage(name: ArtistScreen.routeName, page: () => ArtistScreen()),
         GetPage(name: PlaylistScreen.routeName, page: () => PlaylistScreen()),
@@ -61,6 +62,9 @@ class MyApp extends StatelessWidget {
             page: () => VerificationScreen()),
         GetPage(
             name: OnboardingScreen.routName, page: () => OnboardingScreen()),
+        GetPage(
+            name: AccountOnboardingScreen.routName,
+            page: () => AccountOnboardingScreen())
       ],
     );
   }
