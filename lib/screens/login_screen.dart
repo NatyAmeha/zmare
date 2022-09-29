@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
+import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:zema/controller/user_controller.dart';
 import 'package:zema/modals/user.dart';
 import 'package:zema/utils/constants.dart';
 import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_container.dart';
 import 'package:zema/widget/custom_image.dart';
 import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/custom_text_field.dart';
 import 'package:zema/widget/loading_progressbar.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  static const routeName = "/register";
+import '../controller/user_controller.dart';
+
+class LoginScreen extends StatefulWidget {
+  static const routeName = "/login";
+  LoginScreen({super.key});
 
   var phoneNumberController = TextEditingController();
-  var userNameController = TextEditingController();
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   var userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
-    var completePhoneNumber = "";
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -39,7 +37,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             UIHelper.moveBack();
           },
         ),
-        title: CustomText("Register", color: Colors.black),
+        title: CustomText("Login", color: Colors.black),
         backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -54,11 +52,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   CustomImage(
                     "assets/images/music_placeholder.png",
                     srcLocation: "assets",
-                    width: 150,
-                    height: 150,
+                    width: 130,
+                    height: 130,
                   ),
                   const SizedBox(height: 24),
-                  CustomText("Register with your phone",
+                  CustomText("Login with your phone",
                       fontSize: 19, fontWeight: FontWeight.bold),
                   const SizedBox(height: 32),
                   IntlPhoneField(
@@ -73,14 +71,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     initialCountryCode: 'ET',
                     onChanged: (phone) {},
                   ),
-                  const SizedBox(height: 24),
-                  CustomTextField(
-                    label: "Name",
-                    autoFocus: false,
-                    controller: widget.userNameController,
-                    onchanged: (value) {},
-                  ),
                   const SizedBox(height: 32),
+                  CustomButton(
+                    "Login",
+                    buttonType: ButtonType.NORMAL_ELEVATED_BUTTON,
+                    onPressed: () async {
+                      var user = User(
+                        phoneNumber: widget.phoneNumberController.text,
+                      );
+                      userController.sendCode(user);
+                    },
+                  ),
                 ],
               ),
             ),
@@ -94,24 +95,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
           ],
         ),
       ),
-      persistentFooterButtons: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: CustomButton(
-            "Register",
-            buttonType: ButtonType.NORMAL_ELEVATED_BUTTON,
-            onPressed: () async {
-              var user = User(
-                username: widget.userNameController.text,
-                phoneNumber: widget.phoneNumberController.text,
-                category: ["GOSPEL"],
-              );
-
-              userController.sendCode(user);
-            },
-          ),
-        ),
-      ],
     );
   }
 }

@@ -3,6 +3,10 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zema/modals/exception.dart';
+import 'package:zema/repo/shared_pref_repo.dart';
+import 'package:zema/screens/login_screen.dart';
+import 'package:zema/screens/registration_screen.dart';
+import 'package:zema/usecase/user_usecase.dart';
 import 'package:zema/widget/error_page.dart';
 import 'package:zema/widget/loading_progressbar.dart';
 
@@ -50,6 +54,17 @@ class UIHelper {
       Get.toNamed(routeName);
       print("NO response");
       return null;
+    }
+  }
+
+  static moveToLoginOrRegister() async {
+    var userUsecase =
+        UserUsecase(sharedPrefRepo: const SharedPreferenceRepository<String>());
+    var tokenResult = await userUsecase.getSavedToken();
+    if (tokenResult != null) {
+      moveToScreen(LoginScreen.routeName);
+    } else {
+      moveToScreen(RegistrationScreen.routeName);
     }
   }
 

@@ -3,6 +3,7 @@ import 'package:zema/repo/repository.dart';
 import 'package:zema/repo/shared_pref_repo.dart';
 import 'package:zema/screens/verification_screen.dart';
 import 'package:zema/service/account_service.dart';
+import 'package:zema/utils/constants.dart';
 
 class UserUsecase {
   IRepositroy? repo;
@@ -21,14 +22,20 @@ class UserUsecase {
     var tokenResult =
         await repo!.create<String, User>("/auth/registerwithphone", userInfo);
     var userResult = await accountService!.decodeToken(tokenResult);
+    print("${userResult.username} , ${userResult.phoneNumber}");
     var preferenceSaveResult =
-        await sharedPrefRepo!.saveUserInfo(userInfo, tokenResult);
+        await sharedPrefRepo!.saveUserInfo(userResult, tokenResult);
     print("${userResult.username}  ${preferenceSaveResult}");
     return userResult;
   }
 
   Future<bool> sendVerificationCode(String phoneNumber) async {
     var result = await accountService!.sendVerificationCode();
+    return result;
+  }
+
+  Future<String?> getSavedToken() async {
+    var result = await sharedPrefRepo!.get(Constants.TOKEN) as String?;
     return result;
   }
 }

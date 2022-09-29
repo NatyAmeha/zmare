@@ -31,7 +31,7 @@ class AccountOnboardingScreen extends StatelessWidget {
             CustomButton("Continue with phone number",
                 icon: Icons.phone,
                 buttonType: ButtonType.ROUND_ELEVATED_BUTTON, onPressed: () {
-              UIHelper.moveToScreen(RegistrationScreen.routeName);
+              UIHelper.moveToLoginOrRegister();
             }),
             const SizedBox(height: 16),
             CustomButton("Continue with facebook",
