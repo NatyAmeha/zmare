@@ -129,6 +129,7 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
           await create<bool, String>(Constants.USERNAME, userInfo.username!);
       var PhoneSave = await create<bool, String>(
           Constants.PHONE_NUMBER, userInfo.phoneNumber!);
+      var userIdSave = await create(Constants.USER_ID, userInfo.id);
       if (userInfo.profileImagePath != null) {
         var profileImageSave = await create<bool, String>(
             Constants.PROFILE_IMAGE, userInfo.profileImagePath!);

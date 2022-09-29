@@ -3,6 +3,7 @@ class Constants {
   static const REGISTERED = "REGISTEREND";
   static const LOGGED_IN = "LOGGED_IN";
 
+  static const USER_ID = "USER_ID";
   static const TOKEN = "TOKEN";
   static const USERNAME = "USER_NAME";
   static const PHONE_NUMBER = "PHONE_NUMBER";

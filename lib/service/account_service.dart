@@ -24,6 +24,7 @@ class FirebaseAuthService implements IAccountService {
   Future<User> decodeToken(String token) async {
     var result = await jwtDecocer.decodeToken(token);
     var userResult = User(
+      id: result["_id"],
       username: result["username"],
       phoneNumber: result["phoneNumber"],
       profileImagePath: result["profileImagePath"],
