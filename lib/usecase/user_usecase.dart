@@ -50,7 +50,7 @@ class UserUsecase {
     return result;
   }
 
-  Future<List<R>?> getUserLibrary<R>(String path, String filter) async {
+  Future<List<R>> getUserLibrary<R>(String path, String filter) async {
     var result =
         await repo!.getAll<R>(path, queryParameters: {"filter": filter});
     return result;

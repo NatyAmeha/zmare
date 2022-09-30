@@ -42,7 +42,7 @@ class AlbumListScreen extends StatelessWidget {
 
   getAlbumList(AlbumListDataType type) {
     switch (type) {
-      case AlbumListDataType.FAVORITE_ALBUM_LIST:
+      case AlbumListDataType.USER_FAVORITE_ALBUM_LIST:
         albumController.getUserFavoriteAlbums();
         break;
       default:

@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:zema/controller/app_controller.dart';
+import 'package:zema/modals/artist.dart';
 import 'package:zema/modals/exception.dart';
 import 'package:zema/repo/api_repository.dart';
 import 'package:zema/usecase/artist_usecase.dart';
+import 'package:zema/usecase/user_usecase.dart';
 import 'package:zema/viewmodels/artist_viewmodel.dart';
 
 class ArtistController extends GetxController {
@@ -21,6 +23,8 @@ class ArtistController extends GetxController {
   var _artistResult = ArtistViewmodel().obs;
   ArtistViewmodel get artistResult => _artistResult.value;
   var isFollowing = false.obs;
+
+  List<Artist>? artistList;
 
   // checkArtistFollowing() async {
   //   var userId = await appController.getUserId();
@@ -83,6 +87,23 @@ class ArtistController extends GetxController {
       _isLoading(false);
       print(ex.toString());
       _exception(ex as AppException);
+    }
+  }
+
+  getUserFavoriteArtists() async {
+    try {
+      _isDataLoading(true);
+      var userUsecase = UserUsecase(repo: ApiRepository());
+      var result =
+          await userUsecase.getUserLibrary<Artist>("/library", "artist");
+      print("resul ti s");
+      print(result);
+      artistList = result;
+    } catch (ex) {
+      print("error ${ex.toString()}");
+      _exception(ex as AppException);
+    } finally {
+      _isDataLoading(false);
     }
   }
 }

@@ -51,11 +51,11 @@ class ApiRepository<T> extends IRepositroy<T> {
       var response =
           await dioClient.get(path, queryParameters: queryParameters);
       var conversionResult = response.data as List<dynamic>;
-      print(conversionResult);
       var finalResult = conversionResult.map((element) {
         var newElement = element as Map<String, dynamic>;
         return newElement.toObject(R.toString()) as R;
       }).toList();
+      print(finalResult);
 
       return finalResult;
     } on DioError catch (e) {

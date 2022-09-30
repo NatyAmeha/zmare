@@ -8,6 +8,7 @@ import 'package:zema/modals/library.dart';
 import 'package:zema/screens/account_onboarding_screen.dart';
 import 'package:zema/screens/album_list_screen.dart';
 import 'package:zema/screens/album_screen.dart';
+import 'package:zema/screens/artist_list_screen.dart';
 import 'package:zema/utils/constants.dart';
 import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/custom_text.dart';
@@ -85,7 +86,9 @@ class AccountScreen extends StatelessWidget {
                       icon: Icons.album,
                       onclick: () {
                         UIHelper.moveToScreen(AlbumListScreen.routeName,
-                            arguments: [AlbumListDataType.FAVORITE_ALBUM_LIST]);
+                            arguments: [
+                              AlbumListDataType.USER_FAVORITE_ALBUM_LIST
+                            ]);
                       },
                     ),
                     CategoryListItem(
@@ -93,6 +96,14 @@ class AccountScreen extends StatelessWidget {
                       subtitle:
                           "${appController.libraryResult?.followedArtists?.length ?? 0}",
                       icon: Icons.playlist_play,
+                      onclick: () {
+                        UIHelper.moveToScreen(
+                          ArtistListScreen.routeName,
+                          arguments: [
+                            ArtistListDataType.USER_FAVORITE_ARTIST_LIST
+                          ],
+                        );
+                      },
                     ),
                     CategoryListItem(
                       title: "Your Playlists",

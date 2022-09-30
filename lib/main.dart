@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:zema/screens/account_onboarding_screen.dart';
 import 'package:zema/screens/album_list_screen.dart';
 import 'package:zema/screens/album_screen.dart';
+import 'package:zema/screens/artist_list_screen.dart';
 import 'package:zema/screens/artist_screen.dart';
 import 'package:zema/screens/browse_screen.dart';
 import 'package:zema/screens/category_screen.dart';
@@ -56,8 +57,10 @@ class MyApp extends StatelessWidget {
         GetPage(name: DownloadScreen.routName, page: () => DownloadScreen()),
         GetPage(name: SongListScreen.routName, page: () => SongListScreen()),
         GetPage(name: AlbumScreen.routName, page: () => AlbumScreen()),
-        GetPage(name: AlbumListScreen.routeName, page: () => AlbumListScreen()),
         GetPage(name: LoginScreen.routeName, page: () => LoginScreen()),
+        GetPage(name: AlbumListScreen.routeName, page: () => AlbumListScreen()),
+        GetPage(
+            name: ArtistListScreen.routeName, page: () => ArtistListScreen()),
         GetPage(
             name: RegistrationScreen.routeName,
             page: () => RegistrationScreen()),
