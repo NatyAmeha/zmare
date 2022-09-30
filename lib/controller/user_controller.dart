@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:zema/controller/app_controller.dart';
 import 'package:zema/modals/exception.dart';
+import 'package:zema/modals/library.dart';
 import 'package:zema/modals/user.dart';
 import 'package:zema/repo/api_repository.dart';
 import 'package:zema/screens/main_screen.dart';
@@ -17,6 +18,9 @@ class UserController extends GetxController {
 
   var _exception = AppException().obs;
   AppException get exception => _exception.value;
+
+  var _libraryResult = Library().obs;
+  Library get libraryResult => _libraryResult.value;
 
   sendCode(User userInfo) async {
     try {
@@ -35,6 +39,7 @@ class UserController extends GetxController {
   }
 
   signupWithPhone(User userInfo) async {
+    _exception(AppException());
     try {
       _isDataLoading(true);
       var userUsecase = UserUsecase(

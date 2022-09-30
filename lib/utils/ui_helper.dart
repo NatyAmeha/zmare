@@ -25,23 +25,25 @@ class UIHelper {
     );
   }
 
-  static Widget displayContent(
-      {required Widget content,
-      required bool showWhen,
-      required AppException exception,
-      bool isLoading = false}) {
+  static Widget displayContent({
+    required Widget content,
+    required bool showWhen,
+    required AppException exception,
+    bool isDataLoading = true,
+  }) {
     Widget widget;
-    if (isLoading) {
-      widget = LoadingProgressbar(loadingState: isLoading);
+
+    if (isDataLoading) {
+      return LoadingProgressbar(loadingState: isDataLoading);
+    } else if (exception.message != null) {
+      return ErrorPage(exception: exception);
     }
-    if (exception.message != null) {
-      widget = ErrorPage(exception: exception);
-    } else if (showWhen) {
-      widget = content;
-    } else {
-      widget = Container();
+    // } else if (showWhen) {
+    //   return  content;
+    // }
+    else {
+      return content;
     }
-    return widget;
   }
 
   static moveToPlaylistScreen(String playlistId) {
@@ -49,13 +51,13 @@ class UIHelper {
   }
 
   static Future<T?> moveToScreen<T>(String routeName,
-      {bool waitForRespnse = false}) async {
+      {dynamic arguments, bool waitForRespnse = false}) async {
     if (waitForRespnse) {
-      var result = await Get.toNamed<T>(routeName);
+      var result = await Get.toNamed<T>(routeName, arguments: arguments);
       return result;
     } else {
-      Get.toNamed(routeName);
-      print("NO response");
+      Get.toNamed(routeName, arguments: arguments);
+
       return null;
     }
   }

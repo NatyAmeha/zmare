@@ -45,7 +45,14 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
   }
 
   @override
-  Future<T?> get(String path, {Map<String, dynamic>? queryParameters}) async {
+  Future<List<R>> getAll<R>(String path,
+      {Map<String, dynamic>? queryParameters}) async {
+    return [] as List<R>;
+  }
+
+  @override
+  Future<R?> get<R>(String path,
+      {Map<String, dynamic>? queryParameters}) async {
     var sharedPref = await SharedPreferences.getInstance();
     try {
       switch (T) {
@@ -53,7 +60,7 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
           if (sharedPref.containsKey(path)) {
             var result = sharedPref.getString(path);
 
-            return result as T?;
+            return result as R?;
           } else {
             return null;
           }
@@ -61,7 +68,7 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
         case int:
           if (sharedPref.containsKey(path)) {
             var result = sharedPref.getInt(path);
-            return result as T?;
+            return result as R?;
           } else {
             return null;
           }
@@ -71,7 +78,7 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
           print("get result $rr");
           if (sharedPref.containsKey(path)) {
             var result = sharedPref.getBool(path);
-            return result as T?;
+            return result as R?;
           } else {
             return null;
           }
@@ -80,7 +87,7 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
           var rr = sharedPref.containsKey(path);
           if (sharedPref.containsKey(path)) {
             var result = sharedPref.getStringList(path);
-            return result as T?;
+            return result as R?;
           } else {
             return null;
           }
@@ -93,12 +100,6 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
       return Future.error(AppException(
           type: AppException.STORAGE_EXCEPTION, message: e.toString()));
     }
-  }
-
-  @override
-  Future<List<T>> getAll(String path,
-      {Map<String, dynamic>? queryParameters}) async {
-    return [] as List<T>;
   }
 
   @override

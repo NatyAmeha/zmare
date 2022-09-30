@@ -1,7 +1,8 @@
 abstract class IRepositroy<T> {
-  Future<List<T>> getAll(String path, {Map<String, dynamic>? queryParameters});
+  Future<List<R>> getAll<R>(String path,
+      {Map<String, dynamic>? queryParameters});
 
-  Future<T?> get(String path, {Map<String, dynamic>? queryParameters});
+  Future<R?> get<R>(String path, {Map<String, dynamic>? queryParameters});
 
   Future<R> create<R, S>(String path, S body,
       {Map<String, dynamic>? queryParameters});

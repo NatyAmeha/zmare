@@ -27,7 +27,7 @@ class PlaylistScreen extends StatelessWidget {
       body: Obx(() => UIHelper.displayContent(
             showWhen: playlistController.playlistResult.name != null,
             exception: playlistController.exception,
-            isLoading: playlistController.isDataLoading,
+            isDataLoading: playlistController.isDataLoading,
             content: CustomScrollView(
               slivers: [
                 SliverAppBar(

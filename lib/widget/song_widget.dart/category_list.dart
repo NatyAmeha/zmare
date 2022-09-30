@@ -55,19 +55,24 @@ class CategoryListItem extends StatelessWidget {
   List<Color>? gradientColor;
   IconData icon;
   String? image;
-  CategoryListItem(
-      {this.title,
-      this.subtitle,
-      this.gradientColor,
-      this.icon = Icons.dashboard,
-      this.image});
+  Function? onclick;
+  CategoryListItem({
+    this.title,
+    this.subtitle,
+    this.gradientColor,
+    this.icon = Icons.dashboard,
+    this.image,
+    this.onclick,
+  });
 
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
       margin: 0,
       color: Colors.grey[200],
-      onTap: () {},
+      onTap: () {
+        onclick?.call();
+      },
       gradientColor: gradientColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

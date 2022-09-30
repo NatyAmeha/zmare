@@ -1,3 +1,4 @@
+import 'package:zema/modals/library.dart';
 import 'package:zema/modals/user.dart';
 import 'package:zema/repo/repository.dart';
 import 'package:zema/repo/shared_pref_repo.dart';
@@ -35,12 +36,23 @@ class UserUsecase {
   }
 
   Future<String?> getUserIdFromPref() async {
-    var result = await sharedPrefRepo!.get(Constants.USER_ID) as String?;
+    var result = await sharedPrefRepo!.get<String>(Constants.USER_ID);
     return result;
   }
 
   Future<String?> getSavedToken() async {
-    var result = await sharedPrefRepo!.get(Constants.TOKEN) as String?;
+    var result = await sharedPrefRepo!.get<String>(Constants.TOKEN);
+    return result;
+  }
+
+  Future<R?> getUserLibraryInfo<R>(String path, {LibraryFilter? filter}) async {
+    var result = await repo!.get<R>(path, queryParameters: {"filter": filter});
+    return result;
+  }
+
+  Future<List<R>?> getUserLibrary<R>(String path, String filter) async {
+    var result =
+        await repo!.getAll<R>(path, queryParameters: {"filter": filter});
     return result;
   }
 }

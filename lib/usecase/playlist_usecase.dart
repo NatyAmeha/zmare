@@ -6,8 +6,8 @@ class PlaylistUsecase {
 
   PlaylistUsecase({this.repo});
 
-  Future<Playlist> getPlaylist(String playlistId) async {
-    var result = await repo?.get("/playlist/$playlistId");
+  Future<Playlist?> getPlaylist(String playlistId) async {
+    var result = await repo?.get<Playlist>("/playlist/$playlistId");
     return result;
   }
 }

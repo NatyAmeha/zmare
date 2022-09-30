@@ -1,4 +1,5 @@
 import 'package:zema/modals/album.dart';
+import 'package:zema/modals/library.dart';
 import 'package:zema/modals/playlist.dart';
 import 'package:zema/viewmodels/artist_viewmodel.dart';
 import 'package:zema/viewmodels/browse_viewmodel.dart';
@@ -25,6 +26,9 @@ extension apiResponseconverter on dynamic {
 
       case "BrowseViewmodel":
         return BrowseViewmodel.fromJson(this);
+
+      case "Library":
+        return Library.fromJson(this);
 
       case "String":
       case "bool":

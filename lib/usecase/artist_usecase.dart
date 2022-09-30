@@ -6,8 +6,8 @@ class ArtistUsecase {
 
   ArtistUsecase({this.repo});
 
-  Future<ArtistViewmodel> getArtistInfo(String artistId) async {
-    var result = await repo?.get("/artist/$artistId");
+  Future<ArtistViewmodel?> getArtistInfo(String artistId) async {
+    var result = await repo?.get<ArtistViewmodel>("/artist/$artistId");
     return result;
   }
 

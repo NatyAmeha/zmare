@@ -48,7 +48,7 @@ class BrowseScreen extends StatelessWidget {
           showWhen:
               appController.browseResult.browseCommand?.isNotEmpty == true,
           exception: appController.exception,
-          isLoading: appController.isDataLoading,
+          isDataLoading: appController.isDataLoading,
           content: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(

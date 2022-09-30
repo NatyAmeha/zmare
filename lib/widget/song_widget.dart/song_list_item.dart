@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:zema/controller/app_controller.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/viewmodels/menu_viewmodel.dart';
@@ -23,12 +25,27 @@ class SongListItem extends StatelessWidget {
   Function(Song)? onMoreclicked;
 
   var songMenus = [
-    MenuViewmodel(text: "Like song", icon: Icons.favorite_outline),
-    MenuViewmodel(text: "Dislike song", icon: Icons.favorite),
-    MenuViewmodel(text: "Download song", icon: Icons.download),
-    MenuViewmodel(text: "Go to Album", icon: Icons.album),
-    MenuViewmodel(text: "Go to Artist", icon: Icons.mic),
-    MenuViewmodel(text: "Delete song", icon: Icons.delete),
+    MenuViewmodel(
+        text: ["Like song", "Unlike song"],
+        icon: [Icons.favorite_outline, Icons.favorite],
+        type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+        dependOnExternal: true),
+    MenuViewmodel(
+        text: ["Download song", "Remove download"],
+        icon: [Icons.download, Icons.downloading],
+        type: MenuViewmodel.MENU_TYPE_DOWNLOAD_REMOVE_DOWNLOAD_SONG),
+    MenuViewmodel(
+        text: ["Go to Album"],
+        icon: [Icons.album],
+        type: MenuViewmodel.MENU_TYPE_GO_TO_ALBUM),
+    MenuViewmodel(
+        text: ["Go to Artist"],
+        icon: [Icons.mic],
+        type: MenuViewmodel.MENU_TYPE_GO_TO_ARTIST),
+    MenuViewmodel(
+        text: ["Delete song"],
+        icon: [Icons.delete],
+        type: MenuViewmodel.MENU_TYPE_DELETE_SONG),
   ];
 
   SongListItem(
@@ -97,11 +114,18 @@ class SongListItem extends StatelessWidget {
               onPressed: () async {
                 onMoreclicked?.call(songInfo) ??
                     UIHelper.showBottomSheet(
-                        SongMenuModal(song: songInfo, menuList: songMenus),
-                        scrollControlled: true);
+                      SongMenuModal(
+                        song: songInfo,
+                        menuList: songMenus,
+                        showProgress: true,
+                        activeMenusIndx:
+                            List.generate(songMenus.length, (index) => index),
+                      ),
+                      scrollControlled: true,
+                    );
               },
               icon: const Icon(Icons.more_vert),
-            )
+            ),
         ],
       ),
     );

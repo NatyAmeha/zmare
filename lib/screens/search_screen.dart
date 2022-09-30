@@ -40,7 +40,7 @@ class _SearchScreenState extends State<SearchScreen>
       () => UIHelper.displayContent(
         showWhen: widget.appController.searhResult.artists?.isNotEmpty == true,
         exception: widget.appController.exception,
-        isLoading: widget.appController.isDataLoading,
+        isDataLoading: widget.appController.isDataLoading,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

@@ -12,6 +12,10 @@ class Constants {
 
 enum AlbumListType { ALBUM_GRID_LIST, ALBUM_HORIZONTAL_LIST }
 
+enum AlbumListDataType { FAVORITE_ALBUM_LIST }
+
+enum LibraryFilter { song, album, artist, playlist }
+
 enum ArtistListType {
   ARTIST_HORIZONTAL_LIST,
   ARTIST_VERTICAL_LIST,

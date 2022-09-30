@@ -7,7 +7,7 @@ class AlbumUsecase {
 
   AlbumUsecase({this.repo});
   Future<Album?> getAlbum(String albumId) async {
-    var result = await repo?.get("/album/$albumId") as Album;
+    var result = await repo?.get<Album>("/album/$albumId") as Album;
     print("album result");
 
     return result;

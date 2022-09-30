@@ -5,6 +5,8 @@ import 'package:zema/modals/exception.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/repo/api_repository.dart';
 import 'package:zema/usecase/album_usecase.dart';
+import 'package:zema/usecase/user_usecase.dart';
+import 'package:zema/utils/constants.dart';
 
 class AlbumController extends GetxController {
   var appController = Get.find<AppController>();
@@ -24,6 +26,8 @@ class AlbumController extends GetxController {
   var _isFavoriteAlbum = false.obs;
   bool get isFavoriteAlbum => _isFavoriteAlbum.value;
 
+  List<Album>? albumList;
+
   @override
   void onInit() {
     var id = Get.parameters["id"];
@@ -42,6 +46,21 @@ class AlbumController extends GetxController {
       print("error ${ex.toString()}");
       _isDataLoading(false);
       _exception(ex as AppException);
+    }
+  }
+
+  getUserFavoriteAlbums() async {
+    try {
+      _isDataLoading(true);
+      var userUsecase = UserUsecase(repo: ApiRepository());
+      var result = await userUsecase.getUserLibrary<Album>("/library", "album");
+      print(result);
+      albumList = result;
+    } catch (ex) {
+      print("error ${ex.toString()}");
+      _exception(ex as AppException);
+    } finally {
+      _isDataLoading(false);
     }
   }
 

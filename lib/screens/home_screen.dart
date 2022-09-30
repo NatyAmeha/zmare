@@ -69,14 +69,14 @@ class HomeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               ScreenHeaderDart(),
-              CircleTileList(
-                image: const [
-                  "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-                  "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-                  "https://i.pinimg.com/736x/8a/b8/7b/8ab87bd6999d659eb282fbed00895d86--last-fm-album-cover.jpg",
-                  "https://imusician.imgix.net/images/how-to-make-an-album-cover.jpg?auto=compress&w=1200&h=630&fit=crop",
-                ],
-              ),
+              if (appController.homeResult.recentActivity?.isNotEmpty == true)
+                CircleTileList(
+                  image: appController.homeResult.recentActivity!
+                      .map((e) => e.image ?? "")
+                      .toList(),
+                  circleRadius: 50,
+                  height: 150,
+                ),
               Container(
                 height: 250,
                 child: ListView.separated(

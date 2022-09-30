@@ -8,20 +8,20 @@ class HomeUsecase {
   HomeUsecase({
     this.repo,
   });
-  Future<HomeViewmodel?> getHomeData() async {
-    var result = await repo?.get("/homenew") as HomeViewmodel?;
-
+  Future<HomeViewmodel> getHomeData() async {
+    var result = await repo?.get<HomeViewmodel>("/homenew") as HomeViewmodel;
+    print(result?.recentActivity?.length);
     return result;
   }
 
-  Future<BrowseViewmodel> getBrowseResult(String category) async {
-    var result = await repo?.get("/browse/$category") as BrowseViewmodel;
+  Future<BrowseViewmodel?> getBrowseResult(String category) async {
+    var result = await repo?.get<BrowseViewmodel>("/browse/$category");
     return result;
   }
 
   Future<SearchViewmodel> getSearchResult(String query) async {
-    var result = await repo?.get("/search", queryParameters: {"query": query})
-        as SearchViewmodel;
+    var result = await repo?.get<SearchViewmodel>("/search",
+        queryParameters: {"query": query}) as SearchViewmodel;
     return result;
   }
 }

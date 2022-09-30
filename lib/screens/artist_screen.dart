@@ -38,7 +38,7 @@ class ArtistScreen extends StatelessWidget {
           content: buildContent(),
           showWhen: artistController.artistResult.artist != null,
           exception: artistController.exception,
-          isLoading: artistController.isDataLoading,
+          isDataLoading: artistController.isDataLoading,
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zema/controller/app_controller.dart';
 import 'package:zema/modals/exception.dart';
+import 'package:zema/screens/account_onboarding_screen.dart';
 import 'package:zema/screens/registration_screen.dart';
 import 'package:zema/utils/constants.dart';
 import 'package:zema/widget/custom_button.dart';
@@ -36,7 +37,7 @@ class ErrorPage extends StatelessWidget {
         btnText = "Sign in";
         errorMessage = "You need to sign in to continue to the app";
         onClick = () {
-          Get.toNamed(RegistrationScreen.routeName);
+          Get.toNamed(AccountOnboardingScreen.routName);
         };
         break;
       case AppException.NOT_FOUND_EXCEPTION:
