@@ -54,6 +54,11 @@ class AppController extends GetxController {
     super.onInit();
   }
 
+  startPlayingAudioFile(List<Song> songs, {int index = 0}) async {
+    await player.load(songs, index: index);
+    await player.play();
+  }
+
   getHomeData() async {
     try {
       _isDataLoading(true);

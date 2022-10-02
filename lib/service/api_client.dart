@@ -11,7 +11,7 @@ class ApiClient {
       return _dioClient!;
     else {
       var dioOption = BaseOptions(
-        baseUrl: "http://192.168.1.6:4000",
+        baseUrl: "http://192.168.1.3:4000",
         connectTimeout: 30000,
         receiveTimeout: 30000,
         sendTimeout: 30000,

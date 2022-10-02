@@ -20,6 +20,8 @@ enum LibraryFilter { song, album, artist, playlist }
 
 enum PlaybackSrc { NETWORK, LOCAL }
 
+enum PlaybackState { BUFFERING, PLAYING, PAUSED, IDLE }
+
 enum ArtistListType {
   ARTIST_HORIZONTAL_LIST,
   ARTIST_VERTICAL_LIST,

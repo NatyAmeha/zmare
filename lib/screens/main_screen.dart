@@ -33,7 +33,7 @@ class _MainScreenState extends State<MainScreen> {
         child: Stack(
           children: [
             selectPage(),
-            const Positioned.fill(
+            Positioned.fill(
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: PlayerCard(),

@@ -23,6 +23,7 @@ class SongListItem extends StatelessWidget {
   bool showDrag;
   bool showMore;
   Function(Song)? onMoreclicked;
+  Function? onTap;
 
   var songMenus = [
     MenuViewmodel(
@@ -59,6 +60,7 @@ class SongListItem extends StatelessWidget {
     this.showMore = true,
     this.showPlayPauseIcon = false,
     this.showDrag = false,
+    this.onTap,
     this.onMoreclicked,
   });
 
@@ -67,10 +69,13 @@ class SongListItem extends StatelessWidget {
     return ListTile(
       key: key,
       selected: isSelected,
-      selectedColor: Colors.grey,
+      // selectedColor: Colors.black,
+      selectedTileColor: Colors.grey[200],
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       minVerticalPadding: 0,
-      onTap: () {},
+      onTap: () {
+        onTap?.call();
+      },
       leading: CustomImage(songInfo.thumbnailPath,
           height: 50, width: 50, roundImage: true),
       title: CustomText(
