@@ -62,6 +62,14 @@ class PlaylistScreen extends StatelessWidget {
                           title: playlistController.playlistResult.name ?? "",
                           actionText: "Start Playing",
                           size: 200,
+                          onActionClick: () {
+                            if (playlistController
+                                    .playlistResult.songs?.isNotEmpty ==
+                                true) {
+                              playlistController.playPlaylist(
+                                  playlistController.playlistSongs!);
+                            }
+                          },
                           subtitle: CustomText(
                             "${playlistController.playlistResult.followersId?.length ?? 0} followers",
                             fontSize: 12,

@@ -4,6 +4,7 @@ import 'package:zema/modals/library.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/modals/user.dart';
 import 'package:zema/repo/api_repository.dart';
+import 'package:zema/service/player/player_service.dart';
 import 'package:zema/usecase/home_usecase.dart';
 import 'package:zema/usecase/song_usecase.dart';
 import 'package:zema/usecase/user_usecase.dart';
@@ -14,6 +15,8 @@ import 'package:zema/viewmodels/search_viewmodel.dart';
 import '../repo/shared_pref_repo.dart';
 
 class AppController extends GetxController {
+  var player = JustAudioPlayer();
+
   var _isDataLoading = true.obs;
   get isDataLoading => _isDataLoading.value;
 

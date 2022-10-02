@@ -17,10 +17,12 @@ import 'package:zema/screens/playlist_screen.dart';
 import 'package:zema/screens/registration_screen.dart';
 import 'package:zema/screens/song_list_screen.dart';
 import 'package:zema/screens/verification_screen.dart';
+import 'package:zema/service/player/player_service.dart';
 import 'package:zema/viewmodels/download_viewmodel.dart';
 import 'package:zema/widget/song_widget.dart/song_list.dart';
 
-void main() {
+Future<void> main() async {
+  await JustAudioPlayer.initBackgroundPlayback();
   runApp(const MyApp());
 }
 

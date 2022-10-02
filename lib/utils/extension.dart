@@ -2,6 +2,7 @@ import 'package:zema/modals/album.dart';
 import 'package:zema/modals/artist.dart';
 import 'package:zema/modals/library.dart';
 import 'package:zema/modals/playlist.dart';
+import 'package:zema/modals/song.dart';
 import 'package:zema/viewmodels/artist_viewmodel.dart';
 import 'package:zema/viewmodels/browse_viewmodel.dart';
 import 'package:zema/viewmodels/home_viewmodel.dart';
@@ -18,6 +19,9 @@ extension apiResponseconverter on dynamic {
 
       case "Artist":
         return Artist.fromJson(this);
+
+      case "Song":
+        return Song.fromJson(this);
 
       case "ArtistViewmodel":
         return ArtistViewmodel.fromJson(this);

@@ -18,6 +18,8 @@ enum ArtistListDataType { USER_FAVORITE_ARTIST_LIST }
 
 enum LibraryFilter { song, album, artist, playlist }
 
+enum PlaybackSrc { NETWORK, LOCAL }
+
 enum ArtistListType {
   ARTIST_HORIZONTAL_LIST,
   ARTIST_VERTICAL_LIST,

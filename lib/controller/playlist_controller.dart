@@ -7,7 +7,9 @@ import 'package:zema/modals/exception.dart';
 import 'package:zema/modals/playlist.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/repo/api_repository.dart';
+import 'package:zema/service/player/player_service.dart';
 import 'package:zema/usecase/playlist_usecase.dart';
+import 'package:zema/utils/constants.dart';
 
 class PlaylistController extends GetxController {
   var appController = Get.find<AppController>();
@@ -20,6 +22,9 @@ class PlaylistController extends GetxController {
 
   var _playlistResult = Playlist().obs;
   Playlist get playlistResult => _playlistResult.value;
+  List<Song>? get playlistSongs =>
+      playlistResult.songs?.map((e) => Song.fromJson(e)).toList();
+
   List<String>? get playlistImages {
     var songImages = playlistResult.songs
         ?.map((e) => Song.fromJson(e))
@@ -40,5 +45,10 @@ class PlaylistController extends GetxController {
       print(ex.toString());
       _exception(ex as AppException);
     }
+  }
+
+  playPlaylist(List<Song> songs) async {
+    var playlistUsecase = PlaylistUsecase(player: appController.player);
+    await playlistUsecase.playPlaylist(songs, PlaybackSrc.NETWORK);
   }
 }

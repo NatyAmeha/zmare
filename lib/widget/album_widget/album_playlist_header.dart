@@ -48,8 +48,10 @@ class AlbumPlayListHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          CustomButton(actionText,
-              buttonType: ButtonType.ROUND_ELEVATED_BUTTON, onPressed: () {}),
+          CustomButton(actionText, buttonType: ButtonType.ROUND_ELEVATED_BUTTON,
+              onPressed: () {
+            onActionClick?.call();
+          }),
           if (subtitle != null) ...[
             const SizedBox(height: 16),
             subtitle!,
