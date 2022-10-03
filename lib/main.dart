@@ -49,7 +49,10 @@ class MyApp extends StatelessWidget {
       home: MainScreen(),
       getPages: [
         GetPage(name: MainScreen.routName, page: () => MainScreen()),
-        GetPage(name: PlayerScreen.routeName, page: () => PlayerScreen()),
+        GetPage(
+            name: PlayerScreen.routeName,
+            page: () => PlayerScreen(),
+            transition: Transition.downToUp),
         GetPage(name: ArtistScreen.routeName, page: () => ArtistScreen()),
         GetPage(name: PlaylistScreen.routeName, page: () => PlaylistScreen()),
         GetPage(name: BrowseScreen.routeName, page: () => BrowseScreen()),

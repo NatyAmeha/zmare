@@ -11,11 +11,14 @@ abstract class IPlayer {
   pause();
   next();
   prev();
+  seek(Duration position, {int? index});
 
   PlaybackSrc? playbackSrc;
   List<MediaItem>? queue;
   Stream<QueueState?>? queueState;
   Stream<CustomPlayerState>? playerState;
+  Stream<Duration>? position;
+  Stream<Duration?>? totalDuration;
 }
 
 class JustAudioPlayer extends IPlayer {
@@ -67,6 +70,14 @@ class JustAudioPlayer extends IPlayer {
           }
         },
       );
+
+  @override
+  // TODO: implement position
+  Stream<Duration>? get position => player.positionStream;
+
+  @override
+  // TODO: implement totalDuration
+  Stream<Duration?>? get totalDuration => player.durationStream;
 
   @override
   Future<Duration?> load(List<Song> songs,
@@ -125,12 +136,16 @@ class JustAudioPlayer extends IPlayer {
 
   @override
   play() {
-    print("playlist song");
     player.play();
   }
 
   @override
   prev() {
     player.seekToPrevious();
+  }
+
+  @override
+  seek(Duration position, {int? index}) {
+    player.seek(position, index: index);
   }
 }

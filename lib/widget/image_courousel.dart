@@ -9,13 +9,16 @@ class ImageCarousel extends StatefulWidget {
   bool autoScroll;
   bool showIndicator;
   bool infiniteScroll;
+  Function(int)? onPageChanged;
 
-  ImageCarousel(
-      {required this.images,
-      this.height = 400,
-      this.autoScroll = true,
-      this.showIndicator = true,
-      this.infiniteScroll = true});
+  ImageCarousel({
+    required this.images,
+    this.height = 400,
+    this.autoScroll = true,
+    this.showIndicator = true,
+    this.infiniteScroll = true,
+    this.onPageChanged,
+  });
 
   @override
   State<ImageCarousel> createState() => _ImageCarouselState();
@@ -42,6 +45,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
             onPageChanged: (index, reason) {
               setState(() {
                 selectedPageIndex = index;
+                widget.onPageChanged?.call(index);
               });
             },
           ),
@@ -52,6 +56,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                   child: CustomImage(e,
                       fit: BoxFit.fitWidth,
                       height: widget.height,
+                      roundImage: true,
                       width: double.infinity),
                 ),
               )
