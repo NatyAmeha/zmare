@@ -4,21 +4,22 @@ import 'package:flutter/material.dart';
 import 'custom_image.dart';
 
 class ImageCarousel extends StatefulWidget {
-  List<String> images;
+  List<String>? images;
   double height;
   bool autoScroll;
   bool showIndicator;
   bool infiniteScroll;
+  List<Widget>? carouselItems;
   Function(int)? onPageChanged;
 
-  ImageCarousel({
-    required this.images,
-    this.height = 400,
-    this.autoScroll = true,
-    this.showIndicator = true,
-    this.infiniteScroll = true,
-    this.onPageChanged,
-  });
+  ImageCarousel(
+      {required this.images,
+      this.height = 400,
+      this.autoScroll = true,
+      this.showIndicator = true,
+      this.infiniteScroll = true,
+      this.onPageChanged,
+      this.carouselItems});
 
   @override
   State<ImageCarousel> createState() => _ImageCarouselState();
@@ -49,26 +50,28 @@ class _ImageCarouselState extends State<ImageCarousel> {
               });
             },
           ),
-          items: widget.images
-              .map(
-                (e) => Container(
-                  padding: const EdgeInsets.all(1),
-                  child: CustomImage(e,
-                      fit: BoxFit.fitWidth,
-                      height: widget.height,
-                      roundImage: true,
-                      width: double.infinity),
-                ),
-              )
-              .toList(),
+          items: widget.images?.isNotEmpty == true
+              ? widget.images!
+                  .map(
+                    (e) => Container(
+                      padding: const EdgeInsets.all(1),
+                      child: CustomImage(e,
+                          fit: BoxFit.fitWidth,
+                          height: widget.height,
+                          roundImage: true,
+                          width: double.infinity),
+                    ),
+                  )
+                  .toList()
+              : widget.carouselItems,
           carouselController: controller,
         ),
-        if (widget.showIndicator)
+        if (widget.showIndicator && widget.images?.isNotEmpty == true)
           Positioned.fill(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: carouselIndicator(
-                  widget.images, controller, selectedPageIndex),
+                  widget.images!, controller, selectedPageIndex),
             ),
           )
       ],

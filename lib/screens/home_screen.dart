@@ -15,6 +15,7 @@ import 'package:zema/widget/image_courousel.dart';
 import 'package:zema/widget/list_header.dart';
 import 'package:zema/widget/loading_progressbar.dart';
 import 'package:zema/widget/playlist_widget/large_playlist_list_item.dart';
+import 'package:zema/widget/playlist_widget/playlist_list.dart';
 import 'package:zema/widget/screen_header.dart';
 import 'package:zema/widget/song_widget.dart/song_list.dart';
 
@@ -77,18 +78,21 @@ class HomeScreen extends StatelessWidget {
                   circleRadius: 50,
                   height: 150,
                 ),
-              Container(
-                height: 250,
-                child: ListView.separated(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: appController.homeResult.topCharts!.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(width: 16),
-                  itemBuilder: (context, index) => LargePlaylistTile(
-                      appController.homeResult.topCharts![index]),
-                ),
-              ),
+
+              PlaylistList(appController.homeResult.topCharts,
+                  listType: PlaylistListType.HORIZONTAL),
+              // Container(
+              //   height: 250,
+              //   child: ListView.separated(
+              //     padding: const EdgeInsets.symmetric(horizontal: 16),
+              //     scrollDirection: Axis.horizontal,
+              //     itemCount: appController.homeResult.topCharts!.length,
+              //     separatorBuilder: (context, index) =>
+              //         const SizedBox(width: 16),
+              //     itemBuilder: (context, index) => LargePlaylistTile(
+              //         appController.homeResult.topCharts![index]),
+              //   ),
+              // ),
             ],
           ),
         ),

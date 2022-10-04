@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:zema/modals/album.dart';
+import 'package:zema/utils/constants.dart';
+import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/custom_container.dart';
 import 'package:zema/widget/custom_image.dart';
 import 'package:zema/widget/custom_text.dart';
@@ -13,18 +16,31 @@ class AlbumListItem extends StatelessWidget {
   Album albumInfo;
   double width;
   double height;
+  AudioSrcType src;
 
-  AlbumListItem(
-    this.albumInfo, {
-    required this.width,
-    required this.height,
-  });
+  AlbumListItem(this.albumInfo,
+      {required this.width,
+      required this.height,
+      this.src = AudioSrcType.NETWORK});
 
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
       onTap: () {
-        Get.toNamed("/album/${albumInfo.id}");
+        if (src == AudioSrcType.NETWORK) {
+          // Get.toNamed("/album/${albumInfo.id}");
+          UIHelper.moveToScreen("/album/${albumInfo.id}", arguments: {
+            "src": AudioSrcType.NETWORK,
+          });
+        } else if (src == AudioSrcType.LOCAL_STORAGE) {
+          UIHelper.moveToScreen(
+            "/album/${albumInfo.id}",
+            arguments: {
+              "src": AudioSrcType.LOCAL_STORAGE,
+              "album_info": albumInfo
+            },
+          );
+        }
       },
       borderRadius: 16,
       padding: 8,
@@ -32,12 +48,26 @@ class AlbumListItem extends StatelessWidget {
       width: width,
       child: Stack(
         children: [
-          CustomImage(
-            albumInfo.artWork,
-            width: width,
-            height: height,
-            roundImage: true,
-          ),
+          if (src == AudioSrcType.NETWORK)
+            CustomImage(
+              albumInfo.artWork,
+              width: width,
+              height: height,
+              roundImage: true,
+            ),
+          if (src == AudioSrcType.LOCAL_STORAGE)
+            QueryArtworkWidget(
+              id: int.parse(albumInfo.id!),
+              type: ArtworkType.ALBUM,
+              artworkHeight: height,
+              artworkWidth: width,
+              nullArtworkWidget: CustomImage(
+                null,
+                width: width,
+                height: height,
+                roundImage: true,
+              ),
+            ),
           Positioned.fill(
             child: Align(
               alignment: Alignment.bottomCenter,

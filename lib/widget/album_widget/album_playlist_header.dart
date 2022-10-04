@@ -7,20 +7,21 @@ import 'package:zema/widget/custom_text.dart';
 import 'package:zema/widget/image_collection.dart';
 
 class AlbumPlayListHeader extends StatelessWidget {
-  List<String> images;
+  List<String>? images;
   String title;
   Widget? subtitle;
   String actionText;
   Function? onActionClick;
   double size;
-  AlbumPlayListHeader({
-    required this.images,
-    required this.title,
-    this.subtitle,
-    this.size = 300,
-    required this.actionText,
-    this.onActionClick,
-  });
+  Widget? leading;
+  AlbumPlayListHeader(
+      {required this.images,
+      required this.title,
+      this.subtitle,
+      this.size = 300,
+      required this.actionText,
+      this.onActionClick,
+      this.leading});
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +31,13 @@ class AlbumPlayListHeader extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          GridImageCollection(
-            images,
-            height: size,
-            width: size,
-          ),
+          if (leading != null) leading!,
+          if (images?.isNotEmpty == true)
+            GridImageCollection(
+              images!,
+              height: size,
+              width: size,
+            ),
           const SizedBox(height: 24),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),

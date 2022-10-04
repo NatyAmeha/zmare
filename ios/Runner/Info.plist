@@ -56,5 +56,7 @@
 		<array>
 			<string>audio</string>
 		</array>
+		<key>NSAppleMusicUsageDescription</key>
+	    <string>Music player for local audio files</string>
 	</dict>
 </plist>

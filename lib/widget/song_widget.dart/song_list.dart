@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:zema/controller/app_controller.dart';
 import 'package:zema/modals/song.dart';
+import 'package:zema/utils/constants.dart';
 import 'package:zema/widget/song_widget.dart/song_list_item.dart';
 
 class SongList extends StatefulWidget {
@@ -11,7 +12,9 @@ class SongList extends StatefulWidget {
   bool isSliver;
   bool shrinkWrap;
   bool isReorderable;
+
   ScrollController? controller;
+  AudioSrcType src;
 
   Widget? header;
   SongList(
@@ -21,6 +24,7 @@ class SongList extends StatefulWidget {
     this.shrinkWrap = false,
     this.isReorderable = false,
     this.header,
+    this.src = AudioSrcType.NETWORK,
   });
 
   var appController = Get.find<AppController>();
@@ -45,6 +49,7 @@ class _SongListState extends State<SongList> {
                       isSelected:
                           snapshot.data?.current?.id == widget.songs![index].id,
                       widget.songs![index],
+                      src: widget.src,
                       onTap: () {
                         widget.appController
                             .startPlayingAudioFile(widget.songs!, index: index);
@@ -76,6 +81,7 @@ class _SongListState extends State<SongList> {
                             showMore: false,
                             isSelected: snapshot.data?.current?.id ==
                                 widget.songs![index].id,
+                            src: widget.src,
                             onTap: () {
                               widget.appController.startPlayingAudioFile(
                                   widget.songs!,
@@ -97,6 +103,7 @@ class _SongListState extends State<SongList> {
                         itemBuilder: (context, index) => SongListItem(
                           index: index,
                           widget.songs![index],
+                          src: widget.src,
                           isSelected: snapshot.data?.current?.id ==
                               widget.songs![index].id,
                           onTap: () {

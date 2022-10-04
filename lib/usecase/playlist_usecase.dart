@@ -15,7 +15,7 @@ class PlaylistUsecase {
     return result;
   }
 
-  Future<void> playPlaylist(List<Song> songs, PlaybackSrc src) async {
+  Future<void> playPlaylist(List<Song> songs, AudioSrcType src) async {
     var duration = await player!.load(songs, src: src);
     player!.play();
   }

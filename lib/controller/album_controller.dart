@@ -1,10 +1,13 @@
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:zema/controller/app_controller.dart';
 import 'package:zema/modals/album.dart';
 import 'package:zema/modals/exception.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/repo/api_repository.dart';
+import 'package:zema/repo/local_audio_repo.dart';
 import 'package:zema/usecase/album_usecase.dart';
+import 'package:zema/usecase/home_usecase.dart';
 import 'package:zema/usecase/user_usecase.dart';
 import 'package:zema/utils/constants.dart';
 
@@ -20,8 +23,7 @@ class AlbumController extends GetxController {
   var _exception = AppException().obs;
   AppException get exception => _exception.value;
 
-  var _albumResult = Album().obs;
-  Album get albumResult => _albumResult.value;
+  Album? albumResult;
 
   var _isFavoriteAlbum = false.obs;
   bool get isFavoriteAlbum => _isFavoriteAlbum.value;
@@ -35,13 +37,32 @@ class AlbumController extends GetxController {
     super.onInit();
   }
 
-  getAlbum(String albumId) async {
+  getAlbum(String albumId, {PlaybackSrc src = PlaybackSrc.NETWORK}) async {
     try {
       _isDataLoading(true);
       var albumUsecase = AlbumUsecase(repo: ApiRepository<Album>());
       var result = await albumUsecase.getAlbum(albumId);
       _isDataLoading(false);
-      _albumResult(result);
+      albumResult = result;
+    } catch (ex) {
+      print("error ${ex.toString()}");
+      _isDataLoading(false);
+      _exception(ex as AppException);
+    }
+  }
+
+  getAlbumFromLocalStorage(Album albumInfo) async {
+    _exception(AppException());
+    try {
+      _isDataLoading(true);
+      var albumUsecase = HomeUsecase(repo: LocalAudioRepo());
+      var songResult = await albumUsecase.getSongsFrom(
+          albumInfo.id!, AudiosFromType.ALBUM_ID);
+      _isDataLoading(false);
+      albumInfo.songs = songResult;
+      albumResult = albumInfo;
+
+      return albumInfo;
     } catch (ex) {
       print("error ${ex.toString()}");
       _isDataLoading(false);

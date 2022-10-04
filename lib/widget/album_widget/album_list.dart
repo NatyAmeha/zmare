@@ -10,15 +10,15 @@ class AlbumList extends StatelessWidget {
   double height;
   bool isSliver;
   bool shrinkWrap;
+  AudioSrcType src;
 
-  AlbumList(
-    this.albums, {
-    this.listType = AlbumListType.ALBUM_GRID_LIST,
-    this.width = double.infinity,
-    this.height = 300,
-    this.isSliver = true,
-    this.shrinkWrap = false,
-  });
+  AlbumList(this.albums,
+      {this.listType = AlbumListType.ALBUM_GRID_LIST,
+      this.width = double.infinity,
+      this.height = 300,
+      this.isSliver = true,
+      this.shrinkWrap = false,
+      this.src = AudioSrcType.NETWORK});
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +36,12 @@ class AlbumList extends StatelessWidget {
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                   mainAxisExtent: height),
-              itemBuilder: (context, index) =>
-                  AlbumListItem(albums![index], width: width, height: height),
+              itemBuilder: (context, index) => AlbumListItem(
+                albums![index],
+                width: width,
+                height: height,
+                src: src,
+              ),
             );
           }
 
@@ -61,8 +65,12 @@ class AlbumList extends StatelessWidget {
         scrollDirection: direction,
         padding: const EdgeInsets.all(8),
         // itemExtent: height,
-        itemBuilder: (context, index) =>
-            AlbumListItem(albums![index], width: width, height: height),
+        itemBuilder: (context, index) => AlbumListItem(
+          albums![index],
+          width: width,
+          height: height,
+          src: src,
+        ),
       ),
     );
   }
@@ -76,8 +84,12 @@ class AlbumList extends StatelessWidget {
           mainAxisExtent: height),
       delegate: SliverChildBuilderDelegate(
         childCount: albums!.length,
-        (context, index) =>
-            AlbumListItem(albums![index], width: width, height: height),
+        (context, index) => AlbumListItem(
+          albums![index],
+          width: width,
+          height: height,
+          src: src,
+        ),
       ),
     );
   }

@@ -6,14 +6,14 @@ import 'package:zema/viewmodels/queue_state.dart';
 
 abstract class IPlayer {
   Future<Duration?> load(List<Song> songs,
-      {PlaybackSrc src, Duration position, int index});
+      {AudioSrcType src, Duration position, int index});
   play();
   pause();
   next();
   prev();
   seek(Duration position, {int? index});
 
-  PlaybackSrc? playbackSrc;
+  AudioSrcType? playbackSrc;
   List<MediaItem>? queue;
   Stream<QueueState?>? queueState;
   Stream<CustomPlayerState>? playerState;
@@ -30,7 +30,7 @@ class JustAudioPlayer extends IPlayer {
   }
 
   @override
-  PlaybackSrc? get playbackSrc => PlaybackSrc.NETWORK;
+  AudioSrcType? get playbackSrc => AudioSrcType.NETWORK;
 
   @override
   List<MediaItem>? get queue => [];
@@ -81,7 +81,7 @@ class JustAudioPlayer extends IPlayer {
 
   @override
   Future<Duration?> load(List<Song> songs,
-      {PlaybackSrc src = PlaybackSrc.NETWORK,
+      {AudioSrcType src = AudioSrcType.NETWORK,
       Duration? position,
       int index = 0}) async {
     playbackSrc = src;
@@ -92,7 +92,9 @@ class JustAudioPlayer extends IPlayer {
               id: song.id!,
               title: song.title!,
               album: song.albumName,
-              artUri: Uri.parse(song.thumbnailPath!),
+              artUri: song.thumbnailPath != null
+                  ? Uri.parse(song.thumbnailPath!)
+                  : null,
               artist: song.artistsName?.join(","),
             ),
           )
@@ -107,7 +109,9 @@ class JustAudioPlayer extends IPlayer {
                     id: song.id!,
                     title: song.title!,
                     album: song.albumName,
-                    artUri: Uri.parse(song.thumbnailPath!),
+                    artUri: song.thumbnailPath != null
+                        ? Uri.parse(song.thumbnailPath!)
+                        : null,
                     artist: song.artistsName?.join(","),
                   ),
                 ),

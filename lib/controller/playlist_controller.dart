@@ -49,6 +49,6 @@ class PlaylistController extends GetxController {
 
   playPlaylist(List<Song> songs) async {
     var playlistUsecase = PlaylistUsecase(player: appController.player);
-    await playlistUsecase.playPlaylist(songs, PlaybackSrc.NETWORK);
+    await playlistUsecase.playPlaylist(songs, AudioSrcType.NETWORK);
   }
 }

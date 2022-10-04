@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:zema/utils/constants.dart';
 import 'package:zema/widget/custom_button.dart';
 import 'package:zema/widget/custom_container.dart';
@@ -9,16 +10,20 @@ import 'package:zema/widget/custom_image.dart';
 import 'package:zema/widget/custom_text.dart';
 
 class CircleTile extends StatelessWidget {
-  String image;
+  String id;
+  String? image;
   String? text;
   double radius;
   double height;
+  AudioSrcType src;
   Function? onClick;
   CircleTile({
-    required this.image,
+    required this.id,
+    this.image,
     this.text,
     required this.radius,
     this.height = 200,
+    this.src = AudioSrcType.NETWORK,
     this.onClick,
   });
 
@@ -35,10 +40,26 @@ class CircleTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          CircleAvatar(
-            radius: radius,
-            backgroundImage: NetworkImage(image),
-          ),
+          if (src == AudioSrcType.NETWORK)
+            if (image != null)
+              CircleAvatar(
+                radius: radius,
+                backgroundImage: NetworkImage(image!),
+              ),
+          if (src == AudioSrcType.LOCAL_STORAGE)
+            QueryArtworkWidget(
+              id: int.parse(id),
+              type: ArtworkType.ARTIST,
+              artworkHeight: radius * 2,
+              artworkWidth: radius * 2,
+              nullArtworkWidget: CustomImage(
+                null,
+                height: radius * 2,
+                width: radius * 2,
+                roundImage: true,
+                borderRadius: 16,
+              ),
+            ),
           const SizedBox(height: 4),
           if (text != null)
             CustomText(
@@ -118,22 +139,23 @@ class CircleTileList extends StatelessWidget {
   List<String>? text;
   List<String>? subtitle;
   List<String> image;
+  AudioSrcType src;
   Function(String?)? onclick;
   double circleRadius;
   double height;
   ArtistListType? listType;
 
   Function? onClick;
-  CircleTileList({
-    required this.image,
-    this.id,
-    this.text,
-    this.subtitle,
-    this.circleRadius = 40,
-    this.height = 110,
-    this.listType = ArtistListType.ARTIST_HORIZONTAL_LIST,
-    this.onclick,
-  });
+  CircleTileList(
+      {required this.image,
+      this.id,
+      this.text,
+      this.subtitle,
+      this.circleRadius = 40,
+      this.height = 110,
+      this.listType = ArtistListType.ARTIST_HORIZONTAL_LIST,
+      this.onclick,
+      this.src = AudioSrcType.NETWORK});
 
   @override
   Widget build(BuildContext context) {
@@ -144,26 +166,60 @@ class CircleTileList extends StatelessWidget {
           itemCount: image.length,
           scrollDirection: Axis.horizontal,
           separatorBuilder: (context, index) => const SizedBox(width: 8),
-          itemBuilder: (context, index) => CircleTile(
-            image: image[index],
-            text: text?.elementAt(index),
-            radius: circleRadius,
-            onClick: () {
-              onclick?.call(id![index]);
-            },
-          ),
+          itemBuilder: (context, index) => src == AudioSrcType.LOCAL_STORAGE
+              ? QueryArtworkWidget(
+                  id: int.parse(id![index]),
+                  type: ArtworkType.ARTIST,
+                  artworkHeight: circleRadius * 2,
+                  artworkWidth: circleRadius * 2,
+                  nullArtworkWidget: CustomImage(
+                    null,
+                    height: circleRadius * 2,
+                    width: circleRadius * 2,
+                    roundImage: true,
+                    borderRadius: 16,
+                  ),
+                )
+              : CircleTile(
+                  id: id![index],
+                  image: image[index],
+                  text: text?.elementAt(index),
+                  radius: circleRadius,
+                  src: src,
+                  onClick: () {
+                    onclick?.call(id![index]);
+                  },
+                ),
         ),
       );
     } else if (listType == ArtistListType.ARTIST_GRID_LIST) {
       return GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, crossAxisSpacing: 8, mainAxisSpacing: 8),
-        itemBuilder: (context, index) => CircleTile(
-          image: image[index],
-          text: text?.elementAt(index),
-          radius: circleRadius,
-          onClick: onclick,
-        ),
+        itemBuilder: (context, index) => src == AudioSrcType.LOCAL_STORAGE
+            ? QueryArtworkWidget(
+                id: int.parse(id![index]),
+                type: ArtworkType.ARTIST,
+                artworkHeight: circleRadius * 2,
+                artworkWidth: circleRadius * 2,
+                nullArtworkWidget: CustomImage(
+                  null,
+                  height: circleRadius * 2,
+                  width: circleRadius * 2,
+                  roundImage: true,
+                  borderRadius: 16,
+                ),
+              )
+            : CircleTile(
+                id: id![index],
+                image: image[index],
+                text: text?.elementAt(index),
+                radius: circleRadius,
+                src: src,
+                onClick: () {
+                  onclick?.call(id![index]);
+                },
+              ),
       );
     } else {
       return SizedBox(

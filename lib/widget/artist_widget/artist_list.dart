@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:zema/modals/artist.dart';
 import 'package:zema/utils/constants.dart';
+import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/widget/circle_tile.dart';
 import 'package:zema/widget/custom_button.dart';
 
@@ -12,13 +13,13 @@ class ArtistList extends StatelessWidget {
   double height;
   ArtistListType type;
   bool shrinkWrap;
+  AudioSrcType src;
 
-  ArtistList(
-    this.artistList, {
-    this.type = ArtistListType.ARTIST_HORIZONTAL_LIST,
-    this.shrinkWrap = false,
-    this.height = 200,
-  });
+  ArtistList(this.artistList,
+      {this.type = ArtistListType.ARTIST_HORIZONTAL_LIST,
+      this.shrinkWrap = false,
+      this.height = 200,
+      this.src = AudioSrcType.NETWORK});
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +32,13 @@ class ArtistList extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) => const SizedBox(width: 8),
             itemBuilder: (context, index) => CircleTile(
+              id: artistList![index].id ?? "",
+              src: src,
               image: artistList![index].profileImagePath!.elementAt(0),
               text: artistList![index].name,
               radius: 70,
               onClick: () {
-                Get.toNamed("/artist/${artistList![index].id}");
+                UIHelper.moveToScreen("/artist/${artistList![index].id}");
               },
             ),
           ),
@@ -50,12 +53,14 @@ class ArtistList extends StatelessWidget {
               crossAxisSpacing: 8,
               mainAxisSpacing: 8),
           itemBuilder: (context, index) => CircleTile(
-            image: artistList![index].profileImagePath!.elementAt(0),
+            id: artistList![index].id ?? "",
+            image: artistList![index].profileImagePath?.elementAt(0),
             text: artistList![index].name,
             radius: 60,
             height: 160,
+            src: src,
             onClick: () {
-              Get.toNamed("/artist/${artistList![index].id}");
+              UIHelper.moveToScreen("/artist/${artistList![index].id}");
             },
           ),
         );

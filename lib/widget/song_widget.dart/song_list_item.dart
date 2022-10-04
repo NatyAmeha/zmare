@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:zema/controller/app_controller.dart';
 import 'package:zema/modals/song.dart';
+import 'package:zema/utils/constants.dart';
 import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/viewmodels/menu_viewmodel.dart';
 import 'package:zema/widget/custom_image.dart';
@@ -20,9 +22,11 @@ class SongListItem extends StatelessWidget {
   bool showFavoriteIcon;
   bool showDragIcon;
   bool showPlayPauseIcon;
+  AudioSrcType src;
   bool showDrag;
   bool showMore;
   Function(Song)? onMoreclicked;
+  Widget? leading;
   Function? onTap;
 
   var songMenus = [
@@ -60,6 +64,8 @@ class SongListItem extends StatelessWidget {
     this.showMore = true,
     this.showPlayPauseIcon = false,
     this.showDrag = false,
+    this.src = AudioSrcType.NETWORK,
+    this.leading,
     this.onTap,
     this.onMoreclicked,
   });
@@ -76,8 +82,21 @@ class SongListItem extends StatelessWidget {
       onTap: () {
         onTap?.call();
       },
-      leading: CustomImage(songInfo.thumbnailPath,
-          height: 50, width: 50, roundImage: true),
+      leading: src == AudioSrcType.LOCAL_STORAGE
+          ? QueryArtworkWidget(
+              id: int.parse(songInfo.id!),
+              type: ArtworkType.AUDIO,
+              artworkWidth: 50,
+              artworkHeight: 50,
+              nullArtworkWidget: CustomImage(
+                null,
+                roundImage: true,
+                height: 50,
+                width: 50,
+              ),
+            )
+          : CustomImage(songInfo.thumbnailPath,
+              height: 50, width: 50, roundImage: true),
       title: CustomText(
         songInfo.title ?? "",
         fontWeight: FontWeight.bold,

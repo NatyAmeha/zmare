@@ -4,10 +4,13 @@ import 'package:zema/modals/library.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/modals/user.dart';
 import 'package:zema/repo/api_repository.dart';
+import 'package:zema/repo/local_audio_repo.dart';
+import 'package:zema/service/permission_service.dart';
 import 'package:zema/service/player/player_service.dart';
 import 'package:zema/usecase/home_usecase.dart';
 import 'package:zema/usecase/song_usecase.dart';
 import 'package:zema/usecase/user_usecase.dart';
+import 'package:zema/utils/constants.dart';
 import 'package:zema/viewmodels/browse_viewmodel.dart';
 import 'package:zema/viewmodels/home_viewmodel.dart';
 import 'package:zema/viewmodels/search_viewmodel.dart';
@@ -39,6 +42,8 @@ class AppController extends GetxController {
   var _homeResult = HomeViewmodel().obs;
   HomeViewmodel get homeResult => _homeResult.value;
 
+  HomeViewmodel? localAudioFiles;
+
   var _browseResult = BrowseViewmodel().obs;
   BrowseViewmodel get browseResult => _browseResult.value;
 
@@ -54,7 +59,8 @@ class AppController extends GetxController {
     super.onInit();
   }
 
-  startPlayingAudioFile(List<Song> songs, {int index = 0}) async {
+  startPlayingAudioFile(List<Song> songs,
+      {int index = 0, AudioSrcType src = AudioSrcType.NETWORK}) async {
     await player.load(songs, index: index);
     await player.play();
   }
@@ -95,6 +101,23 @@ class AppController extends GetxController {
       var result = await usecase.getSearchResult(query);
       _isDataLoading(false);
       _searchResult(result);
+    } catch (ex) {
+      print("error ${ex.toString()}");
+      _isDataLoading(false);
+      _exception(ex as AppException);
+    }
+  }
+
+  getLocalAudioFiles() async {
+    _exception(AppException());
+    ;
+    try {
+      _isDataLoading(true);
+      var usecase = HomeUsecase(
+          repo: LocalAudioRepo(), permissionService: PermissionService());
+      var result = await usecase.getLocalAudioFiles();
+      _isDataLoading(false);
+      localAudioFiles = result;
     } catch (ex) {
       print("error ${ex.toString()}");
       _isDataLoading(false);

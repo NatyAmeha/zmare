@@ -7,6 +7,8 @@ import 'package:zema/modals/song.dart';
 import 'package:zema/screens/account_screen.dart';
 import 'package:zema/screens/browse_screen.dart';
 import 'package:zema/screens/home_screen.dart';
+import 'package:zema/screens/local_audio_screen.dart';
+import 'package:zema/widget/bottom_navigator.dart';
 import 'package:zema/widget/custom_image.dart';
 import 'package:zema/widget/custom_text.dart';
 import 'package:zema/widget/song_widget.dart/play_pause_icon.dart';
@@ -20,6 +22,13 @@ class MainScreen extends StatefulWidget {
   var appController = Get.put(AppController());
   var song = Song(title: "Song title name", artistsName: ["Artist name 1"]);
 
+  var navigatorKeys = [
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>()
+  ];
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -32,7 +41,12 @@ class _MainScreenState extends State<MainScreen> {
       body: SafeArea(
         child: Stack(
           children: [
+            // selectP(),
             selectPage(),
+            // displayB(HomeScreen(), 0),
+            // displayB(BrowseScreen(), 1),
+            // displayB(LocalAudioScreen(), 2),
+            // displayB(AccountScreen(), 3),
             Positioned.fill(
               child: Align(
                 alignment: Alignment.bottomCenter,
@@ -46,6 +60,7 @@ class _MainScreenState extends State<MainScreen> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Browse"),
+          BottomNavigationBarItem(icon: Icon(Icons.storage), label: "Local"),
           BottomNavigationBarItem(
               icon: Icon(Icons.person), label: "My Account"),
         ],
@@ -72,9 +87,33 @@ class _MainScreenState extends State<MainScreen> {
       case 1:
         return BrowseScreen();
       case 2:
+        return LocalAudioScreen();
+      case 3:
         return AccountScreen();
       default:
         return HomeScreen();
     }
+  }
+
+  selectP() {
+    var pages = [
+      displayBody(0, HomeScreen.routName, widget.navigatorKeys[0]),
+      displayBody(1, BrowseScreen.routeName, widget.navigatorKeys[1]),
+      displayBody(2, LocalAudioScreen.routeName, widget.navigatorKeys[2]),
+      displayBody(3, AccountScreen.routName, widget.navigatorKeys[3])
+    ];
+    return pages[selectedPageIndex];
+  }
+
+  Widget displayB(Widget body, int pageIndex) {
+    return Offstage(offstage: selectedPageIndex != pageIndex, child: body);
+  }
+
+  Widget displayBody(int pageIndex, String initialRoute, Key navigatorKey) {
+    return Visibility(
+      visible: selectedPageIndex == pageIndex,
+      child: NestedBottomNavigator(
+          navigatorKey: navigatorKey, initialroute: initialRoute),
+    );
   }
 }

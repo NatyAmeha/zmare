@@ -10,12 +10,14 @@ class CustomImage extends StatelessWidget {
   BoxFit? fit;
   String? srcLocation;
   bool? roundImage;
+  double borderRadius;
   CustomImage(this.image,
       {this.width = 100,
       this.height = 100,
       this.placeholder = "assets/images/music_placeholder.png",
       this.fit = BoxFit.cover,
       this.roundImage = false,
+      this.borderRadius = 8,
       this.srcLocation = "network"});
 
   @override
@@ -24,7 +26,7 @@ class CustomImage extends StatelessWidget {
     if (srcLocation == "network") {
       return roundImage == true
           ? ClipRRect(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(borderRadius),
               child: FadeInImage.assetNetwork(
                 image: image ?? placeholder,
                 placeholder: placeholder,

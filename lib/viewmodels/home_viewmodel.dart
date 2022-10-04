@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:zema/modals/album.dart';
 import 'package:zema/modals/artist.dart';
 import 'package:zema/modals/playlist.dart';
+import 'package:zema/modals/song.dart';
 import 'package:zema/modals/user.dart';
 
 part 'home_viewmodel.g.dart';
@@ -21,16 +22,24 @@ class HomeViewmodel {
   // popularRadio? : IRadio[]
   // topCreatorByDonation? : DonationViewmodel[]
 
-  HomeViewmodel({
-    this.recentActivity,
-    this.newMusic,
-    this.madeForYou,
-    this.topCharts,
-    this.popularArtist,
-    this.newArtist,
-    this.recommendedAlbum,
-    this.featuredPlaylist,
-  });
+  List<Song>? songs;
+  List<Album>? albums;
+  List<Playlist>? playlists;
+  List<Artist>? artists;
+
+  HomeViewmodel(
+      {this.recentActivity,
+      this.newMusic,
+      this.madeForYou,
+      this.topCharts,
+      this.popularArtist,
+      this.newArtist,
+      this.recommendedAlbum,
+      this.featuredPlaylist,
+      this.songs,
+      this.albums,
+      this.playlists,
+      this.artists});
 
   factory HomeViewmodel.fromJson(Map<String, dynamic> json) =>
       _$HomeViewmodelFromJson(json);

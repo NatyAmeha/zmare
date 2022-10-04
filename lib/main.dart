@@ -9,6 +9,7 @@ import 'package:zema/screens/browse_screen.dart';
 import 'package:zema/screens/category_screen.dart';
 import 'package:zema/screens/download_screen.dart';
 import 'package:zema/screens/home_screen.dart';
+import 'package:zema/screens/local_audio_screen.dart';
 import 'package:zema/screens/login_screen.dart';
 import 'package:zema/screens/main_screen.dart';
 import 'package:zema/screens/onboarding_screen.dart';
@@ -18,6 +19,7 @@ import 'package:zema/screens/registration_screen.dart';
 import 'package:zema/screens/song_list_screen.dart';
 import 'package:zema/screens/verification_screen.dart';
 import 'package:zema/service/player/player_service.dart';
+import 'package:zema/utils/route/routes.dart';
 import 'package:zema/viewmodels/download_viewmodel.dart';
 import 'package:zema/widget/song_widget.dart/song_list.dart';
 
@@ -33,52 +35,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MainScreen(),
-      getPages: [
-        GetPage(name: MainScreen.routName, page: () => MainScreen()),
-        GetPage(
-            name: PlayerScreen.routeName,
-            page: () => PlayerScreen(),
-            transition: Transition.downToUp),
-        GetPage(name: ArtistScreen.routeName, page: () => ArtistScreen()),
-        GetPage(name: PlaylistScreen.routeName, page: () => PlaylistScreen()),
-        GetPage(name: BrowseScreen.routeName, page: () => BrowseScreen()),
-        GetPage(
-            name: CategoryScreen.routeName,
-            page: () => CategoryScreen("Category Name")),
-        GetPage(name: DownloadScreen.routName, page: () => DownloadScreen()),
-        GetPage(name: SongListScreen.routName, page: () => SongListScreen()),
-        GetPage(name: AlbumScreen.routName, page: () => AlbumScreen()),
-        GetPage(name: LoginScreen.routeName, page: () => LoginScreen()),
-        GetPage(name: AlbumListScreen.routeName, page: () => AlbumListScreen()),
-        GetPage(
-            name: ArtistListScreen.routeName, page: () => ArtistListScreen()),
-        GetPage(
-            name: RegistrationScreen.routeName,
-            page: () => RegistrationScreen()),
-        GetPage(
-            name: VerificationScreen.routeName,
-            page: () => VerificationScreen()),
-        GetPage(
-            name: OnboardingScreen.routName, page: () => OnboardingScreen()),
-        GetPage(
-            name: AccountOnboardingScreen.routName,
-            page: () => AccountOnboardingScreen())
-      ],
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+        ),
+        home: MainScreen(),
+        getPages: RouteUtil.routes);
   }
 }
 

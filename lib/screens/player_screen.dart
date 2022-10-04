@@ -3,10 +3,12 @@ import 'dart:ffi';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:zema/controller/player_controller.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/screens/download_screen.dart';
 import 'package:zema/screens/song_list_screen.dart';
+import 'package:zema/utils/constants.dart';
 import 'package:zema/utils/ui_helper.dart';
 
 import 'package:zema/widget/custom_container.dart';
@@ -62,10 +64,27 @@ class _PlayerScreenState extends State<PlayerScreen> {
                       //  Art work and song info
                       const SizedBox(height: 8),
                       ImageCarousel(
-                        images: snapshot.data?.queues
-                                ?.map((e) => e.artUri!.toString())
-                                .toList() ??
-                            [],
+                        images: widget.playerController.appController.player
+                                    .playbackSrc ==
+                                AudioSrcType.LOCAL_STORAGE
+                            ? null
+                            : snapshot.data?.queues
+                                ?.map((e) => e.artUri.toString())
+                                .toList(),
+                        carouselItems: widget.playerController.appController
+                                    .player.playbackSrc ==
+                                AudioSrcType.LOCAL_STORAGE
+                            ? snapshot.data?.queues
+                                ?.map((e) => QueryArtworkWidget(
+                                      id: int.parse(e.id),
+                                      type: ArtworkType.AUDIO,
+                                      artworkWidth: double.infinity,
+                                      artworkHeight:
+                                          MediaQuery.of(context).size.height *
+                                              0.4,
+                                    ))
+                                .toList()
+                            : null,
                         autoScroll: false,
                         infiniteScroll: false,
                         showIndicator: false,
@@ -81,15 +100,17 @@ class _PlayerScreenState extends State<PlayerScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              CustomText(snapshot.data?.current?.title ?? "",
-                                  fontSize: 19, fontWeight: FontWeight.bold),
-                              const SizedBox(height: 4),
-                              CustomText(snapshot.data?.current?.artist ?? "",
-                                  fontSize: 14)
-                            ],
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                CustomText(snapshot.data?.current?.title ?? "",
+                                    fontSize: 19, fontWeight: FontWeight.bold),
+                                const SizedBox(height: 4),
+                                CustomText(snapshot.data?.current?.artist ?? "",
+                                    fontSize: 14)
+                              ],
+                            ),
                           ),
                           IconButton(
                               onPressed: () {},
@@ -200,23 +221,27 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomText("Up next", fontSize: 10),
-                                        const SizedBox(height: 4),
-                                        CustomText(
-                                            snapshot.data?.queues
-                                                    ?.elementAt((snapshot.data
-                                                                ?.currentIndex ??
-                                                            0) +
-                                                        1)
-                                                    .title ??
-                                                "End of queue",
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)
-                                      ],
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          CustomText("Up next", fontSize: 10),
+                                          const SizedBox(height: 4),
+                                          CustomText(
+                                              snapshot.data?.queues
+                                                      ?.elementAt((snapshot.data
+                                                                  ?.currentIndex ??
+                                                              0) +
+                                                          1)
+                                                      .title ??
+                                                  "End of queue",
+                                              fontSize: 16,
+                                              maxLine: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontWeight: FontWeight.bold)
+                                        ],
+                                      ),
                                     ),
                                     IconButton(
                                         onPressed: () {},
