@@ -1,8 +1,10 @@
 import 'dart:ffi';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:zema/controller/player_controller.dart';
 import 'package:zema/modals/song.dart';
@@ -35,6 +37,7 @@ class _PlayerScreenState extends State<PlayerScreen> {
   @override
   Widget build(BuildContext context) {
     var dragController = DraggableScrollableController();
+    var carouselController = CarouselController();
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -63,37 +66,13 @@ class _PlayerScreenState extends State<PlayerScreen> {
                     children: [
                       //  Art work and song info
                       const SizedBox(height: 8),
-                      ImageCarousel(
-                        images: widget.playerController.appController.player
-                                    .playbackSrc ==
-                                AudioSrcType.LOCAL_STORAGE
-                            ? null
-                            : snapshot.data?.queues
-                                ?.map((e) => e.artUri.toString())
-                                .toList(),
-                        carouselItems: widget.playerController.appController
-                                    .player.playbackSrc ==
-                                AudioSrcType.LOCAL_STORAGE
-                            ? snapshot.data?.queues
-                                ?.map((e) => QueryArtworkWidget(
-                                      id: int.parse(e.id),
-                                      type: ArtworkType.AUDIO,
-                                      artworkWidth: double.infinity,
-                                      artworkHeight:
-                                          MediaQuery.of(context).size.height *
-                                              0.4,
-                                    ))
-                                .toList()
-                            : null,
-                        autoScroll: false,
-                        infiniteScroll: false,
-                        showIndicator: false,
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        onPageChanged: (page) {
-                          widget.playerController.appController.player
-                              .seek(Duration.zero, index: page);
-                        },
-                      ),
+                      if (snapshot.data != null)
+                        buildPlayerCarousel(
+                            snapshot.data!.queues!,
+                            widget.playerController.appController.player
+                                .playbackSrc!,
+                            initialPage: snapshot.data!.currentIndex,
+                            controller: carouselController),
                       const SizedBox(height: 16),
 
                       Row(
@@ -159,13 +138,25 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                   icon: Icons.skip_previous,
                                   size: 40,
                                   onclick: () {
-                                    Get.to(SongListScreen(showFilter: true));
+                                    widget.playerController.appController.player
+                                        .prev();
+                                    carouselController.previousPage(
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        curve: Curves.ease);
                                   }),
                               PlayPauseIcon(isPlaying: true, isBuffering: true),
                               PlayerControlIcon(
                                   icon: Icons.skip_next,
                                   size: 40,
-                                  onclick: () {}),
+                                  onclick: () {
+                                    widget.playerController.appController.player
+                                        .next();
+                                    carouselController.nextPage(
+                                        duration:
+                                            const Duration(milliseconds: 200),
+                                        curve: Curves.ease);
+                                  }),
                               PlayerControlIcon(
                                   icon: Icons.shuffle, onclick: () {}),
                             ],
@@ -195,25 +186,11 @@ class _PlayerScreenState extends State<PlayerScreen> {
                             children: [
                               CustomContainer(
                                 onTap: () {
-                                  Future.delayed(Duration.zero, () {
-                                    dragController.animateTo(
-                                        isQueueScrolled ? 0.105 : 1.0,
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.ease);
-                                    isQueueScrolled = !isQueueScrolled;
-                                    Future.delayed(Duration(seconds: 1), () {
-                                      print(snapshot.data?.currentIndex);
-                                      scrollController.animateTo(
-                                          snapshot.data?.currentIndex
-                                                  ?.toDouble() ??
-                                              scrollController
-                                                  .position.maxScrollExtent,
-                                          duration:
-                                              const Duration(milliseconds: 200),
-                                          curve: Curves.ease);
-                                    });
-                                  });
-                                  // scrollController.jumpTo(1200);
+                                  scrollQueueList(
+                                      dragController,
+                                      scrollController,
+                                      snapshot.data?.currentIndex ?? 0,
+                                      70);
                                 },
                                 padding: 12,
                                 color: Colors.grey[200],
@@ -251,50 +228,12 @@ class _PlayerScreenState extends State<PlayerScreen> {
                                 ),
                               ),
                               const SizedBox(height: 8),
-                              Expanded(
-                                child: ReorderableList(
-                                  controller: scrollController,
-                                  itemCount: snapshot.data?.queues?.length ?? 0,
-                                  onReorder: (oldIndex, newIndex) {
-                                    setState(() {
-                                      // if (newIndex > oldIndex) newIndex--;
-                                      // var item = widget.songs!.removeAt(oldIndex);
-                                      // widget.songs!.insert(newIndex, item);
-                                    });
-                                  },
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      key:
-                                          Key(snapshot.data!.queues![index].id),
-                                      leading: CustomImage(
-                                          snapshot.data?.queues![index].artUri
-                                              .toString(),
-                                          height: 50,
-                                          width: 50,
-                                          roundImage: true),
-                                      title: CustomText(
-                                        snapshot.data?.queues![index].title ??
-                                            "",
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17,
-                                        maxLine: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 4),
-                                        child: CustomText(
-                                            snapshot.data?.queues![index]
-                                                    .artist ??
-                                                "",
-                                            fontSize: 13,
-                                            maxLine: 1,
-                                            overflow: TextOverflow.ellipsis),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              )
+                              if (snapshot.data!.queues?.isNotEmpty == true)
+                                buildQueueList(
+                                    snapshot.data!.queues!,
+                                    scrollController,
+                                    widget.playerController.appController.player
+                                        .playbackSrc),
                             ],
                           ),
                         );
@@ -304,5 +243,77 @@ class _PlayerScreenState extends State<PlayerScreen> {
             )),
       ),
     );
+  }
+
+  Widget buildPlayerCarousel(List<MediaItem> queues, AudioSrcType audioSrc,
+      {int? initialPage, required CarouselController controller}) {
+    // controller.jumpToPage(initialPage ?? 0);
+    print("page change ${initialPage}");
+    return ImageCarousel(
+      initialPage: initialPage ?? 0,
+      controller: controller,
+      images: audioSrc == AudioSrcType.LOCAL_STORAGE
+          ? null
+          : queues.map((e) => e.artUri.toString()).toList(),
+      carouselItems: audioSrc == AudioSrcType.LOCAL_STORAGE
+          ? queues
+              .map((e) => QueryArtworkWidget(
+                    id: int.parse(e.id),
+                    type: ArtworkType.AUDIO,
+                    artworkWidth: double.infinity,
+                    artworkHeight: MediaQuery.of(context).size.height * 0.4,
+                  ))
+              .toList()
+          : null,
+      autoScroll: false,
+      infiniteScroll: false,
+      showIndicator: false,
+      height: MediaQuery.of(context).size.height * 0.4,
+      onPageChanged: (page) {
+        widget.playerController.appController.player
+            .seek(Duration.zero, index: page);
+      },
+    );
+  }
+
+  Widget buildQueueList(List<MediaItem> queues,
+      ScrollController scrollController, AudioSrcType? srcType) {
+    var songListFromQueue = queues
+        .map((e) => Song(
+              id: e.id,
+              title: e.title,
+              songFilePath: e.extras!["songFile"],
+              artistsName: e.artist?.split(","),
+              album: e.album,
+              thumbnailPath: e.artUri.toString(),
+            ))
+        .toList();
+    return Expanded(
+      child: SongList(
+        songListFromQueue,
+        isSliver: false,
+        controller: scrollController,
+        isReorderable: true,
+        src: srcType ?? AudioSrcType.NETWORK,
+      ),
+    );
+  }
+
+  scrollQueueList(DraggableScrollableController controller,
+      ScrollController listScrollController, int index, double listItemHeight) {
+    Future.delayed(Duration.zero, () {
+      controller.animateTo(isQueueScrolled ? 0.105 : 1.0,
+          duration: const Duration(milliseconds: 300), curve: Curves.ease);
+      isQueueScrolled = !isQueueScrolled;
+      scrollinQueueList(listScrollController, index, listItemHeight);
+    });
+  }
+
+  scrollinQueueList(
+      ScrollController scrollController, int index, double listItemHeight) {
+    Future.delayed(const Duration(seconds: 1), () {
+      scrollController.animateTo((index + 1) * listItemHeight,
+          duration: const Duration(milliseconds: 200), curve: Curves.ease);
+    });
   }
 }

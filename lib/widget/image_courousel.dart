@@ -9,17 +9,22 @@ class ImageCarousel extends StatefulWidget {
   bool autoScroll;
   bool showIndicator;
   bool infiniteScroll;
+  int initialPage;
+  CarouselController controller;
   List<Widget>? carouselItems;
   Function(int)? onPageChanged;
 
-  ImageCarousel(
-      {required this.images,
-      this.height = 400,
-      this.autoScroll = true,
-      this.showIndicator = true,
-      this.infiniteScroll = true,
-      this.onPageChanged,
-      this.carouselItems});
+  ImageCarousel({
+    required this.images,
+    required this.controller,
+    this.height = 400,
+    this.autoScroll = true,
+    this.showIndicator = true,
+    this.infiniteScroll = true,
+    this.onPageChanged,
+    this.initialPage = 0,
+    this.carouselItems,
+  });
 
   @override
   State<ImageCarousel> createState() => _ImageCarouselState();
@@ -30,7 +35,6 @@ class _ImageCarouselState extends State<ImageCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    var controller = CarouselController();
     return Stack(
       children: [
         CarouselSlider(
@@ -39,7 +43,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
             aspectRatio: 1 / 1,
             height: widget.height,
             viewportFraction: 1,
-            initialPage: 0,
+            initialPage: widget.initialPage,
             reverse: false,
             enableInfiniteScroll: widget.infiniteScroll,
             scrollDirection: Axis.horizontal,
@@ -64,14 +68,14 @@ class _ImageCarouselState extends State<ImageCarousel> {
                   )
                   .toList()
               : widget.carouselItems,
-          carouselController: controller,
+          carouselController: widget.controller,
         ),
         if (widget.showIndicator && widget.images?.isNotEmpty == true)
           Positioned.fill(
             child: Align(
               alignment: Alignment.bottomCenter,
               child: carouselIndicator(
-                  widget.images!, controller, selectedPageIndex),
+                  widget.images!, widget.controller!, selectedPageIndex),
             ),
           )
       ],

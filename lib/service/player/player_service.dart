@@ -92,6 +92,7 @@ class JustAudioPlayer extends IPlayer {
               id: song.id!,
               title: song.title!,
               album: song.albumName,
+              extras: {"songFile": song.songFilePath},
               artUri: song.thumbnailPath != null
                   ? Uri.parse(song.thumbnailPath!)
                   : null,
@@ -109,6 +110,7 @@ class JustAudioPlayer extends IPlayer {
                     id: song.id!,
                     title: song.title!,
                     album: song.albumName,
+                    extras: {"songFile": song.songFilePath},
                     artUri: song.thumbnailPath != null
                         ? Uri.parse(song.thumbnailPath!)
                         : null,
@@ -131,6 +133,7 @@ class JustAudioPlayer extends IPlayer {
   @override
   next() {
     player.seekToNext();
+    player.play();
   }
 
   @override
@@ -146,6 +149,7 @@ class JustAudioPlayer extends IPlayer {
   @override
   prev() {
     player.seekToPrevious();
+    player.play();
   }
 
   @override

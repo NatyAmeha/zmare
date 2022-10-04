@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zema/controller/app_controller.dart';
@@ -110,7 +111,11 @@ class HomeScreen extends StatelessWidget {
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 16),
-              child: ImageCarousel(images: images, height: 250),
+              child: ImageCarousel(
+                images: images,
+                height: 250,
+                controller: CarouselController(),
+              ),
             ),
           ),
         ),

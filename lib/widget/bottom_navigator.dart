@@ -46,7 +46,8 @@ class NestedBottomNavigator extends StatelessWidget {
             page: () => AccountScreen(),
           );
         } else {
-          GetPageRoute(
+          print("other route");
+          return GetPageRoute(
             settings: settings,
             routeName: settings.name,
             page: RouteUtil.routes

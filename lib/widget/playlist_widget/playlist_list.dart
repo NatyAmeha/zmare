@@ -25,7 +25,7 @@ class PlaylistList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (playlists?.isNotEmpty == true) {
       if (listType == PlaylistListType.HORIZONTAL) {
-        Container(
+        return SizedBox(
           height: 250,
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16),
