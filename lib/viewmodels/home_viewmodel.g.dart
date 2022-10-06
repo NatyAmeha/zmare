@@ -32,6 +32,18 @@ HomeViewmodel _$HomeViewmodelFromJson(Map<String, dynamic> json) =>
       featuredPlaylist: (json['featuredPlaylist'] as List<dynamic>?)
           ?.map((e) => Playlist.fromJson(e as Map<String, dynamic>))
           .toList(),
+      songs: (json['songs'] as List<dynamic>?)
+          ?.map((e) => Song.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      albums: (json['albums'] as List<dynamic>?)
+          ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      playlists: (json['playlists'] as List<dynamic>?)
+          ?.map((e) => Playlist.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      artists: (json['artists'] as List<dynamic>?)
+          ?.map((e) => Artist.fromJson(e as Map<String, dynamic>))
+          .toList(),
     )..newAlbum = (json['newAlbum'] as List<dynamic>?)
         ?.map((e) => Album.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -50,4 +62,8 @@ Map<String, dynamic> _$HomeViewmodelToJson(HomeViewmodel instance) =>
           instance.recommendedAlbum?.map((e) => e.toJson()).toList(),
       'featuredPlaylist':
           instance.featuredPlaylist?.map((e) => e.toJson()).toList(),
+      'songs': instance.songs?.map((e) => e.toJson()).toList(),
+      'albums': instance.albums?.map((e) => e.toJson()).toList(),
+      'playlists': instance.playlists?.map((e) => e.toJson()).toList(),
+      'artists': instance.artists?.map((e) => e.toJson()).toList(),
     };

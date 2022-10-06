@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:zema/screens/artist_screen.dart';
+import 'package:zema/screens/download_screen.dart';
 import 'package:zema/screens/playlist_screen.dart';
 import 'package:zema/widget/custom_text.dart';
 
@@ -22,7 +23,7 @@ class ScreenHeaderDart extends StatelessWidget {
             children: [
               InkWell(
                 onTap: () {
-                  Get.toNamed(PlaylistScreen.routeName);
+                  Get.toNamed(DownloadScreen.routName);
                 },
                 child: const CircleAvatar(
                   radius: 15,

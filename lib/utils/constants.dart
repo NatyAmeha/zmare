@@ -14,6 +14,8 @@ enum AlbumListType { ALBUM_GRID_LIST, ALBUM_HORIZONTAL_LIST }
 
 enum PlaylistListType { HORIZONTAL, GRID }
 
+enum ListSelectionState { SINGLE_SELECTION, MULTI_SELECTION }
+
 enum AudioSrcType { NETWORK, LOCAL_STORAGE, DOWNLOAD }
 
 enum AlbumListDataType { USER_FAVORITE_ALBUM_LIST }
@@ -26,6 +28,10 @@ enum PlaybackSrc { NETWORK, LOCAL }
 
 enum PlaybackState { BUFFERING, PLAYING, PAUSED, IDLE }
 
+enum DownloadStatus { PAUSED, COMPLETED, FAILED, IN_PROGRESS, NOT_STARTED }
+
+enum DownloadType { ALBUM, PLAYLIST, SINGLE }
+
 enum ArtistListType {
   ARTIST_HORIZONTAL_LIST,
   ARTIST_VERTICAL_LIST,
@@ -35,13 +41,6 @@ enum ArtistListType {
 enum SongTypeEnum { SINGLE, EP, ALBUM }
 
 enum PlaylistFilter { TODAY, MONTH, LIKED }
-
-enum DownloadStatus {
-  DOWNLOAD_COMPLETED,
-  DOWNLOAD_PAUSED,
-  DOWNLOAD_NOT_STARTED,
-  DOWNLOAD_IN_PROGRESS
-}
 
 enum ButtonType {
   ROUND_OUTLINED_BUTTON,

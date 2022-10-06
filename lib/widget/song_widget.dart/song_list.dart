@@ -12,20 +12,22 @@ class SongList extends StatefulWidget {
   bool isSliver;
   bool shrinkWrap;
   bool isReorderable;
+  ListSelectionState selectionState;
 
   ScrollController? controller;
   AudioSrcType src;
 
   Widget? header;
-  SongList(
-    this.songs, {
-    this.isSliver = true,
-    this.controller,
-    this.shrinkWrap = false,
-    this.isReorderable = false,
-    this.header,
-    this.src = AudioSrcType.NETWORK,
-  });
+  Function(Song)? onMoreClicked;
+  SongList(this.songs,
+      {this.isSliver = true,
+      this.controller,
+      this.shrinkWrap = false,
+      this.isReorderable = false,
+      this.header,
+      this.selectionState = ListSelectionState.SINGLE_SELECTION,
+      this.src = AudioSrcType.NETWORK,
+      this.onMoreClicked});
 
   var appController = Get.find<AppController>();
 
@@ -34,6 +36,7 @@ class SongList extends StatefulWidget {
 }
 
 class _SongListState extends State<SongList> {
+  var selectedSongIds = <String>[];
   @override
   Widget build(BuildContext context) {
     return widget.songs?.isNotEmpty == true
@@ -53,6 +56,9 @@ class _SongListState extends State<SongList> {
                       onTap: () {
                         widget.appController
                             .startPlayingAudioFile(widget.songs!, index: index);
+                      },
+                      onMoreclicked: (Song) {
+                        widget.onMoreClicked?.call(Song);
                       },
                     ),
                   ));
@@ -87,6 +93,9 @@ class _SongListState extends State<SongList> {
                                   widget.songs!,
                                   index: index);
                             },
+                            onMoreclicked: (Song) {
+                              widget.onMoreClicked?.call(Song);
+                            },
                           );
                         },
                       );
@@ -104,6 +113,8 @@ class _SongListState extends State<SongList> {
                           index: index,
                           widget.songs![index],
                           src: widget.src,
+                          selectionState: widget.selectionState,
+                          selectedSongIds: selectedSongIds,
                           isSelected: snapshot.data?.current?.id ==
                               widget.songs![index].id,
                           onTap: () {
@@ -111,10 +122,33 @@ class _SongListState extends State<SongList> {
                                 widget.songs!,
                                 index: index);
                           },
+                          onMoreclicked: (Song) {
+                            widget.onMoreClicked?.call(Song);
+                          },
+                          onMultiSelection: (songInfo) {
+                            print("on multi selection called");
+                            setState(() {
+                              if (widget.selectionState !=
+                                  ListSelectionState.MULTI_SELECTION) {
+                                widget.selectionState =
+                                    ListSelectionState.MULTI_SELECTION;
+                              }
+                              addOrRemoveSongId(songInfo.id!);
+                            });
+                          },
                         ),
                       );
                     },
                   ))
         : Container();
+  }
+
+  addOrRemoveSongId(String id) {
+    if (selectedSongIds.contains(id) == true) {
+      selectedSongIds.remove(id);
+    } else {
+      selectedSongIds.add(id);
+    }
+    print(selectedSongIds.length);
   }
 }

@@ -76,4 +76,21 @@ class UIHelper {
   static moveBack({dynamic? result}) {
     Get.back(result: result);
   }
+
+  static Future<void> showInfoDialog(
+      String title, String message, Function onActionClicked) async {
+    var rationaleDialog = await Get.defaultDialog(
+      title: title,
+      content: Flexible(
+        child: Text(message),
+      ),
+      confirm: TextButton(
+        child: const Text('OK'),
+        onPressed: () async {
+          Get.back();
+          onActionClicked();
+        },
+      ),
+    );
+  }
 }

@@ -5,8 +5,10 @@ import 'package:zema/modals/album.dart';
 import 'package:zema/modals/exception.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/repo/api_repository.dart';
+import 'package:zema/repo/db/db_repo.dart';
 import 'package:zema/repo/local_audio_repo.dart';
 import 'package:zema/usecase/album_usecase.dart';
+import 'package:zema/usecase/download_usecase.dart';
 import 'package:zema/usecase/home_usecase.dart';
 import 'package:zema/usecase/user_usecase.dart';
 import 'package:zema/utils/constants.dart';
@@ -42,8 +44,10 @@ class AlbumController extends GetxController {
       _isDataLoading(true);
       var albumUsecase = AlbumUsecase(repo: ApiRepository<Album>());
       var result = await albumUsecase.getAlbum(albumId);
-      _isDataLoading(false);
+      var albumSongs = result?.songs?.map((e) => Song.fromJson(e)).toList();
       albumResult = result;
+      albumResult!.songs = albumSongs;
+      _isDataLoading(false);
     } catch (ex) {
       print("error ${ex.toString()}");
       _isDataLoading(false);
@@ -110,6 +114,19 @@ class AlbumController extends GetxController {
       print("error ${ex.toString()}");
       _isLoading(false);
       _exception(ex as AppException);
+    }
+  }
+
+  downloadAlbum(List<Song> albumSongs) async {
+    try {
+      _isLoading(true);
+      var downloadUsecase = DownloadUsecase(repositroy: DBRepo());
+      var result = await downloadUsecase.startDownload(albumSongs, "");
+      print("Download result ${result}");
+    } catch (ex) {
+      _exception(ex as AppException);
+    } finally {
+      _isLoading(false);
     }
   }
 

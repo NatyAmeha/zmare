@@ -25,9 +25,12 @@ class SongListItem extends StatelessWidget {
   AudioSrcType src;
   bool showDrag;
   bool showMore;
+  List<String> selectedSongIds;
+  ListSelectionState selectionState;
   Function(Song)? onMoreclicked;
   Widget? leading;
   Function? onTap;
+  Function(Song)? onMultiSelection;
 
   var songMenus = [
     MenuViewmodel(
@@ -66,7 +69,10 @@ class SongListItem extends StatelessWidget {
     this.showDrag = false,
     this.src = AudioSrcType.NETWORK,
     this.leading,
+    this.selectedSongIds = const [],
+    this.selectionState = ListSelectionState.SINGLE_SELECTION,
     this.onTap,
+    this.onMultiSelection,
     this.onMoreclicked,
   });
 
@@ -80,23 +86,12 @@ class SongListItem extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       minVerticalPadding: 0,
       onTap: () {
-        onTap?.call();
+        onClick();
       },
-      leading: src == AudioSrcType.LOCAL_STORAGE
-          ? QueryArtworkWidget(
-              id: int.parse(songInfo.id!),
-              type: ArtworkType.AUDIO,
-              artworkWidth: 50,
-              artworkHeight: 50,
-              nullArtworkWidget: CustomImage(
-                null,
-                roundImage: true,
-                height: 50,
-                width: 50,
-              ),
-            )
-          : CustomImage(songInfo.thumbnailPath,
-              height: 50, width: 50, roundImage: true),
+      onLongPress: () {
+        onMultiSelection?.call(songInfo);
+      },
+      leading: buildLeading(),
       title: CustomText(
         songInfo.title ?? "",
         fontWeight: FontWeight.bold,
@@ -153,5 +148,51 @@ class SongListItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget buildLeading() {
+    return src == AudioSrcType.LOCAL_STORAGE
+        ? Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (selectionState == ListSelectionState.MULTI_SELECTION)
+                Checkbox(
+                    value: selectedSongIds.contains(songInfo.id),
+                    onChanged: (isSelected) {}),
+              const SizedBox(width: 8),
+              QueryArtworkWidget(
+                id: int.parse(songInfo.id!),
+                type: ArtworkType.AUDIO,
+                artworkWidth: 50,
+                artworkHeight: 50,
+                nullArtworkWidget: CustomImage(
+                  null,
+                  roundImage: true,
+                  height: 50,
+                  width: 50,
+                ),
+              ),
+            ],
+          )
+        : Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (selectionState == ListSelectionState.MULTI_SELECTION)
+                Checkbox(
+                    value: selectedSongIds.contains(songInfo.id),
+                    onChanged: (isSelected) {}),
+              const SizedBox(width: 8),
+              CustomImage(songInfo.thumbnailPath,
+                  height: 50, width: 50, roundImage: true),
+            ],
+          );
+  }
+
+  onClick() {
+    if (selectionState == ListSelectionState.MULTI_SELECTION) {
+      onMultiSelection?.call(songInfo);
+    } else {
+      onTap?.call();
+    }
   }
 }

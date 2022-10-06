@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:zema/modals/download.dart';
 
 class AppException implements Exception {
   final int? type;
@@ -23,6 +24,7 @@ class AppException implements Exception {
   static const PERMISSION_DENIED_FOREVER_EXCEPTION = 11;
 
   static const INVALID_PHONE_NUMBER_EXCEPTION = 12;
+  static const DOWNLOAD_EXCEPTION = 13;
 
   static AppException handleerror(DioError ex) {
     switch (ex.type) {

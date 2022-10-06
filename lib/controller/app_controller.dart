@@ -1,9 +1,14 @@
+import 'dart:isolate';
+import 'dart:ui';
+
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:zema/modals/exception.dart';
 import 'package:zema/modals/library.dart';
 import 'package:zema/modals/song.dart';
 import 'package:zema/modals/user.dart';
 import 'package:zema/repo/api_repository.dart';
+import 'package:zema/repo/db/db_manager.dart';
 import 'package:zema/repo/local_audio_repo.dart';
 import 'package:zema/service/permission_service.dart';
 import 'package:zema/service/player/player_service.dart';
@@ -19,6 +24,7 @@ import '../repo/shared_pref_repo.dart';
 
 class AppController extends GetxController {
   var player = JustAudioPlayer();
+  final ReceivePort _port = ReceivePort();
 
   var _isDataLoading = true.obs;
   get isDataLoading => _isDataLoading.value;
@@ -116,6 +122,7 @@ class AppController extends GetxController {
       var usecase = HomeUsecase(
           repo: LocalAudioRepo(), permissionService: PermissionService());
       var result = await usecase.getLocalAudioFiles();
+      print("playlist local ${result.playlists?.length}");
       _isDataLoading(false);
       localAudioFiles = result;
     } catch (ex) {
@@ -188,5 +195,24 @@ class AppController extends GetxController {
       _isLoading(false);
       _exception(ex as AppException);
     }
+  }
+
+  // flutter downloader callback functions
+  // static downloadCallback(0)
+
+  // createIsolate() {
+  //    IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
+  //   _port.listen((dynamic data) {
+  //     String id = data[0];
+  //     DownloadTaskStatus status = data[1];
+  //     int progress = data[2];
+
+  //   });
+  // }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
   }
 }

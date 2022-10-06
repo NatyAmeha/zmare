@@ -10,20 +10,20 @@ class DownloadStatusIndicator extends StatelessWidget {
   double progress;
   DownloadStatusIndicator({
     this.progress = 0,
-    this.status = DownloadStatus.DOWNLOAD_NOT_STARTED,
+    this.status = DownloadStatus.NOT_STARTED,
   });
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        if (status == DownloadStatus.DOWNLOAD_NOT_STARTED)
+        if (status == DownloadStatus.NOT_STARTED)
           const Icon(Icons.download, color: Colors.blue),
-        if (status == DownloadStatus.DOWNLOAD_COMPLETED)
+        if (status == DownloadStatus.COMPLETED)
           const Icon(Icons.download_done_sharp, color: Colors.blue),
-        if (status == DownloadStatus.DOWNLOAD_PAUSED)
+        if (status == DownloadStatus.PAUSED)
           const Icon(Icons.pause, color: Colors.blue),
-        if (status == DownloadStatus.DOWNLOAD_IN_PROGRESS)
+        if (status == DownloadStatus.IN_PROGRESS)
           SizedBox(
             height: 50,
             width: 50,

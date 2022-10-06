@@ -29,8 +29,7 @@ class AlbumScreen extends StatelessWidget {
     var args = Get.arguments as Map<String, dynamic>;
     var albumSrcType = args["src"] as AudioSrcType;
     var albumInfo = args["album_info"] as Album?;
-    print("src ${albumSrcType} ${albumId}");
-    print(albumInfo?.name);
+
     if (albumController.albumResult == null) {
       switch (albumSrcType) {
         case AudioSrcType.NETWORK:
@@ -48,24 +47,10 @@ class AlbumScreen extends StatelessWidget {
 
     return Scaffold(
       body: Obx(() => UIHelper.displayContent(
-              showWhen: true,
-              exception: albumController.exception,
-              isDataLoading: albumController.isDataLoading,
-              content: buildPage(albumSrcType))
-          // {
-          // if (albumController.isDataLoading) {
-          //   return LoadingProgressbar(
-          //     loadingState: albumController.isDataLoading,
-          //   );
-          // } else if (albumController.exception.message != null) {
-          //   return ErrorPage(exception: albumController.exception);
-          // } else if (albumController.albumResult.id != null) {
-          //   return buildPage();
-          // } else {
-          //   return Container();
-          // }
-          // }
-          ),
+          showWhen: true,
+          exception: albumController.exception,
+          isDataLoading: albumController.isDataLoading,
+          content: buildPage(albumSrcType))),
     );
   }
 
@@ -97,9 +82,12 @@ class AlbumScreen extends StatelessWidget {
               ),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                albumController.downloadAlbum(
+                    albumController.albumResult!.songs!.cast<Song>());
+              },
               icon: const Icon(
-                Icons.more_vert,
+                Icons.download,
                 color: Colors.grey,
               ),
             )
@@ -142,13 +130,15 @@ class AlbumScreen extends StatelessWidget {
           ),
         ),
         if (albumController.albumResult?.songs?.isNotEmpty == true)
-          src == AudioSrcType.NETWORK
-              ? SongList(
-                  albumController.albumResult!.songs!
-                      .map((e) => Song.fromJson(e))
-                      .toList(),
-                )
-              : SongList(albumController.albumResult!.songs?.cast<Song>())
+          SongList(albumController.albumResult!.songs?.cast<Song>())
+        // src == AudioSrcType.NETWORK
+        //     ? SongList(
+        //         albumController.albumResult!.songs!
+        //             .map((e) => Song.fromJson(e))
+        //             .toList(),
+        //         onMoreClicked: (Song) {},
+        //       )
+        //     : SongList(albumController.albumResult!.songs?.cast<Song>())
       ],
     );
   }

@@ -1,8 +1,10 @@
 import 'package:zema/modals/album.dart';
 import 'package:zema/modals/artist.dart';
+import 'package:zema/modals/download.dart';
 import 'package:zema/modals/library.dart';
 import 'package:zema/modals/playlist.dart';
 import 'package:zema/modals/song.dart';
+import 'package:zema/utils/constants.dart';
 import 'package:zema/viewmodels/artist_viewmodel.dart';
 import 'package:zema/viewmodels/browse_viewmodel.dart';
 import 'package:zema/viewmodels/home_viewmodel.dart';
@@ -44,5 +46,21 @@ extension apiResponseconverter on dynamic {
       default:
         null;
     }
+  }
+}
+
+extension SongToDownloadConverter on Song {
+  Download toDownload(String taskId, DownloadType type, String location) {
+    return Download(
+      taskId: taskId,
+      fileId: id,
+      name: title,
+      url: songFilePath,
+      location: location,
+      status: DownloadStatus.NOT_STARTED,
+      type: type,
+      typeId: id,
+      image: thumbnailPath,
+    );
   }
 }

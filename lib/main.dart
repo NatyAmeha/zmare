@@ -1,4 +1,8 @@
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:zema/screens/account_onboarding_screen.dart';
 import 'package:zema/screens/album_list_screen.dart';
@@ -18,12 +22,19 @@ import 'package:zema/screens/playlist_screen.dart';
 import 'package:zema/screens/registration_screen.dart';
 import 'package:zema/screens/song_list_screen.dart';
 import 'package:zema/screens/verification_screen.dart';
+import 'package:zema/service/download/download_progress_callback.dart';
 import 'package:zema/service/player/player_service.dart';
 import 'package:zema/utils/route/routes.dart';
 import 'package:zema/viewmodels/download_viewmodel.dart';
 import 'package:zema/widget/song_widget.dart/song_list.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterDownloader.initialize(
+    debug: false, //set to false to disable printing logs to console
+    // ignoreSsl: true //set to false to disable working with http links
+  );
+  FlutterDownloader.registerCallback(downloadCallback);
   await JustAudioPlayer.initBackgroundPlayback();
   runApp(const MyApp());
 }
@@ -136,4 +147,10 @@ class _MyHomePageState extends State<MyHomePage> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+void downloadCallback(String id, DownloadTaskStatus status, int progress) {
+  final SendPort send =
+      IsolateNameServer.lookupPortByName('downloader_send_port')!;
+  send.send([id, status, progress]);
 }
