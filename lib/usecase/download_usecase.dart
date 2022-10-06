@@ -29,7 +29,8 @@ class DownloadUsecase {
     return result;
   }
 
-  Future<bool> startDownload(List<Song> songs, String path) async {
+  Future<bool> startDownload(
+      List<Song> songs, String path, DownloadType type, String typeId) async {
     var listIds = [];
     var permissionResult =
         await permission.requestPermission(Permission.storage);
@@ -39,8 +40,9 @@ class DownloadUsecase {
         print("download started ${taskId}");
         if (taskId != null) {
           var dbInsertResult = await repositroy!.create<int, Download>(
-              DatabaseManager.DB_TABLE_DOWNLOAD,
-              song.toDownload(taskId, DownloadType.ALBUM, "location"));
+            DatabaseManager.DB_TABLE_DOWNLOAD,
+            song.toDownload(taskId, type, typeId),
+          );
         }
       });
       print("download completed");

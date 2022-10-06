@@ -84,7 +84,8 @@ class AlbumScreen extends StatelessWidget {
             IconButton(
               onPressed: () {
                 albumController.downloadAlbum(
-                    albumController.albumResult!.songs!.cast<Song>());
+                    albumController.albumResult!.songs!.cast<Song>(),
+                    albumController.albumResult!.id!);
               },
               icon: const Icon(
                 Icons.download,

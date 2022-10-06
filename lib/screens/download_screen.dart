@@ -18,7 +18,7 @@ class DownloadScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    downloadController.getDownloads();
+    downloadController.getAllDownloads();
     return Scaffold(
       appBar: AppBar(title: CustomText("Downloads")),
       body: Obx(

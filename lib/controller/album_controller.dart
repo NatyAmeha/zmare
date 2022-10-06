@@ -117,11 +117,12 @@ class AlbumController extends GetxController {
     }
   }
 
-  downloadAlbum(List<Song> albumSongs) async {
+  downloadAlbum(List<Song> albumSongs, String albumId) async {
     try {
       _isLoading(true);
       var downloadUsecase = DownloadUsecase(repositroy: DBRepo());
-      var result = await downloadUsecase.startDownload(albumSongs, "");
+      var result = await downloadUsecase.startDownload(
+          albumSongs, "", DownloadType.ALBUM, albumId);
       print("Download result ${result}");
     } catch (ex) {
       _exception(ex as AppException);
