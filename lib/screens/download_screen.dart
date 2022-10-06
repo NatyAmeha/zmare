@@ -4,6 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:zema/controller/app_controller.dart';
 import 'package:zema/controller/download_controller.dart';
+import 'package:zema/utils/constants.dart';
+import 'package:zema/utils/extension.dart';
 import 'package:zema/utils/ui_helper.dart';
 import 'package:zema/viewmodels/download_viewmodel.dart';
 import 'package:zema/widget/custom_text.dart';
@@ -38,7 +40,13 @@ class DownloadScreen extends StatelessWidget {
             itemCount: downloadController.downloadResult!.length,
             separatorBuilder: (context, index) => const SizedBox(height: 12),
             itemBuilder: (context, index) => DownloadListItem(
-                downloadInfo: downloadController.downloadResult![index]),
+              downloadInfo: downloadController.downloadResult![index],
+              onClick: (downloads) {
+                var songs = downloads.map((e) => e.toSongInfo()).toList();
+                downloadController.appController
+                    .startPlayingAudioFile(songs, src: AudioSrcType.DOWNLOAD);
+              },
+            ),
           )
         : ErrorPage(
             message:

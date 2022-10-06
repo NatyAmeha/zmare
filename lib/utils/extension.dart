@@ -63,3 +63,16 @@ extension SongToDownloadConverter on Song {
     );
   }
 }
+
+extension DownloadToSong on Download {
+  Song toSongInfo() {
+    return Song(
+      id: fileId.toString(),
+      title: name,
+      album: "album",
+      artistsName: ["artist names"],
+      songFilePath: location,
+      thumbnailPath: image,
+    );
+  }
+}

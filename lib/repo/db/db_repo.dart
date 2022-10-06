@@ -52,11 +52,13 @@ class DBRepo implements IRepositroy {
           var downloadResult = result.map((e) => Download.fromJson(e)).toList();
           for (var e in downloadResult) {
             var b = moreDownloadINfo.first;
-            // var additionalDownloadInfo = moreDownloadINfo.first;
+
+            var additionalDownloadInfo = moreDownloadINfo
+                .firstWhere((element) => element.name == e.name);
             // print("info ${b.location}");
-            e.location = b.location;
-            e.url = b.url;
-            e.date = b.date;
+            e.location = additionalDownloadInfo.location;
+            e.url = additionalDownloadInfo.url;
+            e.date = additionalDownloadInfo.date;
           }
 
           return downloadResult.cast<R>();

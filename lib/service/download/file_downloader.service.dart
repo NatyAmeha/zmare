@@ -63,8 +63,8 @@ class FileDownloaderService implements IDownloadService {
   Future<String?> startSingle(Song song, String path) async {
     var dir = await getExternalStorageDirectory();
     var filePath = "${dir?.path}";
-    var saveDir = Directory(filePath);
-    var dirSave = await saveDir.create(recursive: true);
+    // var saveDir = Directory(filePath);
+    // var dirSave = await saveDir.create(recursive: true);
 
     var taskId = await FlutterDownloader.enqueue(
         url: song.songFilePath!,

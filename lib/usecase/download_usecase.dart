@@ -37,7 +37,7 @@ class DownloadUsecase {
     if (permissionResult) {
       await Future.forEach(songs, (song) async {
         var taskId = await downloadService.startSingle(song, path);
-        print("download started ${taskId}");
+
         if (taskId != null) {
           var dbInsertResult = await repositroy!.create<int, Download>(
             DatabaseManager.DB_TABLE_DOWNLOAD,

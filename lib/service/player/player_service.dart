@@ -72,11 +72,9 @@ class JustAudioPlayer extends IPlayer {
       );
 
   @override
-  // TODO: implement position
   Stream<Duration>? get position => player.positionStream;
 
   @override
-  // TODO: implement totalDuration
   Stream<Duration?>? get totalDuration => player.durationStream;
 
   @override

@@ -42,6 +42,7 @@ class DownloadController extends GetxController {
       _isDataLoading(true);
       var downloadUsecase = DownloadUsecase(repositroy: DBRepo());
       var result = await downloadUsecase.getDownloads();
+      print(result.map((e) => e.location).toList());
       var downloadInfos =
           groupBy(result, (download) => download.typeId).entries.map((entry) {
         var type = DownloadType.SINGLE;
@@ -51,9 +52,11 @@ class DownloadController extends GetxController {
           type == DownloadType.PLAYLIST;
         }
         return DownloadViewmodel(
-            title: type.toString(),
-            subtitle: "${entry.value.length} songs",
-            images: entry.value.map((e) => e.image!).toSet().toList());
+          title: type.toString(),
+          subtitle: "${entry.value.length} songs",
+          images: entry.value.map((e) => e.image!).toSet().toList(),
+          downloads: entry.value,
+        );
       }).toList();
       downloadResult = downloadInfos;
     } catch (ex) {

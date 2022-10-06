@@ -10,11 +10,15 @@ import 'package:zema/widget/image_collection.dart';
 
 class DownloadListItem extends StatelessWidget {
   DownloadViewmodel downloadInfo;
-  DownloadListItem({required this.downloadInfo});
+  Function(List<Download>)? onClick;
+  DownloadListItem({required this.downloadInfo, this.onClick});
 
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
+      onTap: () {
+        onClick?.call(downloadInfo.downloads);
+      },
       padding: 16,
       child: Row(
         children: [
