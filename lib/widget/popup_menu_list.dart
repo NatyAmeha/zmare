@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class PopupMenuList extends StatelessWidget {
+class PopupMenu extends StatelessWidget {
   Map<String, Function?> menuList;
   List<IconData>? iconList;
   List<int> inActiveMenuIndexes;
   IconData? indicator;
-  PopupMenuList(
+  PopupMenu(
       {required this.menuList,
       this.iconList,
       this.indicator,

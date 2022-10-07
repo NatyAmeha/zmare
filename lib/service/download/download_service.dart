@@ -7,4 +7,5 @@ abstract class IDownloadService {
   Future<void> resume(List<String> id);
   Future<void> stop(List<String> id);
   Future<void> removeDownloads(List<String> id);
+  Stream<int> getDownloadProgress(String taskId);
 }

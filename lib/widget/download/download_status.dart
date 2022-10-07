@@ -8,14 +8,15 @@ import 'package:zema/widget/custom_text.dart';
 class DownloadStatusIndicator extends StatelessWidget {
   DownloadStatus status;
   double progress;
-  DownloadStatusIndicator({
-    this.progress = 0,
-    this.status = DownloadStatus.NOT_STARTED,
-  });
+  double size;
+  DownloadStatusIndicator(
+      {this.progress = 0,
+      this.status = DownloadStatus.NOT_STARTED,
+      this.size = 30});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Row(
       children: [
         if (status == DownloadStatus.NOT_STARTED)
           const Icon(Icons.download, color: Colors.blue),
@@ -25,22 +26,21 @@ class DownloadStatusIndicator extends StatelessWidget {
           const Icon(Icons.pause, color: Colors.blue),
         if (status == DownloadStatus.IN_PROGRESS)
           SizedBox(
-            height: 50,
-            width: 50,
+            height: size,
+            width: size,
             child: CircularProgressIndicator.adaptive(
               value: progress,
+              strokeWidth: 3,
               backgroundColor: Colors.grey,
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.blue),
             ),
           ),
-        Positioned.fill(
-            child: Align(
-          alignment: Alignment.center,
-          child: CustomText(
-            "${progress * 100}%",
-            fontSize: 10,
-          ),
-        ))
+        const SizedBox(width: 8),
+        if (status == DownloadStatus.COMPLETED)
+          CustomText("completed", fontSize: 11),
+        if (status == DownloadStatus.PAUSED) CustomText("Paused", fontSize: 11),
+        if (status == DownloadStatus.IN_PROGRESS)
+          CustomText("${progress * 100}%", fontSize: 11),
       ],
     );
   }

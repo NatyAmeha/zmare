@@ -50,7 +50,8 @@ extension apiResponseconverter on dynamic {
 }
 
 extension SongToDownloadConverter on Song {
-  Download toDownload(String taskId, DownloadType type, String typeId) {
+  Download toDownload(
+      String taskId, DownloadType type, String typeId, String typeName) {
     return Download(
       taskId: taskId,
       fileId: id,
@@ -59,6 +60,8 @@ extension SongToDownloadConverter on Song {
       status: DownloadStatus.NOT_STARTED,
       type: type,
       typeId: typeId,
+      typeName: typeName,
+      artistNames: artistsName?.join(","),
       image: thumbnailPath,
     );
   }

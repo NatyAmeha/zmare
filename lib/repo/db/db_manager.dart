@@ -35,7 +35,9 @@ class DatabaseManager {
             type TEXT ,
             typeId TEXT ,
             image TEXT,
-            date INTEGER            
+            date INTEGER,            
+            typeName TEXT,
+            artistNames TEXT
           )
           ''');
       print("db created successfully");

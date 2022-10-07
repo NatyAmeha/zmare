@@ -15,7 +15,10 @@ class Download {
   DownloadStatus? status;
   DownloadType? type;
   String? typeId;
+  String? typeName;
   String? image;
+  String? artistNames;
+
   DateTime? date;
 
   Download({
@@ -28,6 +31,8 @@ class Download {
     this.location,
     this.type,
     this.typeId,
+    this.typeName,
+    this.artistNames,
     this.image,
     this.date,
   });

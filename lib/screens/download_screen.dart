@@ -36,9 +36,8 @@ class DownloadScreen extends StatelessWidget {
 
   Widget buildPage() {
     return downloadController.downloadResult?.isNotEmpty == true
-        ? ListView.separated(
+        ? ListView.builder(
             itemCount: downloadController.downloadResult!.length,
-            separatorBuilder: (context, index) => const SizedBox(height: 12),
             itemBuilder: (context, index) => DownloadListItem(
               downloadInfo: downloadController.downloadResult![index],
               onClick: (downloads) {

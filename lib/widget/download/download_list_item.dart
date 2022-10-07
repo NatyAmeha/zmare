@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:zema/modals/download.dart';
+import 'package:zema/utils/constants.dart';
 import 'package:zema/viewmodels/download_viewmodel.dart';
 import 'package:zema/widget/custom_container.dart';
 import 'package:zema/widget/custom_image.dart';
 import 'package:zema/widget/custom_text.dart';
+import 'package:zema/widget/download/download_status.dart';
 import 'package:zema/widget/image_collection.dart';
+import 'package:zema/widget/popup_menu_list.dart';
 
 class DownloadListItem extends StatelessWidget {
   DownloadViewmodel downloadInfo;
@@ -33,13 +36,28 @@ class DownloadListItem extends StatelessWidget {
               const SizedBox(height: 8),
               CustomText(downloadInfo.subtitle, fontSize: 15),
               const SizedBox(height: 8),
-              CustomText("album", fontSize: 10),
+              DownloadStatusIndicator(
+                progress: 0.34,
+                status: DownloadStatus.IN_PROGRESS,
+                size: 20,
+              )
             ],
           )),
           const SizedBox(width: 16),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
+          PopupMenu(
+            menuList: {
+              "Pause download": () {},
+              "Resume download": () {},
+              "Cancel download": () {}
+            },
+            iconList: const [Icons.pause, Icons.play_arrow, Icons.close],
+          )
         ],
       ),
     );
+  }
+
+  DownloadStatus checkDownloadStatus() {
+    return DownloadStatus.COMPLETED;
   }
 }

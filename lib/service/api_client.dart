@@ -7,9 +7,9 @@ class ApiClient {
   static Dio? _dioClient;
 
   static Dio getDioInstance() {
-    if (_dioClient != null)
+    if (_dioClient != null) {
       return _dioClient!;
-    else {
+    } else {
       var dioOption = BaseOptions(
         baseUrl: "http://192.168.1.4:4000",
         connectTimeout: 30000,

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -73,5 +74,15 @@ class FileDownloaderService implements IDownloadService {
         showNotification: true,
         openFileFromNotification: true);
     return taskId;
+  }
+
+  @override
+  Stream<int> getDownloadProgress(String taskId) async* {
+    var donwloadTasks = await FlutterDownloader.loadTasks();
+    var selectedDownloadTask =
+        donwloadTasks?.firstWhere((element) => element.taskId == taskId);
+    if (selectedDownloadTask != null) {
+      var timer = Timer.periodic(Duration(seconds: 1), (timer) {});
+    }
   }
 }
