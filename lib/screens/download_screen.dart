@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:zema/controller/app_controller.dart';
 import 'package:zema/controller/download_controller.dart';
+import 'package:zema/screens/downloaded_song_screen.dart';
 import 'package:zema/utils/constants.dart';
 import 'package:zema/utils/extension.dart';
 import 'package:zema/utils/ui_helper.dart';
@@ -42,8 +43,12 @@ class DownloadScreen extends StatelessWidget {
               downloadInfo: downloadController.downloadResult![index],
               onClick: (downloads) {
                 var songs = downloads.map((e) => e.toSongInfo()).toList();
-                downloadController.appController
-                    .startPlayingAudioFile(songs, src: AudioSrcType.DOWNLOAD);
+
+                UIHelper.moveToScreen(DownloadedSongScreen.routename,
+                    arguments: {
+                      "title": downloadController.downloadResult![index].title,
+                      "songs": songs
+                    });
               },
             ),
           )

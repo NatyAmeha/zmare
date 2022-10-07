@@ -18,16 +18,20 @@ class SongList extends StatefulWidget {
   AudioSrcType src;
 
   Widget? header;
+  Function(Song)? onClick;
   Function(Song)? onMoreClicked;
-  SongList(this.songs,
-      {this.isSliver = true,
-      this.controller,
-      this.shrinkWrap = false,
-      this.isReorderable = false,
-      this.header,
-      this.selectionState = ListSelectionState.SINGLE_SELECTION,
-      this.src = AudioSrcType.NETWORK,
-      this.onMoreClicked});
+  SongList(
+    this.songs, {
+    this.isSliver = true,
+    this.controller,
+    this.shrinkWrap = false,
+    this.isReorderable = false,
+    this.header,
+    this.selectionState = ListSelectionState.SINGLE_SELECTION,
+    this.src = AudioSrcType.NETWORK,
+    this.onClick,
+    this.onMoreClicked,
+  });
 
   var appController = Get.find<AppController>();
 
@@ -54,8 +58,11 @@ class _SongListState extends State<SongList> {
                       widget.songs![index],
                       src: widget.src,
                       onTap: () {
-                        widget.appController
-                            .startPlayingAudioFile(widget.songs!, index: index);
+                        widget.onClick?.call(widget.songs![index]) ??
+                            widget.appController.startPlayingAudioFile(
+                                widget.songs!,
+                                index: index,
+                                src: widget.src);
                       },
                       onMoreclicked: (Song) {
                         widget.onMoreClicked?.call(Song);
@@ -89,9 +96,11 @@ class _SongListState extends State<SongList> {
                                 widget.songs![index].id,
                             src: widget.src,
                             onTap: () {
-                              widget.appController.startPlayingAudioFile(
-                                  widget.songs!,
-                                  index: index);
+                              widget.onClick?.call(widget.songs![index]) ??
+                                  widget.appController.startPlayingAudioFile(
+                                      widget.songs!,
+                                      index: index,
+                                      src: widget.src);
                             },
                             onMoreclicked: (Song) {
                               widget.onMoreClicked?.call(Song);
@@ -118,9 +127,11 @@ class _SongListState extends State<SongList> {
                           isSelected: snapshot.data?.current?.id ==
                               widget.songs![index].id,
                           onTap: () {
-                            widget.appController.startPlayingAudioFile(
-                                widget.songs!,
-                                index: index);
+                            widget.onClick?.call(widget.songs![index]) ??
+                                widget.appController.startPlayingAudioFile(
+                                    widget.songs!,
+                                    index: index,
+                                    src: widget.src);
                           },
                           onMoreclicked: (Song) {
                             widget.onMoreClicked?.call(Song);
