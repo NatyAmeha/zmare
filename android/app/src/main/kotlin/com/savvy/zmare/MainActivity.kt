@@ -1,4 +1,4 @@
-package com.example.zema
+package com.savvy.zmare
 
 import io.flutter.embedding.android.FlutterActivity
 
