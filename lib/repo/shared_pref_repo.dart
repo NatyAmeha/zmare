@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/modals/user.dart';
-import 'package:zema/repo/repository.dart';
-import 'package:zema/utils/constants.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/modals/user.dart';
+import 'package:zmare/repo/repository.dart';
+import 'package:zmare/utils/constants.dart';
 
 abstract class ISharedPrefRepository<T> extends IRepositroy<T> {
   Future<bool> saveUserInfo(User userInfo, String token);
@@ -55,7 +55,7 @@ class SharedPreferenceRepository<T> implements ISharedPrefRepository<T> {
       {Map<String, dynamic>? queryParameters}) async {
     var sharedPref = await SharedPreferences.getInstance();
     try {
-      switch (T) {
+      switch (R) {
         case String:
           if (sharedPref.containsKey(path)) {
             var result = sharedPref.getString(path);

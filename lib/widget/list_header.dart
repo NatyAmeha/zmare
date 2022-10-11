@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/widget/custom_container.dart';
+import 'package:zmare/widget/custom_container.dart';
 
 import 'custom_text.dart';
 

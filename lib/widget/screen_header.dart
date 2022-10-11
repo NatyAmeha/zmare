@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/screens/artist_screen.dart';
-import 'package:zema/screens/download_screen.dart';
-import 'package:zema/screens/playlist_screen.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/screens/artist_screen.dart';
+import 'package:zmare/screens/download_screen.dart';
+import 'package:zmare/screens/playlist_screen.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class ScreenHeaderDart extends StatelessWidget {
   const ScreenHeaderDart({super.key});

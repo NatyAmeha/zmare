@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/viewmodels/browse_viewmodel.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/viewmodels/browse_viewmodel.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class Categorylist extends StatelessWidget {
   List<BrowseCommand>? browseInfo;
@@ -83,16 +83,20 @@ class CategoryListItem extends StatelessWidget {
               Icon(icon, size: 30),
               if (image != null) CustomImage(image, width: 40, height: 40),
               if (subtitle != null)
-                CustomText(subtitle!, fontSize: 17, fontWeight: FontWeight.bold)
+                CustomText(subtitle!,
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    maxLine: 1,
+                    overflow: TextOverflow.ellipsis)
             ],
           ),
           const SizedBox(height: 8),
-          CustomText(
-            title ?? "Gospel music",
-            fontWeight: FontWeight.bold,
-            fontSize: 13,
-            alignment: TextAlign.start,
-          )
+          CustomText(title ?? "Gospel music",
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              alignment: TextAlign.start,
+              maxLine: 1,
+              overflow: TextOverflow.ellipsis)
         ],
       ),
     );

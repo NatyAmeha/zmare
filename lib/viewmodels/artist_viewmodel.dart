@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/modals/song.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/modals/song.dart';
 part 'artist_viewmodel.g.dart';
 
 @JsonSerializable(explicitToJson: true)

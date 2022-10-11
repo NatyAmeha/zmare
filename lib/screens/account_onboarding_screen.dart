@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/user_controller.dart';
-import 'package:zema/screens/registration_screen.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/controller/user_controller.dart';
+import 'package:zmare/screens/registration_screen.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class AccountOnboardingScreen extends StatelessWidget {
   static const routName = "/signinoption";
@@ -26,7 +26,7 @@ class AccountOnboardingScreen extends StatelessWidget {
           children: [
             CustomImage(null, width: 100, height: 100),
             const SizedBox(height: 24),
-            CustomText("Zema"),
+            CustomText("Zmare"),
             Spacer(),
             CustomButton("Continue with phone number",
                 icon: Icons.phone,

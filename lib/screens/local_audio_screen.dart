@@ -3,16 +3,16 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/album_widget/album_list.dart';
-import 'package:zema/widget/artist_widget/artist_list.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/playlist_widget/playlist_list.dart';
-import 'package:zema/widget/song_widget.dart/local_song_list_item.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/album_widget/album_list.dart';
+import 'package:zmare/widget/artist_widget/artist_list.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/playlist_widget/playlist_list.dart';
+import 'package:zmare/widget/song_widget.dart/local_song_list_item.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 class LocalAudioScreen extends StatelessWidget {
   static const routeName = "/local_audio";

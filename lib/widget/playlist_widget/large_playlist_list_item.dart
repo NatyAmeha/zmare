@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/song_widget.dart/play_pause_icon.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/song_widget.dart/play_pause_icon.dart';
 
 class LargePlaylistTile extends StatelessWidget {
   Playlist playlistInfo;

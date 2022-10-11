@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/image_collection.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/image_collection.dart';
 
 class AlbumPlayListHeader extends StatelessWidget {
   List<String>? images;

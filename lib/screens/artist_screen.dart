@@ -4,23 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/artist_controller.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/screens/category_screen.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/album_widget/album_list.dart';
-import 'package:zema/widget/artist_widget/follow_unfollow_btn.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_carousel.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/error_page.dart';
-import 'package:zema/widget/list_header.dart';
-import 'package:zema/widget/loading_progressbar.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:zmare/controller/artist_controller.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/screens/category_screen.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/ad_widget/banner_ad_widget.dart';
+import 'package:zmare/widget/album_widget/album_list.dart';
+import 'package:zmare/widget/artist_widget/follow_unfollow_btn.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_carousel.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/error_page.dart';
+import 'package:zmare/widget/list_header.dart';
+import 'package:zmare/widget/loading_progressbar.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 class ArtistScreen extends StatelessWidget {
   static const routeName = "/artist/:id";
@@ -159,47 +161,56 @@ class ArtistScreen extends StatelessWidget {
         ),
         if (artistController.artistResult.topSongs?.isNotEmpty == true)
           SliverToBoxAdapter(
-            child: CustomCarousel(
-              widgets: [
-                SongList(
-                  artistController.artistResult.topSongs!.take(5).toList(),
-                  isSliver: false,
-                  shrinkWrap: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CustomCarousel(
+                  widgets: [
+                    SongList(
+                      artistController.artistResult.topSongs!.take(5).toList(),
+                      isSliver: false,
+                      shrinkWrap: true,
+                      showAds: false,
+                    ),
+                    if (artistController
+                            .artistResult.artist!.singleSongs?.isNotEmpty ==
+                        true)
+                      SongList(
+                        artistController.artistResult.artist!.singleSongs!
+                            .map((e) => Song.fromJson(e))
+                            .take(5)
+                            .toList(),
+                        isSliver: false,
+                        shrinkWrap: true,
+                        showAds: false,
+                      )
+                  ],
+                  headers: [
+                    ListHeader(
+                      "Top Songs",
+                      isSliver: false,
+                      bottomPadding: 0,
+                      topPadding: 0,
+                      showMore:
+                          artistController.artistResult.topSongs!.length > 2,
+                    ),
+                    if (artistController
+                            .artistResult.artist!.singleSongs?.isNotEmpty ==
+                        true)
+                      ListHeader(
+                        "Single Songs",
+                        isSliver: false,
+                        bottomPadding: 0,
+                        topPadding: 0,
+                        showMore: artistController
+                                .artistResult.artist!.singleSongs!.length >
+                            2,
+                      )
+                  ],
+                  height: 320,
                 ),
-                if (artistController
-                        .artistResult.artist!.singleSongs?.isNotEmpty ==
-                    true)
-                  SongList(
-                    artistController.artistResult.artist!.singleSongs!
-                        .map((e) => Song.fromJson(e))
-                        .take(5)
-                        .toList(),
-                    isSliver: false,
-                    shrinkWrap: true,
-                  )
+                BannerAdWidget(adSize: AdSize.fullBanner)
               ],
-              headers: [
-                ListHeader(
-                  "Top Songs",
-                  isSliver: false,
-                  bottomPadding: 0,
-                  topPadding: 0,
-                  showMore: artistController.artistResult.topSongs!.length > 2,
-                ),
-                if (artistController
-                        .artistResult.artist!.singleSongs?.isNotEmpty ==
-                    true)
-                  ListHeader(
-                    "Single Songs",
-                    isSliver: false,
-                    bottomPadding: 0,
-                    topPadding: 0,
-                    showMore: artistController
-                            .artistResult.artist!.singleSongs!.length >
-                        2,
-                  )
-              ],
-              height: 320,
             ),
             // ListHeader("Popular songs", bottomPadding: 16),
             // SongList(artistController.artistResult.topSongs!.take(5).toList()),
@@ -208,13 +219,18 @@ class ArtistScreen extends StatelessWidget {
             true) ...[
           ListHeader("Albums"),
           SliverToBoxAdapter(
-            child: AlbumList(
-              artistController.artistResult.artist!.albums!
-                  .map((e) => Album.fromJson(e))
-                  .toList(),
-              listType: AlbumListType.ALBUM_HORIZONTAL_LIST,
-              height: 250,
-              width: 200,
+            child: Column(
+              children: [
+                AlbumList(
+                  artistController.artistResult.artist!.albums!
+                      .map((e) => Album.fromJson(e))
+                      .toList(),
+                  listType: AlbumListType.ALBUM_HORIZONTAL_LIST,
+                  height: 250,
+                  width: 200,
+                ),
+                BannerAdWidget(adSize: AdSize.largeBanner)
+              ],
             ),
           )
         ],

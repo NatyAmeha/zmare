@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/dialog/song_menu_modal.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/dialog/song_menu_modal.dart';
 
 class LocalSongListItem extends StatelessWidget {
   Song songInfo;

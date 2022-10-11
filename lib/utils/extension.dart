@@ -1,14 +1,14 @@
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/modals/download.dart';
-import 'package:zema/modals/library.dart';
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/viewmodels/artist_viewmodel.dart';
-import 'package:zema/viewmodels/browse_viewmodel.dart';
-import 'package:zema/viewmodels/home_viewmodel.dart';
-import 'package:zema/viewmodels/search_viewmodel.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/modals/download.dart';
+import 'package:zmare/modals/library.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/viewmodels/artist_viewmodel.dart';
+import 'package:zmare/viewmodels/browse_viewmodel.dart';
+import 'package:zmare/viewmodels/home_viewmodel.dart';
+import 'package:zmare/viewmodels/search_viewmodel.dart';
 
 extension apiResponseconverter on dynamic {
   dynamic toObject(String className) {

@@ -1,24 +1,20 @@
 import 'package:flutter/cupertino.dart';
 
 class MenuViewmodel {
-  List<String> text;
-  List<String>? subtitle;
-  List<IconData> icon;
-  int selectedOption;
+  String text;
+  String? subtitle;
+  IconData icon;
+
   int type;
-  bool? dependOnExternal;
-  List<Function>? actions;
+
   Function(int)? onClick;
 
   MenuViewmodel({
     required this.text,
     required this.icon,
     required this.type,
-    this.selectedOption = 0,
     this.subtitle,
     this.onClick,
-    this.actions,
-    this.dependOnExternal = false
   });
 
   static const MENU_TYPE_LIKE_UNLIKE_SONG = 0;

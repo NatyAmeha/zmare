@@ -1,7 +1,7 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_image.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_image.dart';
 
 class RecentActivityListItem extends StatelessWidget {
   String image;

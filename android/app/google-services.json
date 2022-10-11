@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "255551597191",
+    "project_id": "zmare-ee670",
+    "storage_bucket": "zmare-ee670.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255551597191:android:c94192e45d728a71d32622",
+        "android_client_info": {
+          "package_name": "com.savvy.zmare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "255551597191-485m3pjjtlk3jcfpq91crjgt7a5nhrmm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSK9-cRjzGUKiDacy-HYO50_q4Wgl787w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "255551597191-485m3pjjtlk3jcfpq91crjgt7a5nhrmm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "255551597191-olbccakmvllggb2tdb3ebu7t3lhe14u4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.savvy.zmare"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

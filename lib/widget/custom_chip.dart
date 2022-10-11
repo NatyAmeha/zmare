@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class CustomChip extends StatelessWidget {
   String label;

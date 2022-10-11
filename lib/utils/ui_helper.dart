@@ -2,13 +2,14 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/repo/shared_pref_repo.dart';
-import 'package:zema/screens/login_screen.dart';
-import 'package:zema/screens/registration_screen.dart';
-import 'package:zema/usecase/user_usecase.dart';
-import 'package:zema/widget/error_page.dart';
-import 'package:zema/widget/loading_progressbar.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/repo/shared_pref_repo.dart';
+import 'package:zmare/screens/login_screen.dart';
+import 'package:zmare/screens/registration_screen.dart';
+import 'package:zmare/usecase/user_usecase.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/error_page.dart';
+import 'package:zmare/widget/loading_progressbar.dart';
 
 class UIHelper {
   static Future<T> showBottomSheet<T>(Widget widget,
@@ -23,6 +24,22 @@ class UIHelper {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
     );
+  }
+
+  static showSnackBar(String message,
+      {String? title = "Successful",
+      SnackbarType? type = SnackbarType.SUCCESS_SNACKBAR}) {
+    Get.snackbar(
+        type == SnackbarType.SUCCESS_SNACKBAR ? "Successfull" : "Error",
+        message,
+        snackPosition: SnackPosition.BOTTOM,
+        animationDuration: const Duration(seconds: 1),
+        icon: Icon(
+          type == SnackbarType.SUCCESS_SNACKBAR ? Icons.check : Icons.error,
+        ),
+        backgroundColor:
+            type == SnackbarType.SUCCESS_SNACKBAR ? Colors.green : Colors.red,
+        margin: const EdgeInsets.all(10));
   }
 
   static Widget displayContent({

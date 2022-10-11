@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/artist_controller.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/artist_widget/artist_list.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/controller/artist_controller.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/artist_widget/artist_list.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 import '../controller/album_controller.dart';
 
@@ -47,6 +47,7 @@ class ArtistListScreen extends StatelessWidget {
       case ArtistListDataType.USER_FAVORITE_ARTIST_LIST:
         artistController.getUserFavoriteArtists();
         break;
+
       default:
         break;
     }

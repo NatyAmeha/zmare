@@ -1,8 +1,8 @@
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/repo/repository.dart';
-import 'package:zema/service/player/player_service.dart';
-import 'package:zema/utils/constants.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/repo/repository.dart';
+import 'package:zmare/service/player/player_service.dart';
+import 'package:zmare/utils/constants.dart';
 
 class PlaylistUsecase {
   IRepositroy? repo;

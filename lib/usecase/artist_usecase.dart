@@ -1,5 +1,6 @@
-import 'package:zema/repo/repository.dart';
-import 'package:zema/viewmodels/artist_viewmodel.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/repo/repository.dart';
+import 'package:zmare/viewmodels/artist_viewmodel.dart';
 
 class ArtistUsecase {
   IRepositroy? repo;
@@ -11,9 +12,20 @@ class ArtistUsecase {
     return result;
   }
 
+  Future<List<Artist>?> getAllArtists() async {
+    var result = await repo?.getAll<Artist>("/artists");
+    return result;
+  }
+
   Future<bool> followArtist(String artistId) async {
     var result = await repo!
         .update<bool, List<String>>("/artist/follow", body: [artistId]);
+    return result;
+  }
+
+  Future<bool> followArtists(List<String> artistIds) async {
+    var result = await repo!
+        .update<bool, List<String>>("/library/followartist", body: artistIds);
     return result;
   }
 

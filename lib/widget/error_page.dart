@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/screens/account_onboarding_screen.dart';
-import 'package:zema/screens/registration_screen.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/screens/account_onboarding_screen.dart';
+import 'package:zmare/screens/registration_screen.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class ErrorPage extends StatelessWidget {
   var appController = Get.find<AppController>();

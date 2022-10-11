@@ -1,9 +1,10 @@
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:zema/modals/download.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/repo/repository.dart';
-import 'package:zema/service/download/download_service.dart';
-import 'package:zema/service/download/file_downloader.service.dart';
+import 'package:zmare/modals/download.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/repo/repository.dart';
+import 'package:zmare/service/download/download_service.dart';
+import 'package:zmare/service/download/file_downloader.service.dart';
+import 'package:zmare/utils/helper.dart';
 
 abstract class IDownloadRepo extends IRepositroy<Download> {}
 
@@ -45,6 +46,8 @@ class FlutterDownloaderRepo implements IDownloadRepo {
         ?.map(
           (e) => Download(
             name: e.filename,
+            progress: e.progress,
+            status: Helper.converttoDownloadStatus(e.status),
             location: "${e.savedDir}/${e.filename}",
             url: e.url,
             date: DateTime.fromMillisecondsSinceEpoch(e.timeCreated),

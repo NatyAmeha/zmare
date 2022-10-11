@@ -3,13 +3,13 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:zema/modals/user.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/loading_progressbar.dart';
+import 'package:zmare/modals/user.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/loading_progressbar.dart';
 
 import '../controller/user_controller.dart';
 
@@ -25,6 +25,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   var userController = Get.find<UserController>();
+  String completePhoneNumber = "";
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       border: OutlineInputBorder(borderSide: BorderSide()),
                     ),
                     initialCountryCode: 'ET',
-                    onChanged: (phone) {},
+                    onChanged: (phone) {
+                      completePhoneNumber = phone.completeNumber;
+                    },
                   ),
                   const SizedBox(height: 32),
                   CustomButton(
@@ -77,9 +80,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     buttonType: ButtonType.NORMAL_ELEVATED_BUTTON,
                     onPressed: () async {
                       var user = User(
-                        phoneNumber: widget.phoneNumberController.text,
+                        phoneNumber: completePhoneNumber,
                       );
-                      userController.sendCode(user);
+                      userController.userInfo = user;
+                      userController.sendCode(true);
                     },
                   ),
                 ],
@@ -88,8 +92,10 @@ class _LoginScreenState extends State<LoginScreen> {
             Positioned.fill(
               child: Align(
                 alignment: Alignment.center,
-                child: LoadingProgressbar(
-                    loadingState: userController.isDataLoading),
+                child: Obx(
+                  () => LoadingProgressbar(
+                      loadingState: userController.isDataLoading),
+                ),
               ),
             )
           ],

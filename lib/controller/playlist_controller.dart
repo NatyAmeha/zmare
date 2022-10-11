@@ -2,14 +2,16 @@ import 'dart:math';
 
 import 'package:darq/darq.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/repo/api_repository.dart';
-import 'package:zema/service/player/player_service.dart';
-import 'package:zema/usecase/playlist_usecase.dart';
-import 'package:zema/utils/constants.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/repo/api_repository.dart';
+import 'package:zmare/repo/db/download_db_repo.dart';
+import 'package:zmare/service/player/player_service.dart';
+import 'package:zmare/usecase/download_usecase.dart';
+import 'package:zmare/usecase/playlist_usecase.dart';
+import 'package:zmare/utils/constants.dart';
 
 class PlaylistController extends GetxController {
   var appController = Get.find<AppController>();
@@ -44,6 +46,23 @@ class PlaylistController extends GetxController {
     } catch (ex) {
       print(ex.toString());
       _exception(ex as AppException);
+    }
+  }
+
+  downloadPlaylist() async {
+    try {
+      _isDataLoading(true);
+      var downloadUsecase = DownloadUsecase(repositroy: DownloadRepository());
+      var result = await downloadUsecase.startDownload(
+          playlistResult.songs!.cast<Song>(),
+          "",
+          DownloadType.PLAYLIST,
+          playlistResult.id!,
+          playlistResult.name!);
+    } catch (ex) {
+      _exception(ex as AppException);
+    } finally {
+      _isDataLoading(false);
     }
   }
 

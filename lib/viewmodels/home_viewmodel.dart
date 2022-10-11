@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/modals/user.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/modals/user.dart';
 
 part 'home_viewmodel.g.dart';
 

@@ -3,15 +3,15 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/viewmodels/menu_viewmodel.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/dialog/song_menu_modal.dart';
-import 'package:zema/widget/song_widget.dart/play_pause_icon.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/viewmodels/menu_viewmodel.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/dialog/song_menu_modal.dart';
+import 'package:zmare/widget/song_widget.dart/play_pause_icon.dart';
 
 class SongListItem extends StatelessWidget {
   Song songInfo;
@@ -34,26 +34,33 @@ class SongListItem extends StatelessWidget {
 
   var songMenus = [
     MenuViewmodel(
-        text: ["Like song", "Unlike song"],
-        icon: [Icons.favorite_outline, Icons.favorite],
-        type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
-        dependOnExternal: true),
+      text: "Like song",
+      icon: Icons.favorite_outline,
+      type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+    ),
     MenuViewmodel(
-        text: ["Download song", "Remove download"],
-        icon: [Icons.download, Icons.downloading],
-        type: MenuViewmodel.MENU_TYPE_DOWNLOAD_REMOVE_DOWNLOAD_SONG),
+      text: "Unlike song",
+      icon: Icons.favorite,
+      type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+    ),
     MenuViewmodel(
-        text: ["Go to Album"],
-        icon: [Icons.album],
+      text: "Download",
+      icon: Icons.download,
+      type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+    ),
+    MenuViewmodel(
+      text: "Remove Download",
+      icon: Icons.remove,
+      type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+    ),
+    MenuViewmodel(
+        text: "Go to Album",
+        icon: Icons.album,
         type: MenuViewmodel.MENU_TYPE_GO_TO_ALBUM),
     MenuViewmodel(
-        text: ["Go to Artist"],
-        icon: [Icons.mic],
+        text: "Go to Artist",
+        icon: Icons.mic,
         type: MenuViewmodel.MENU_TYPE_GO_TO_ARTIST),
-    MenuViewmodel(
-        text: ["Delete song"],
-        icon: [Icons.delete],
-        type: MenuViewmodel.MENU_TYPE_DELETE_SONG),
   ];
 
   SongListItem(
@@ -131,17 +138,7 @@ class SongListItem extends StatelessWidget {
           if (showMore)
             IconButton(
               onPressed: () async {
-                onMoreclicked?.call(songInfo) ??
-                    UIHelper.showBottomSheet(
-                      SongMenuModal(
-                        song: songInfo,
-                        menuList: songMenus,
-                        showProgress: true,
-                        activeMenusIndx:
-                            List.generate(songMenus.length, (index) => index),
-                      ),
-                      scrollControlled: true,
-                    );
+                onMoreclicked?.call(songInfo) ?? showSongMenu();
               },
               icon: const Icon(Icons.more_vert),
             ),
@@ -186,6 +183,46 @@ class SongListItem extends StatelessWidget {
                   height: 50, width: 50, roundImage: true),
             ],
           );
+  }
+
+  Future<bool> sampleFuture(bool returnVAlue) {
+    return Future.delayed(const Duration(seconds: 5), () {
+      return returnVAlue;
+    });
+  }
+
+  Future<void> showSongMenu() async {
+    UIHelper.showBottomSheet(
+      SongMenuModal(
+        headerTitle: songInfo.title,
+        headerSubtitle: songInfo.artistsName?.join(","),
+        headerImage: songInfo.thumbnailPath,
+        menuList: [],
+      ),
+      scrollControlled: true,
+    );
+    var downloadResult = await sampleFuture(true);
+    var isLiked = await sampleFuture(false);
+
+    if (downloadResult)
+      songMenus.removeAt(2);
+    else
+      songMenus.removeAt(3);
+
+    if (isLiked)
+      songMenus.removeAt(0);
+    else
+      songMenus.removeAt(1);
+    UIHelper.moveBack();
+    UIHelper.showBottomSheet(
+      SongMenuModal(
+        headerTitle: songInfo.title,
+        headerSubtitle: songInfo.artistsName?.join(","),
+        headerImage: songInfo.thumbnailPath,
+        menuList: songMenus,
+      ),
+      scrollControlled: true,
+    );
   }
 
   onClick() {

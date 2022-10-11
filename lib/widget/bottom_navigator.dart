@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/screens/account_screen.dart';
-import 'package:zema/screens/browse_screen.dart';
-import 'package:zema/screens/home_screen.dart';
-import 'package:zema/screens/local_audio_screen.dart';
-import 'package:zema/utils/route/routes.dart';
+import 'package:zmare/screens/account_screen.dart';
+import 'package:zmare/screens/browse_screen.dart';
+import 'package:zmare/screens/home_screen.dart';
+import 'package:zmare/screens/local_audio_screen.dart';
+import 'package:zmare/utils/route/routes.dart';
 
 class NestedBottomNavigator extends StatelessWidget {
   Key navigatorKey;

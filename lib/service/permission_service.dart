@@ -1,8 +1,8 @@
 import 'package:get/get_core/src/get_main.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/utils/ui_helper.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/utils/ui_helper.dart';
 
 abstract class IPremissionService {
   Future<bool> requestPermission(Permission permission);

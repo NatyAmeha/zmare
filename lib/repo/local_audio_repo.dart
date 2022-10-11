@@ -1,11 +1,11 @@
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/repo/repository.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/repo/repository.dart';
 
 abstract class ILocalAudioRepo<T> extends IRepositroy<T> {
   Future<List<Song>> querySongsFrom(String id, AudiosFromType type);

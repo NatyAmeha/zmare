@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/repo/api_repository.dart';
-import 'package:zema/usecase/artist_usecase.dart';
-import 'package:zema/usecase/user_usecase.dart';
-import 'package:zema/viewmodels/artist_viewmodel.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/repo/api_repository.dart';
+import 'package:zmare/usecase/artist_usecase.dart';
+import 'package:zmare/usecase/user_usecase.dart';
+import 'package:zmare/viewmodels/artist_viewmodel.dart';
 
 class ArtistController extends GetxController {
   var appController = Get.find<AppController>();
@@ -23,6 +23,8 @@ class ArtistController extends GetxController {
   var _artistResult = ArtistViewmodel().obs;
   ArtistViewmodel get artistResult => _artistResult.value;
   var isFollowing = false.obs;
+
+  var selectedArtistId = <String>[].obs;
 
   List<Artist>? artistList;
 
@@ -52,6 +54,20 @@ class ArtistController extends GetxController {
       _isLoading(true);
       var artistUsecase = ArtistUsecase(repo: ApiRepository());
       var result = await artistUsecase.followArtist(artistId);
+      _isLoading(false);
+      isFollowing(true);
+    } catch (ex) {
+      _isDataLoading(false);
+      print(ex.toString());
+      _exception(ex as AppException);
+    }
+  }
+
+  followArtists(List<String> artistIds) async {
+    try {
+      _isLoading(true);
+      var artistUsecase = ArtistUsecase(repo: ApiRepository());
+      var result = await artistUsecase.followArtists(artistIds);
       _isLoading(false);
       isFollowing(true);
     } catch (ex) {
@@ -104,6 +120,29 @@ class ArtistController extends GetxController {
       _exception(ex as AppException);
     } finally {
       _isDataLoading(false);
+    }
+  }
+
+  getAllArtists() async {
+    try {
+      _isDataLoading(true);
+      var artistRepo = ArtistUsecase(repo: ApiRepository());
+      var result = await artistRepo.getAllArtists();
+      artistList = result;
+    } catch (ex) {
+      _exception(ex as AppException);
+    } finally {
+      _isDataLoading(false);
+    }
+  }
+
+  // state controller
+  addOrRemoveArtistId(String id) {
+    print(id);
+    if (selectedArtistId.contains(id) == true) {
+      selectedArtistId.remove(id);
+    } else {
+      selectedArtistId.add(id);
     }
   }
 }

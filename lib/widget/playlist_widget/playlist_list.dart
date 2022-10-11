@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/playlist_widget/large_playlist_list_item.dart';
-import 'package:zema/widget/playlist_widget/playlist_grid_tile.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/playlist_widget/large_playlist_list_item.dart';
+import 'package:zmare/widget/playlist_widget/playlist_grid_tile.dart';
 
 class PlaylistList extends StatelessWidget {
   List<Playlist>? playlists;

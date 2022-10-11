@@ -1,24 +1,26 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/screens/browse_screen.dart';
-import 'package:zema/screens/player_screen.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/viewmodels/menu_viewmodel.dart';
-import 'package:zema/widget/album_widget/album_list.dart';
-import 'package:zema/widget/artist_widget/artist_list.dart';
-import 'package:zema/widget/circle_tile.dart';
-import 'package:zema/widget/error_page.dart';
-import 'package:zema/widget/image_courousel.dart';
-import 'package:zema/widget/list_header.dart';
-import 'package:zema/widget/loading_progressbar.dart';
-import 'package:zema/widget/playlist_widget/large_playlist_list_item.dart';
-import 'package:zema/widget/playlist_widget/playlist_list.dart';
-import 'package:zema/widget/screen_header.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/screens/browse_screen.dart';
+import 'package:zmare/screens/player_screen.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/viewmodels/menu_viewmodel.dart';
+import 'package:zmare/widget/ad_widget/banner_ad_widget.dart';
+import 'package:zmare/widget/album_widget/album_list.dart';
+import 'package:zmare/widget/artist_widget/artist_list.dart';
+import 'package:zmare/widget/circle_tile.dart';
+import 'package:zmare/widget/error_page.dart';
+import 'package:zmare/widget/image_courousel.dart';
+import 'package:zmare/widget/list_header.dart';
+import 'package:zmare/widget/loading_progressbar.dart';
+import 'package:zmare/widget/playlist_widget/large_playlist_list_item.dart';
+import 'package:zmare/widget/playlist_widget/playlist_list.dart';
+import 'package:zmare/widget/screen_header.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 import '../modals/song.dart';
 
@@ -50,7 +52,6 @@ class HomeScreen extends StatelessWidget {
           return ErrorPage(
             exception: appController.exception,
             action: () {
-              appController.removeException();
               appController.getHomeData();
             },
           );
@@ -64,6 +65,10 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget buildPage() {
+    Future.delayed(Duration.zero, () {
+      appController.removeException();
+    });
+
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -77,6 +82,9 @@ class HomeScreen extends StatelessWidget {
                       .map((e) => e.image ?? "")
                       .toList(),
                   circleRadius: 50,
+                  id: appController.homeResult.recentActivity!
+                      .map((e) => e.id ?? "")
+                      .toList(),
                   height: 150,
                 ),
 
@@ -119,19 +127,27 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ),
-        ListHeader(
-          "Popular songs",
-          bottomPadding: 16,
-          onClick: () {
-            Get.toNamed(PlayerScreen.routeName);
-          },
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: BannerAdWidget(
+              adSize: AdSize.largeBanner,
+            ),
+          ),
         ),
-        SongList(songLists),
         if (appController.homeResult.newAlbum?.isNotEmpty == true) ...[
           ListHeader("Albums"),
           AlbumList(appController.homeResult.newAlbum!,
               isSliver: true, height: 250),
         ],
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: BannerAdWidget(
+              adSize: AdSize.leaderboard,
+            ),
+          ),
+        ),
         ListHeader("Albums Horizontal list"),
         SliverToBoxAdapter(
           child: AlbumList(

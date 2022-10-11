@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zema/modals/song.dart';
+import 'package:zmare/modals/song.dart';
 part 'album.g.dart';
 
 @JsonSerializable(explicitToJson: true, fieldRename: FieldRename.none)

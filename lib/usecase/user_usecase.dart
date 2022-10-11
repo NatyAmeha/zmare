@@ -1,10 +1,9 @@
-import 'package:zema/modals/library.dart';
-import 'package:zema/modals/user.dart';
-import 'package:zema/repo/repository.dart';
-import 'package:zema/repo/shared_pref_repo.dart';
-import 'package:zema/screens/verification_screen.dart';
-import 'package:zema/service/account_service.dart';
-import 'package:zema/utils/constants.dart';
+import 'package:zmare/modals/library.dart';
+import 'package:zmare/modals/user.dart';
+import 'package:zmare/repo/repository.dart';
+import 'package:zmare/repo/shared_pref_repo.dart';
+import 'package:zmare/service/account_service.dart';
+import 'package:zmare/utils/constants.dart';
 
 class UserUsecase {
   IRepositroy? repo;
@@ -17,9 +16,22 @@ class UserUsecase {
     this.accountService,
   });
 
+  Future<String?> sendVerificaationCode(String phoneNumber) async {
+    try {
+      var verificationId =
+          await accountService!.sendVerificationCode(phoneNumber);
+      return verificationId;
+    } catch (ex) {
+      rethrow;
+    }
+  }
+
+  Future<bool> verifySmsCode(String verificationId, String code) async {
+    var result = await accountService!.verifyCode(verificationId, code);
+    return result;
+  }
+
   Future<User> registerOrAuthenticatewithPhone(User userInfo) async {
-    var verifyResult = await accountService!.verifyCode("12345");
-    print("verifiatin result $verifyResult");
     var tokenResult =
         await repo!.create<String, User>("/auth/registerwithphone", userInfo);
     var userResult = await accountService!.decodeToken(tokenResult);
@@ -30,8 +42,9 @@ class UserUsecase {
     return userResult;
   }
 
-  Future<bool> sendVerificationCode(String phoneNumber) async {
-    var result = await accountService!.sendVerificationCode();
+  Future<String?> sendVerificationCode(String phoneNumber) async {
+    print("phone number $phoneNumber");
+    var result = await accountService!.sendVerificationCode(phoneNumber);
     return result;
   }
 
@@ -43,6 +56,17 @@ class UserUsecase {
   Future<String?> getSavedToken() async {
     var result = await sharedPrefRepo!.get<String>(Constants.TOKEN);
     return result;
+  }
+
+  Future<User?> getUserInfoFromPref() async {
+    var tokenResult = await getSavedToken();
+    print("res $tokenResult");
+    if (tokenResult != null) {
+      var result = await accountService!.decodeToken(tokenResult);
+      return result;
+    } else {
+      return null;
+    }
   }
 
   Future<R?> getUserLibraryInfo<R>(String path, {LibraryFilter? filter}) async {

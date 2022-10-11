@@ -4,22 +4,24 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/controller/player_controller.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/screens/download_screen.dart';
-import 'package:zema/screens/song_list_screen.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
+import 'package:zmare/controller/player_controller.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/screens/download_screen.dart';
+import 'package:zmare/screens/song_list_screen.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/ad_widget/banner_ad_widget.dart';
 
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/image_courousel.dart';
-import 'package:zema/widget/song_widget.dart/play_pause_icon.dart';
-import 'package:zema/widget/song_widget.dart/player_control_icon.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/image_courousel.dart';
+import 'package:zmare/widget/song_widget.dart/play_pause_icon.dart';
+import 'package:zmare/widget/song_widget.dart/player_control_icon.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 class PlayerScreen extends StatefulWidget {
   static const routeName = "/player";
@@ -249,30 +251,45 @@ class _PlayerScreenState extends State<PlayerScreen> {
       {int? initialPage, required CarouselController controller}) {
     // controller.jumpToPage(initialPage ?? 0);
     print("page change ${initialPage}");
-    return ImageCarousel(
-      initialPage: initialPage ?? 0,
-      controller: controller,
-      images: audioSrc == AudioSrcType.LOCAL_STORAGE
-          ? null
-          : queues.map((e) => e.artUri.toString()).toList(),
-      carouselItems: audioSrc == AudioSrcType.LOCAL_STORAGE
-          ? queues
-              .map((e) => QueryArtworkWidget(
-                    id: int.parse(e.id),
-                    type: ArtworkType.AUDIO,
-                    artworkWidth: double.infinity,
-                    artworkHeight: MediaQuery.of(context).size.height * 0.4,
-                  ))
-              .toList()
-          : null,
-      autoScroll: false,
-      infiniteScroll: false,
-      showIndicator: false,
+
+    return Container(
       height: MediaQuery.of(context).size.height * 0.4,
-      onPageChanged: (page) {
-        widget.playerController.appController.player
-            .seek(Duration.zero, index: page);
-      },
+      child: Stack(
+        children: [
+          ImageCarousel(
+            initialPage: initialPage ?? 0,
+            controller: controller,
+            images: audioSrc == AudioSrcType.LOCAL_STORAGE
+                ? null
+                : queues.map((e) => e.artUri.toString()).toList(),
+            carouselItems: audioSrc == AudioSrcType.LOCAL_STORAGE
+                ? queues
+                    .map((e) => QueryArtworkWidget(
+                          id: int.parse(e.id),
+                          type: ArtworkType.AUDIO,
+                          artworkWidth: double.infinity,
+                          artworkHeight:
+                              MediaQuery.of(context).size.height * 0.4,
+                        ))
+                    .toList()
+                : null,
+            autoScroll: false,
+            infiniteScroll: false,
+            showIndicator: false,
+            height: MediaQuery.of(context).size.height * 0.4,
+            onPageChanged: (page) {
+              widget.playerController.appController.player
+                  .seek(Duration.zero, index: page);
+            },
+          ),
+          Positioned(
+              left: 8,
+              right: 8,
+              child: BannerAdWidget(
+                adSize: AdSize.largeBanner,
+              ))
+        ],
+      ),
     );
   }
 

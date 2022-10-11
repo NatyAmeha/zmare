@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:zema/modals/library.dart';
+import 'package:zmare/modals/library.dart';
 
 part 'user.g.dart';
 

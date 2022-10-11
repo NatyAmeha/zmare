@@ -1,4 +1,4 @@
-import 'package:zema/repo/repository.dart';
+import 'package:zmare/repo/repository.dart';
 
 class SongUsecase {
   IRepositroy? repo;

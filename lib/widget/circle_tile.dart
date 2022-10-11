@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class CircleTile extends StatelessWidget {
   String id;
@@ -17,22 +18,32 @@ class CircleTile extends StatelessWidget {
   double height;
   AudioSrcType src;
   Function? onClick;
-  CircleTile({
-    required this.id,
-    this.image,
-    this.text,
-    required this.radius,
-    this.height = 200,
-    this.src = AudioSrcType.NETWORK,
-    this.onClick,
-  });
+
+  List<String> selectedArtistIds;
+  ListSelectionState selectionState;
+  Function(String)? onMultiSelection;
+  CircleTile(
+      {required this.id,
+      this.image,
+      this.text,
+      required this.radius,
+      this.height = 200,
+      this.src = AudioSrcType.NETWORK,
+      this.onClick,
+      this.selectedArtistIds = const [],
+      this.selectionState = ListSelectionState.SINGLE_SELECTION,
+      this.onMultiSelection});
 
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
       height: height,
       onTap: () {
-        onClick?.call();
+        if (selectionState == ListSelectionState.MULTI_SELECTION) {
+          onMultiSelection?.call(id);
+        } else {
+          onClick?.call();
+        }
       },
       width: radius * 2,
       padding: 8,
@@ -42,9 +53,22 @@ class CircleTile extends StatelessWidget {
         children: [
           if (src == AudioSrcType.NETWORK)
             if (image != null)
-              CircleAvatar(
-                radius: radius,
-                backgroundImage: NetworkImage(image!),
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: radius,
+                    backgroundImage: NetworkImage(image!),
+                  ),
+                  if (selectionState == ListSelectionState.MULTI_SELECTION &&
+                      selectedArtistIds.contains(id))
+                    Positioned.fill(
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Icon(Icons.check_circle,
+                            color: Colors.blue, size: radius),
+                      ),
+                    )
+                ],
               ),
           if (src == AudioSrcType.LOCAL_STORAGE)
             QueryArtworkWidget(

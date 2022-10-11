@@ -1,22 +1,23 @@
 import 'package:get/get.dart';
-import 'package:zema/screens/account_onboarding_screen.dart';
-import 'package:zema/screens/album_list_screen.dart';
-import 'package:zema/screens/album_screen.dart';
-import 'package:zema/screens/artist_list_screen.dart';
-import 'package:zema/screens/artist_screen.dart';
-import 'package:zema/screens/browse_screen.dart';
-import 'package:zema/screens/category_screen.dart';
-import 'package:zema/screens/downloaded_song_screen.dart';
-import 'package:zema/screens/download_screen.dart';
-import 'package:zema/screens/local_audio_screen.dart';
-import 'package:zema/screens/login_screen.dart';
-import 'package:zema/screens/main_screen.dart';
-import 'package:zema/screens/onboarding_screen.dart';
-import 'package:zema/screens/player_screen.dart';
-import 'package:zema/screens/playlist_screen.dart';
-import 'package:zema/screens/registration_screen.dart';
-import 'package:zema/screens/song_list_screen.dart';
-import 'package:zema/screens/verification_screen.dart';
+import 'package:zmare/screens/account_onboarding_screen.dart';
+import 'package:zmare/screens/album_list_screen.dart';
+import 'package:zmare/screens/album_screen.dart';
+import 'package:zmare/screens/artist_list_screen.dart';
+import 'package:zmare/screens/artist_screen.dart';
+import 'package:zmare/screens/artist_selection_list.dart';
+import 'package:zmare/screens/browse_screen.dart';
+import 'package:zmare/screens/category_screen.dart';
+import 'package:zmare/screens/downloaded_song_screen.dart';
+import 'package:zmare/screens/download_screen.dart';
+import 'package:zmare/screens/local_audio_screen.dart';
+import 'package:zmare/screens/login_screen.dart';
+import 'package:zmare/screens/main_screen.dart';
+import 'package:zmare/screens/onboarding_screen.dart';
+import 'package:zmare/screens/player_screen.dart';
+import 'package:zmare/screens/playlist_screen.dart';
+import 'package:zmare/screens/registration_screen.dart';
+import 'package:zmare/screens/song_list_screen.dart';
+import 'package:zmare/screens/verification_screen.dart';
 
 class RouteUtil {
   static List<GetPage> routes = [
@@ -48,6 +49,9 @@ class RouteUtil {
     GetPage(name: OnboardingScreen.routName, page: () => OnboardingScreen()),
     GetPage(
         name: AccountOnboardingScreen.routName,
-        page: () => AccountOnboardingScreen())
+        page: () => AccountOnboardingScreen()),
+    GetPage(
+        name: ArtistSelectionListScreen.routeName,
+        page: () => ArtistSelectionListScreen())
   ];
 }

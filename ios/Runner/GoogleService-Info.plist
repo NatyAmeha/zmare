@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>255551597191-olbccakmvllggb2tdb3ebu7t3lhe14u4.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.255551597191-olbccakmvllggb2tdb3ebu7t3lhe14u4</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAGW94L8UGzQlu2hzGjSxeW8AA0eQhmrHw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>255551597191</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.savvy.zmare</string>
+	<key>PROJECT_ID</key>
+	<string>zmare-ee670</string>
+	<key>STORAGE_BUCKET</key>
+	<string>zmare-ee670.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:255551597191:ios:27f3d1f6b3038607d32622</string>
+</dict>
+</plist>

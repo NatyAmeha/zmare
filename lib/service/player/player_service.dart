@@ -1,8 +1,9 @@
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/viewmodels/queue_state.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/viewmodels/queue_state.dart';
+import 'package:zmare/utils/constants.dart';
 
 abstract class IPlayer {
   Future<Duration?> load(List<Song> songs,

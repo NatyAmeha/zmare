@@ -1,15 +1,15 @@
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/repo/local_audio_repo.dart';
-import 'package:zema/repo/repository.dart';
-import 'package:zema/service/permission_service.dart';
-import 'package:zema/viewmodels/browse_viewmodel.dart';
-import 'package:zema/viewmodels/home_viewmodel.dart';
-import 'package:zema/viewmodels/search_viewmodel.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/repo/local_audio_repo.dart';
+import 'package:zmare/repo/repository.dart';
+import 'package:zmare/service/permission_service.dart';
+import 'package:zmare/viewmodels/browse_viewmodel.dart';
+import 'package:zmare/viewmodels/home_viewmodel.dart';
+import 'package:zmare/viewmodels/search_viewmodel.dart';
 
 class HomeUsecase {
   IRepositroy? repo;

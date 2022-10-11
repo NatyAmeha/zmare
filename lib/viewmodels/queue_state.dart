@@ -1,5 +1,5 @@
 import 'package:just_audio_background/just_audio_background.dart';
-import 'package:zema/utils/constants.dart';
+import 'package:zmare/utils/constants.dart';
 
 class QueueState {
   int? currentIndex;

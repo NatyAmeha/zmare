@@ -16,6 +16,8 @@ Download _$DownloadFromJson(Map<String, dynamic> json) => Download(
       location: json['location'] as String?,
       type: $enumDecodeNullable(_$DownloadTypeEnumMap, json['type']),
       typeId: json['typeId'] as String?,
+      typeName: json['typeName'] as String?,
+      artistNames: json['artistNames'] as String?,
       image: json['image'] as String?,
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
@@ -31,7 +33,9 @@ Map<String, dynamic> _$DownloadToJson(Download instance) => <String, dynamic>{
       'status': _$DownloadStatusEnumMap[instance.status],
       'type': _$DownloadTypeEnumMap[instance.type],
       'typeId': instance.typeId,
+      'typeName': instance.typeName,
       'image': instance.image,
+      'artistNames': instance.artistNames,
       'date': instance.date?.toIso8601String(),
     };
 

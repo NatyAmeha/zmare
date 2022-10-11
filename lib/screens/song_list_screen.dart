@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/widget/custom_chip.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/widget/custom_chip.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 class SongListScreen extends StatelessWidget {
   static const routName = "/songs";

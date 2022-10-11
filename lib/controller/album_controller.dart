@@ -1,17 +1,18 @@
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/repo/api_repository.dart';
-import 'package:zema/repo/db/db_repo.dart';
-import 'package:zema/repo/local_audio_repo.dart';
-import 'package:zema/usecase/album_usecase.dart';
-import 'package:zema/usecase/download_usecase.dart';
-import 'package:zema/usecase/home_usecase.dart';
-import 'package:zema/usecase/user_usecase.dart';
-import 'package:zema/utils/constants.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/repo/api_repository.dart';
+import 'package:zmare/repo/db/db_repo.dart';
+import 'package:zmare/repo/db/download_db_repo.dart';
+import 'package:zmare/repo/local_audio_repo.dart';
+import 'package:zmare/usecase/album_usecase.dart';
+import 'package:zmare/usecase/download_usecase.dart';
+import 'package:zmare/usecase/home_usecase.dart';
+import 'package:zmare/usecase/user_usecase.dart';
+import 'package:zmare/utils/constants.dart';
 
 class AlbumController extends GetxController {
   var appController = Get.find<AppController>();
@@ -120,7 +121,7 @@ class AlbumController extends GetxController {
   downloadAlbum(List<Song> albumSongs, String albumId, String albumName) async {
     try {
       _isLoading(true);
-      var downloadUsecase = DownloadUsecase(repositroy: DBRepo());
+      var downloadUsecase = DownloadUsecase(repositroy: DownloadRepository());
       var result = await downloadUsecase.startDownload(
           albumSongs, "", DownloadType.ALBUM, albumId, albumName);
       print("Download result ${result}");

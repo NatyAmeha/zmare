@@ -2,25 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/screens/search_screen.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/album_widget/album_list.dart';
-import 'package:zema/widget/artist_widget/artist_list.dart';
-import 'package:zema/widget/circle_tile.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_carousel.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_tab_view.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/list_header.dart';
-import 'package:zema/widget/search_widget.dart';
-import 'package:zema/widget/song_widget.dart/category_list.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/screens/search_screen.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/ad_widget/banner_ad_widget.dart';
+import 'package:zmare/widget/album_widget/album_list.dart';
+import 'package:zmare/widget/artist_widget/artist_list.dart';
+import 'package:zmare/widget/circle_tile.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_carousel.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_tab_view.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/list_header.dart';
+import 'package:zmare/widget/search_widget.dart';
+import 'package:zmare/widget/song_widget.dart/category_list.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 class BrowseScreen extends StatelessWidget {
   static const routeName = "/browse/:category";
@@ -65,43 +67,17 @@ class BrowseScreen extends StatelessWidget {
                           hintText: "Search music, albums and playlist"),
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      height: 250,
+                    SizedBox(
+                      height: 210,
                       child: Categorylist(
                         browseInfo: appController.browseResult.browseCommand,
                       ),
-                    ),
-                    CustomCarousel(
-                      widgets: [
-                        SongList(
-                            appController.browseResult.topSongs
-                                ?.take(4)
-                                .toList(),
-                            isSliver: false,
-                            shrinkWrap: true),
-                        SongList(
-                            appController.browseResult.newSongs
-                                ?.take(4)
-                                .toList(),
-                            isSliver: false,
-                            shrinkWrap: true),
-                      ],
-                      headers: [
-                        ListHeader("Top Songs",
-                            isSliver: false, showMore: false),
-                        ListHeader(
-                          "New Songs",
-                          isSliver: false,
-                          showMore: false,
-                        )
-                      ],
-                      height: 400,
                     ),
                   ],
                 ),
               ),
               CustomTabView(
-                height: 500,
+                height: 380,
                 tabs: const [
                   Tab(text: "Top songs"),
                   Tab(text: "New songs"),
@@ -112,23 +88,27 @@ class BrowseScreen extends StatelessWidget {
                     SongList(
                         appController.browseResult.topSongs?.take(5).toList(),
                         isSliver: false,
+                        showAds: false,
                         shrinkWrap: true),
                   ),
                   CustomTabContent(
                     SongList(
                         appController.browseResult.newSongs?.take(5).toList(),
                         isSliver: false,
+                        showAds: false,
                         shrinkWrap: true),
                   ),
                   CustomTabContent(
                     SongList(
                       appController.browseResult.likedSongs?.take(5).toList(),
                       isSliver: false,
+                      showAds: false,
                       shrinkWrap: true,
                     ),
                   )
                 ],
               ),
+              showAdWidget(AdSize.largeBanner),
               CustomTabView(
                 height: 600,
                 tabs: const [
@@ -159,6 +139,7 @@ class BrowseScreen extends StatelessWidget {
                     ),
                 ],
               ),
+              showAdWidget(AdSize.fullBanner),
               CustomTabView(
                 height: 500,
                 tabs: const [
@@ -180,6 +161,7 @@ class BrowseScreen extends StatelessWidget {
                     ),
                 ],
               ),
+              showAdWidget(AdSize.fullBanner),
               const SliverToBoxAdapter(
                 child: SizedBox(height: 100),
               )
@@ -188,5 +170,12 @@ class BrowseScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget showAdWidget(AdSize adsize) {
+    return SliverToBoxAdapter(
+        child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: BannerAdWidget(adSize: adsize)));
   }
 }

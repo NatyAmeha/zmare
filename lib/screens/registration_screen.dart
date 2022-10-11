@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:zema/controller/user_controller.dart';
-import 'package:zema/modals/user.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/custom_text_field.dart';
-import 'package:zema/widget/loading_progressbar.dart';
+import 'package:zmare/controller/user_controller.dart';
+import 'package:zmare/modals/user.dart';
+import 'package:zmare/screens/artist_selection_list.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/custom_text_field.dart';
+import 'package:zmare/widget/loading_progressbar.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const routeName = "/register";
@@ -26,10 +26,9 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   var userController = Get.find<UserController>();
-
+  String completePhoneNumber = "";
   @override
   Widget build(BuildContext context) {
-    var completePhoneNumber = "";
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -71,7 +70,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       border: OutlineInputBorder(borderSide: BorderSide()),
                     ),
                     initialCountryCode: 'ET',
-                    onChanged: (phone) {},
+                    onChanged: (phone) {
+                      completePhoneNumber = phone.completeNumber;
+                    },
                   ),
                   const SizedBox(height: 24),
                   CustomTextField(
@@ -87,8 +88,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             Positioned.fill(
               child: Align(
                 alignment: Alignment.center,
-                child: LoadingProgressbar(
-                    loadingState: userController.isDataLoading),
+                child: Obx(
+                  () => LoadingProgressbar(
+                      loadingState: userController.isDataLoading),
+                ),
               ),
             )
           ],
@@ -103,11 +106,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             onPressed: () async {
               var user = User(
                 username: widget.userNameController.text,
-                phoneNumber: widget.phoneNumberController.text,
+                phoneNumber: completePhoneNumber,
                 category: ["GOSPEL"],
               );
-
-              userController.sendCode(user);
+              userController.userInfo = user;
+              userController.sendCode(false);
             },
           ),
         ),

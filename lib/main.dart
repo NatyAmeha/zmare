@@ -4,38 +4,26 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
-import 'package:zema/screens/account_onboarding_screen.dart';
-import 'package:zema/screens/album_list_screen.dart';
-import 'package:zema/screens/album_screen.dart';
-import 'package:zema/screens/artist_list_screen.dart';
-import 'package:zema/screens/artist_screen.dart';
-import 'package:zema/screens/browse_screen.dart';
-import 'package:zema/screens/category_screen.dart';
-import 'package:zema/screens/download_screen.dart';
-import 'package:zema/screens/home_screen.dart';
-import 'package:zema/screens/local_audio_screen.dart';
-import 'package:zema/screens/login_screen.dart';
-import 'package:zema/screens/main_screen.dart';
-import 'package:zema/screens/onboarding_screen.dart';
-import 'package:zema/screens/player_screen.dart';
-import 'package:zema/screens/playlist_screen.dart';
-import 'package:zema/screens/registration_screen.dart';
-import 'package:zema/screens/song_list_screen.dart';
-import 'package:zema/screens/verification_screen.dart';
-import 'package:zema/service/download/download_progress_callback.dart';
-import 'package:zema/service/player/player_service.dart';
-import 'package:zema/utils/route/routes.dart';
-import 'package:zema/viewmodels/download_viewmodel.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import 'package:zmare/screens/main_screen.dart';
+
+import 'package:zmare/service/player/player_service.dart';
+import 'package:zmare/utils/route/routes.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FlutterDownloader.initialize(
     debug: false, //set to false to disable printing logs to console
     // ignoreSsl: true //set to false to disable working with http links
   );
   FlutterDownloader.registerCallback(downloadCallback);
   await JustAudioPlayer.initBackgroundPlayback();
+  await MobileAds.instance.initialize();
   runApp(const MyApp());
 }
 

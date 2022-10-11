@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/playlist_controller.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/album_widget/album_playlist_header.dart';
-import 'package:zema/widget/custom_button.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/image_collection.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:zmare/controller/playlist_controller.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/album_widget/album_playlist_header.dart';
+import 'package:zmare/widget/custom_button.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/image_collection.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 class PlaylistScreen extends StatelessWidget {
   static const routeName = "/playlist/:id";
@@ -40,7 +40,9 @@ class PlaylistScreen extends StatelessWidget {
                   ),
                   actions: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        playlistController.downloadPlaylist();
+                      },
                       icon: const Icon(Icons.download, color: Colors.grey),
                     ),
                     IconButton(

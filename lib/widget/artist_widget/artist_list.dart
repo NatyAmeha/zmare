@@ -2,79 +2,103 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/modals/artist.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/circle_tile.dart';
-import 'package:zema/widget/custom_button.dart';
+import 'package:zmare/controller/artist_controller.dart';
+import 'package:zmare/modals/artist.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/circle_tile.dart';
+import 'package:zmare/widget/custom_button.dart';
 
-class ArtistList extends StatelessWidget {
+class ArtistList extends StatefulWidget {
   List<Artist>? artistList;
   double height;
   ArtistListType type;
   bool shrinkWrap;
   AudioSrcType src;
+  ListSelectionState selectionState;
+  ArtistList(
+    this.artistList, {
+    this.type = ArtistListType.ARTIST_HORIZONTAL_LIST,
+    this.shrinkWrap = false,
+    this.height = 200,
+    this.src = AudioSrcType.NETWORK,
+    this.selectionState = ListSelectionState.SINGLE_SELECTION,
+  });
 
-  ArtistList(this.artistList,
-      {this.type = ArtistListType.ARTIST_HORIZONTAL_LIST,
-      this.shrinkWrap = false,
-      this.height = 200,
-      this.src = AudioSrcType.NETWORK});
+  var artistController = Get.put(ArtistController());
 
   @override
+  State<ArtistList> createState() => _ArtistListState();
+}
+
+class _ArtistListState extends State<ArtistList> {
+  var selectedArtistId = <String>[];
+  @override
   Widget build(BuildContext context) {
-    if (artistList?.isNotEmpty == true) {
-      if (type == ArtistListType.ARTIST_HORIZONTAL_LIST) {
+    if (widget.artistList?.isNotEmpty == true) {
+      if (widget.type == ArtistListType.ARTIST_HORIZONTAL_LIST) {
         return SizedBox(
-          height: height,
+          height: widget.height,
           child: ListView.separated(
-            itemCount: artistList!.length,
+            itemCount: widget.artistList!.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) => const SizedBox(width: 8),
             itemBuilder: (context, index) => CircleTile(
-              id: artistList![index].id ?? "",
-              src: src,
-              image: artistList![index].profileImagePath!.elementAt(0),
-              text: artistList![index].name,
+              id: widget.artistList![index].id ?? "",
+              src: widget.src,
+              image: widget.artistList![index].profileImagePath!.elementAt(0),
+              text: widget.artistList![index].name,
               radius: 70,
               onClick: () {
-                UIHelper.moveToScreen("/artist/${artistList![index].id}");
+                UIHelper.moveToScreen(
+                    "/artist/${widget.artistList![index].id}");
               },
             ),
           ),
         );
-      } else if (type == ArtistListType.ARTIST_GRID_LIST) {
+      } else if (widget.type == ArtistListType.ARTIST_GRID_LIST) {
         return GridView.builder(
-          itemCount: artistList!.length,
-          shrinkWrap: shrinkWrap,
+          itemCount: widget.artistList!.length,
+          shrinkWrap: widget.shrinkWrap,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               mainAxisExtent: 170,
               crossAxisCount: 3,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8),
           itemBuilder: (context, index) => CircleTile(
-            id: artistList![index].id ?? "",
-            image: artistList![index].profileImagePath?.elementAt(0),
-            text: artistList![index].name,
+            id: widget.artistList![index].id ?? "",
+            image: widget.artistList![index].profileImagePath?.elementAt(0),
+            text: widget.artistList![index].name,
             radius: 60,
             height: 160,
-            src: src,
+            selectionState: widget.selectionState,
+            selectedArtistIds: selectedArtistId,
+            src: widget.src,
             onClick: () {
-              UIHelper.moveToScreen("/artist/${artistList![index].id}");
+              UIHelper.moveToScreen("/artist/${widget.artistList![index].id}");
+            },
+            onMultiSelection: (artistId) {
+              setState(() {
+                if (widget.selectionState !=
+                    ListSelectionState.MULTI_SELECTION) {
+                  widget.selectionState = ListSelectionState.MULTI_SELECTION;
+                }
+                addOrRemoveSongId(artistId);
+              });
             },
           ),
         );
       } else {
         return SizedBox(
-          height: height,
+          height: widget.height,
           child: ListView.builder(
-            itemCount: artistList!.length,
+            itemCount: widget.artistList!.length,
             // separatorBuilder: (context, index) => const SizedBox(height: 8),
             itemExtent: 100,
             itemBuilder: (context, index) => CircleVerticalListTile(
-              image: artistList![index].profileImagePath!.elementAt(0),
-              text: artistList![index].name,
-              subtitle: "${artistList![index].followersCount} followers",
+              image: widget.artistList![index].profileImagePath!.elementAt(0),
+              text: widget.artistList![index].name,
+              subtitle: "${widget.artistList![index].followersCount} followers",
               radius: 40,
               trailing: CustomButton(
                 "Follow",
@@ -84,7 +108,7 @@ class ArtistList extends StatelessWidget {
                 onPressed: () {},
               ),
               onClick: () {
-                Get.toNamed("/artist/${artistList![index].id}");
+                Get.toNamed("/artist/${widget.artistList![index].id}");
               },
             ),
           ),
@@ -93,5 +117,14 @@ class ArtistList extends StatelessWidget {
     } else {
       return Container();
     }
+  }
+
+  addOrRemoveSongId(String id) {
+    if (selectedArtistId.contains(id) == true) {
+      selectedArtistId.remove(id);
+    } else {
+      selectedArtistId.add(id);
+    }
+    widget.artistController.addOrRemoveArtistId(id);
   }
 }

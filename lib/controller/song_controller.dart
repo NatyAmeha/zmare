@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/repo/api_repository.dart';
-import 'package:zema/usecase/user_usecase.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/repo/api_repository.dart';
+import 'package:zmare/usecase/user_usecase.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 class SongController extends GetxController {
   var _isDataLoading = true.obs;

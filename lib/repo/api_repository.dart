@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/repo/repository.dart';
-import 'package:zema/service/api_client.dart';
-import 'package:zema/utils/extension.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/repo/repository.dart';
+import 'package:zmare/service/api_client.dart';
+import 'package:zmare/utils/extension.dart';
 
 class ApiRepository<T> extends IRepositroy<T> {
   final dioClient = ApiClient.getDioInstance();

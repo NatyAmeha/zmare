@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/song_widget.dart/song_list.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/song_widget.dart/song_list.dart';
 
 class DownloadedSongScreen extends StatelessWidget {
   static const routename = "/songs_list";

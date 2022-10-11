@@ -3,28 +3,45 @@ import 'dart:io';
 
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/service/download/download_service.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/service/download/download_service.dart';
 
 class FileDownloaderService implements IDownloadService {
   const FileDownloaderService();
   @override
-  Future<void> pause(List<String> id) {
-    // TODO: implement pause
-    throw UnimplementedError();
+  Future<void> pause(String id) async {
+    try {
+      await FlutterDownloader.pause(taskId: id);
+    } catch (ex) {
+      print(ex.toString());
+    }
   }
 
   @override
-  Future<void> removeDownloads(List<String> id) {
-    // TODO: implement removeDownloads
-    throw UnimplementedError();
+  Future<void> removeDownload(String id) async {
+    try {
+      await FlutterDownloader.remove(taskId: id, shouldDeleteContent: true);
+    } catch (ex) {
+      print(ex.toString());
+      return Future.error(AppException(
+          type: AppException.DOWNLOAD_EXCEPTION,
+          message: "unable to delete download"));
+    }
   }
 
   @override
-  Future<void> resume(List<String> id) {
-    // TODO: implement resume
-    throw UnimplementedError();
+  Future<String?> resume(String id) async {
+    try {
+      var result = await FlutterDownloader.resume(taskId: id);
+      print("resume update ${result}");
+      return result;
+    } catch (ex) {
+      print(ex.toString());
+      return Future.error(AppException(
+          type: AppException.DOWNLOAD_EXCEPTION,
+          message: "unable to resume download"));
+    }
   }
 
   @override

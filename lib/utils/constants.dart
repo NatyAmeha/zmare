@@ -10,6 +10,8 @@ class Constants {
   static const PROFILE_IMAGE = "PROFILE_IMAGE";
 }
 
+enum SnackbarType { ERROR_SNACKBAR, SUCCESS_SNACKBAR }
+
 enum AlbumListType { ALBUM_GRID_LIST, ALBUM_HORIZONTAL_LIST }
 
 enum PlaylistListType { HORIZONTAL, GRID }
@@ -20,7 +22,10 @@ enum AudioSrcType { NETWORK, LOCAL_STORAGE, DOWNLOAD }
 
 enum AlbumListDataType { USER_FAVORITE_ALBUM_LIST }
 
-enum ArtistListDataType { USER_FAVORITE_ARTIST_LIST }
+enum ArtistListDataType {
+  USER_FAVORITE_ARTIST_LIST,
+  ARTIST_LIST_FOR_ONBOARDING
+}
 
 enum LibraryFilter { song, album, artist, playlist }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/song_widget.dart/album_list_item.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/song_widget.dart/album_list_item.dart';
 
 class AlbumList extends StatelessWidget {
   List<Album>? albums;

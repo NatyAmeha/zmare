@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/widget/album_widget/album_list.dart';
-import 'package:zema/widget/custom_container.dart';
-import 'package:zema/widget/custom_text.dart';
-import 'package:zema/widget/list_header.dart';
-import 'package:zema/widget/playlist_widget/large_playlist_list_item.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/widget/album_widget/album_list.dart';
+import 'package:zmare/widget/custom_container.dart';
+import 'package:zmare/widget/custom_text.dart';
+import 'package:zmare/widget/list_header.dart';
+import 'package:zmare/widget/playlist_widget/large_playlist_list_item.dart';
 
 class CategoryScreen extends StatelessWidget {
   static const routeName = "/category";

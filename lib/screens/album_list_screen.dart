@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/album_controller.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/utils/ui_helper.dart';
-import 'package:zema/widget/album_widget/album_list.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:zmare/controller/album_controller.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
+import 'package:zmare/widget/ad_widget/banner_ad_widget.dart';
+import 'package:zmare/widget/album_widget/album_list.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class AlbumListScreen extends StatelessWidget {
   static const routeName = "/album_list";
@@ -28,14 +30,28 @@ class AlbumListScreen extends StatelessWidget {
           title: CustomText("Albums", color: Colors.black),
           backgroundColor: Colors.white),
       body: albums?.isNotEmpty == true
-          ? AlbumList(albums, isSliver: false, height: double.infinity)
+          ? Column(
+              children: [
+                BannerAdWidget(adSize: AdSize.banner),
+                Expanded(
+                    child: AlbumList(albums,
+                        isSliver: false, height: double.infinity)),
+              ],
+            )
           : Obx(
               () => UIHelper.displayContent(
-                showWhen: true,
-                exception: albumController.exception,
-                isDataLoading: albumController.isDataLoading,
-                content: AlbumList(albumController.albumList, isSliver: false),
-              ),
+                  showWhen: true,
+                  exception: albumController.exception,
+                  isDataLoading: albumController.isDataLoading,
+                  content: Column(
+                    children: [
+                      BannerAdWidget(adSize: AdSize.banner),
+                      Expanded(
+                        child: AlbumList(albumController.albumList,
+                            isSliver: false),
+                      ),
+                    ],
+                  )),
             ),
     );
   }

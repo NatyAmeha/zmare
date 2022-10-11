@@ -1,8 +1,8 @@
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:zema/modals/album.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/repo/local_audio_repo.dart';
-import 'package:zema/repo/repository.dart';
+import 'package:zmare/modals/album.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/repo/local_audio_repo.dart';
+import 'package:zmare/repo/repository.dart';
 
 class AlbumUsecase {
   IRepositroy? repo;

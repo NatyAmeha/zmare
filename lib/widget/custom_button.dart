@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class CustomButton extends StatelessWidget {
   ButtonType buttonType;

@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/artist_controller.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/custom_button.dart';
+import 'package:zmare/controller/artist_controller.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/custom_button.dart';
 
 class FollowUnfollowArtistBtn extends StatelessWidget {
   String artistId;

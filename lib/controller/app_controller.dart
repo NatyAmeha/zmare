@@ -3,22 +3,23 @@ import 'dart:ui';
 
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
-import 'package:zema/modals/exception.dart';
-import 'package:zema/modals/library.dart';
-import 'package:zema/modals/song.dart';
-import 'package:zema/modals/user.dart';
-import 'package:zema/repo/api_repository.dart';
-import 'package:zema/repo/db/db_manager.dart';
-import 'package:zema/repo/local_audio_repo.dart';
-import 'package:zema/service/permission_service.dart';
-import 'package:zema/service/player/player_service.dart';
-import 'package:zema/usecase/home_usecase.dart';
-import 'package:zema/usecase/song_usecase.dart';
-import 'package:zema/usecase/user_usecase.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/viewmodels/browse_viewmodel.dart';
-import 'package:zema/viewmodels/home_viewmodel.dart';
-import 'package:zema/viewmodels/search_viewmodel.dart';
+import 'package:zmare/modals/exception.dart';
+import 'package:zmare/modals/library.dart';
+import 'package:zmare/modals/song.dart';
+import 'package:zmare/modals/user.dart';
+import 'package:zmare/repo/api_repository.dart';
+import 'package:zmare/repo/db/db_manager.dart';
+import 'package:zmare/repo/local_audio_repo.dart';
+import 'package:zmare/service/account_service.dart';
+import 'package:zmare/service/permission_service.dart';
+import 'package:zmare/service/player/player_service.dart';
+import 'package:zmare/usecase/home_usecase.dart';
+import 'package:zmare/usecase/song_usecase.dart';
+import 'package:zmare/usecase/user_usecase.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/viewmodels/browse_viewmodel.dart';
+import 'package:zmare/viewmodels/home_viewmodel.dart';
+import 'package:zmare/viewmodels/search_viewmodel.dart';
 
 import '../repo/shared_pref_repo.dart';
 
@@ -56,13 +57,24 @@ class AppController extends GetxController {
   var _searchResult = SearchViewmodel().obs;
   SearchViewmodel get searhResult => _searchResult.value;
 
+  // to show interstitial ad after 5 click
+  var playerCardClickCount = 0;
+
   // var _libraryResult = Library().obs;
   Library? libraryResult;
 
   @override
   onInit() {
+    checkUserLoginStatus();
     getHomeData();
     super.onInit();
+  }
+
+  checkUserLoginStatus() async {
+    var userUsecase = UserUsecase(accountService: FirebaseAuthService());
+    var result = await userUsecase.getUserInfoFromPref();
+    print(" userinfo ${result?.username}");
+    if (result != null) loggedInUser(result);
   }
 
   startPlayingAudioFile(List<Song> songs,
@@ -144,7 +156,7 @@ class AppController extends GetxController {
     } catch (ex) {
       _isDataLoading(false);
       print(ex.toString());
-      _exception(ex as AppException);
+      // _exception(ex as AppException);
     }
   }
 

@@ -1,10 +1,10 @@
 import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:zema/modals/playlist.dart';
-import 'package:zema/utils/constants.dart';
-import 'package:zema/widget/custom_image.dart';
-import 'package:zema/widget/custom_text.dart';
+import 'package:zmare/modals/playlist.dart';
+import 'package:zmare/utils/constants.dart';
+import 'package:zmare/widget/custom_image.dart';
+import 'package:zmare/widget/custom_text.dart';
 
 class PlaylistGridTile extends StatelessWidget {
   Playlist? playlistInfo;

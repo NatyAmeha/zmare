@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:zema/controller/app_controller.dart';
-import 'package:zema/utils/constants.dart';
+import 'package:zmare/controller/app_controller.dart';
+import 'package:zmare/utils/constants.dart';
 
 class PlayPauseIcon extends StatelessWidget {
   bool isPlaying;

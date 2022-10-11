@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zema/utils/constants.dart';
+import 'package:zmare/utils/constants.dart';
 
 class ApiClient {
   static Dio? _dioClient;
@@ -11,7 +11,7 @@ class ApiClient {
       return _dioClient!;
     } else {
       var dioOption = BaseOptions(
-        baseUrl: "http://192.168.1.4:4000",
+        baseUrl: "http://192.168.1.6:4000",
         connectTimeout: 30000,
         receiveTimeout: 30000,
         sendTimeout: 30000,
