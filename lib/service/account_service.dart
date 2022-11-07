@@ -1,14 +1,19 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:zmare/modals/exception.dart';
 import 'package:zmare/modals/user.dart' as u;
 import 'package:zmare/service/jwt_decoder.dart';
+import 'package:zmare/modals/user.dart' as AppUser;
 
 abstract class IAccountService {
   Future<String?> sendVerificationCode(String phoneNumber);
   Future<bool> verifyCode(String verificationId, String code);
   Future<u.User> decodeToken(String token);
+  Future<String?> getFCMToken(String? vapidKey);
+  Future<AppUser.User> signInWithFacebook();
 }
 
 class FirebaseAuthService implements IAccountService {
@@ -32,14 +37,17 @@ class FirebaseAuthService implements IAccountService {
                   type: AppException.INVALID_PHONE_NUMBER_EXCEPTION,
                   message: ex.message));
             }
+            print("veriication failed , ${ex.message}");
           },
           codeSent: (verificationId, resendToken) {
             print("code sent to device  ${verificationId.toString()}");
 
             completer.complete(verificationId);
           },
+          timeout: const Duration(seconds: 60),
           codeAutoRetrievalTimeout: (valverificationId) {});
     } catch (ex) {
+      print("auth error ${ex.toString()}");
       completer.completeError(AppException(
           type: AppException.UNKNOWN_EXCEPTION, message: ex.toString()));
     }
@@ -50,7 +58,9 @@ class FirebaseAuthService implements IAccountService {
   Future<bool> verifyCode(String verificationId, String code) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: verificationId, smsCode: code);
-    if (credential.smsCode == code) {
+    var authResult =
+        await firebaseAuthInstance.signInWithCredential(credential);
+    if (authResult.user != null) {
       return true;
     } else {
       return false;
@@ -67,5 +77,30 @@ class FirebaseAuthService implements IAccountService {
       profileImagePath: result["profileImagePath"],
     );
     return userResult;
+  }
+
+  @override
+  Future<String?> getFCMToken(String? vapidKey) async {
+    var result = await FirebaseMessaging.instance.getToken();
+    return result;
+  }
+
+  @override
+  Future<AppUser.User> signInWithFacebook() async {
+    // try {
+    var loginREsult = await FacebookAuth.instance.login();
+
+    var credential =
+        FacebookAuthProvider.credential(loginREsult.accessToken!.token);
+    var userCred = await FirebaseAuth.instance.signInWithCredential(credential);
+    var user = AppUser.User(
+        username: userCred.user?.displayName,
+        phoneNumber: userCred.user?.phoneNumber,
+        profileImagePath: userCred.user?.photoURL);
+    return user;
+    // }  catch (e) {
+    //   print(e.toString());
+    //   return null;
+    // }
   }
 }

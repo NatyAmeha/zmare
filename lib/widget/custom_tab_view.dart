@@ -14,7 +14,7 @@ class CustomTabView extends StatelessWidget {
   CustomTabView({
     required this.tabs,
     required this.contents,
-    this.height = 400,
+    this.height = double.infinity,
     this.isSliver = true,
   });
 
@@ -22,7 +22,9 @@ class CustomTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isSliver) {
       return SliverToBoxAdapter(
-        child: Container(
+        child: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
           child: DefaultTabController(
             initialIndex: 0,
             length: tabs.length,
@@ -31,7 +33,7 @@ class CustomTabView extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CustomTabbar(tabs),
-                const SizedBox(height: 16),
+                // const SizedBox(height: 16),
                 SizedBox(
                   height: height,
                   child: TabBarView(children: contents),
@@ -46,17 +48,20 @@ class CustomTabView extends StatelessWidget {
         initialIndex: 0,
         length: tabs.length,
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             TabBar(
               tabs: tabs,
               indicator: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25), color: Colors.blue),
-              unselectedLabelColor: Colors.black,
+                  borderRadius: BorderRadius.circular(25),
+                  color: Theme.of(context).colorScheme.primary),
+              unselectedLabelColor: Colors.grey,
               isScrollable: true,
-              labelColor: Colors.white,
             ),
             const SizedBox(height: 16),
-            SizedBox(height: height, child: TabBarView(children: contents)),
+            Expanded(
+                // height: height,
+                child: TabBarView(children: contents)),
           ],
         ),
       );

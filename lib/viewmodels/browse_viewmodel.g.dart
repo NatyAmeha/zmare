@@ -53,15 +53,21 @@ Map<String, dynamic> _$BrowseViewmodelToJson(BrowseViewmodel instance) =>
 BrowseCommand _$BrowseCommandFromJson(Map<String, dynamic> json) =>
     BrowseCommand(
       name: json['name'] as String?,
+      subtitle: json['subtitle'] as String?,
       category: json['category'] as String?,
       contentType: json['contentType'] as String?,
       imagePath: json['imagePath'] as String?,
+      tags:
+          (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              const [],
     );
 
 Map<String, dynamic> _$BrowseCommandToJson(BrowseCommand instance) =>
     <String, dynamic>{
       'name': instance.name,
+      'subtitle': instance.subtitle,
       'category': instance.category,
       'contentType': instance.contentType,
+      'tags': instance.tags,
       'imagePath': instance.imagePath,
     };

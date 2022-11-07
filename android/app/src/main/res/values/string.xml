@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Zmare App</string>
+    <string name="facebook_app_id">509461950725346</string>
+    <string name="facebook_client_token">2834ea38645457059d6a99452f3591be</string>
+    <string name="fb_login_protocol_scheme">fb509461950725346</string>
+</resources>

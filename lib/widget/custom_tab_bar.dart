@@ -10,12 +10,14 @@ class CustomTabbar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return TabBar(
       tabs: tabs,
+      padding: const EdgeInsets.all(16),
       // indicatorSize: TabBarIndicatorSize.label,
       indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(25), color: Colors.blue),
-      unselectedLabelColor: Colors.black,
+          borderRadius: BorderRadius.circular(25),
+          color: Theme.of(context).colorScheme.primary),
+      unselectedLabelColor: Colors.grey,
       isScrollable: true,
-      labelColor: Colors.white,
+      // labelColor: Theme.of(context).colorScheme.primary,
     );
   }
 

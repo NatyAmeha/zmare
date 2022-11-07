@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '255551597191',
     projectId: 'zmare-ee670',
     storageBucket: 'zmare-ee670.appspot.com',
+    androidClientId: '255551597191-h2rauphq21ae62ejt80m9e7ni1bkk87u.apps.googleusercontent.com',
     iosClientId: '255551597191-olbccakmvllggb2tdb3ebu7t3lhe14u4.apps.googleusercontent.com',
     iosBundleId: 'com.savvy.zmare',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '255551597191',
     projectId: 'zmare-ee670',
     storageBucket: 'zmare-ee670.appspot.com',
+    androidClientId: '255551597191-h2rauphq21ae62ejt80m9e7ni1bkk87u.apps.googleusercontent.com',
     iosClientId: '255551597191-olbccakmvllggb2tdb3ebu7t3lhe14u4.apps.googleusercontent.com',
     iosBundleId: 'com.savvy.zmare',
   );

@@ -33,19 +33,21 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () {
-      widget.appController.getSearchResult(widget.query);
+      if (widget.appController.searhResult == null) {
+        widget.appController.getSearchResult(widget.query);
+      }
     });
 
     return Obx(
       () => UIHelper.displayContent(
-        showWhen: widget.appController.searhResult.artists?.isNotEmpty == true,
+        showWhen: widget.appController.searhResult != null,
         exception: widget.appController.exception,
         isDataLoading: widget.appController.isDataLoading,
         content: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TabBar(
-              labelColor: Colors.black,
+              labelColor: Theme.of(context).colorScheme.primary,
               unselectedLabelColor: Colors.grey[400],
               controller: _tabController,
               isScrollable: true,
@@ -62,14 +64,19 @@ class _SearchScreenState extends State<SearchScreen>
                 children: [
                   Expanded(child: buildAllPage()),
                   Expanded(
-                      child: SongList(widget.appController.searhResult.songs,
+                      child: SongList(widget.appController.searhResult?.songs,
+                          adIndexs: UIHelper.selectAdIndex(
+                              widget.appController.searhResult?.songs?.length ??
+                                  0),
                           isSliver: false)),
                   Expanded(
-                      child: AlbumList(widget.appController.searhResult.albums,
-                          isSliver: false)),
+                      child: AlbumList(
+                    widget.appController.searhResult?.albums,
+                    height: 250,
+                  )),
                   Expanded(
                       child: ArtistList(
-                    widget.appController.searhResult.artists,
+                    widget.appController.searhResult?.artists,
                     type: ArtistListType.ARTIST_GRID_LIST,
                   ))
                 ],
@@ -87,9 +94,10 @@ class _SearchScreenState extends State<SearchScreen>
         ListHeader("Songs"),
         SliverToBoxAdapter(
           child: CustomTabContent(
-            widget.appController.searhResult.songs?.isNotEmpty == true
+            widget.appController.searhResult?.songs?.isNotEmpty == true
                 ? SongList(
-                    widget.appController.searhResult.songs?.take(5).toList(),
+                    widget.appController.searhResult?.songs?.take(5).toList(),
+                    showAds: false,
                     isSliver: false,
                     shrinkWrap: true)
                 : Center(
@@ -97,17 +105,21 @@ class _SearchScreenState extends State<SearchScreen>
                     "No Album found",
                     color: Colors.black,
                   )),
-            trailing: widget.appController.searhResult.songs?.length
+            trailing: widget.appController.searhResult?.songs?.length
                         .isGreaterThan(5) ==
                     true
-                ? CustomButton(
-                    "See more",
-                    textSize: 13,
-                    buttonType: ButtonType.TEXT_BUTTON,
-                    textColor: Colors.black,
-                    onPressed: () {
-                      _tabController.index = 1;
-                    },
+                ? Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: CustomButton(
+                      "See more songs",
+                      textSize: 13,
+                      textColor: Colors.black,
+                      buttonType: ButtonType.NORMAL_OUTLINED_BUTTON,
+                      onPressed: () {
+                        _tabController.index = 1;
+                      },
+                    ),
                   )
                 : null,
           ),
@@ -115,23 +127,27 @@ class _SearchScreenState extends State<SearchScreen>
         ListHeader("Albums"),
         SliverToBoxAdapter(
           child: CustomTabContent(
-            widget.appController.searhResult.albums?.isNotEmpty == true
+            widget.appController.searhResult?.albums?.isNotEmpty == true
                 ? AlbumList(
-                    widget.appController.searhResult.albums?.take(4).toList(),
-                    isSliver: false,
+                    widget.appController.searhResult?.albums?.take(4).toList(),
+                    primary: false,
+                    height: 250,
                     shrinkWrap: true)
                 : Center(child: CustomText("No Album found")),
-            trailing: widget.appController.searhResult.albums?.length
+            trailing: widget.appController.searhResult?.albums?.length
                         .isGreaterThan(4) ==
                     true
-                ? CustomButton(
-                    "See more",
-                    textSize: 13,
-                    buttonType: ButtonType.TEXT_BUTTON,
-                    textColor: Colors.black,
-                    onPressed: () {
-                      _tabController.index = 2;
-                    },
+                ? Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: CustomButton(
+                      "See more Albums",
+                      textSize: 13,
+                      buttonType: ButtonType.NORMAL_OUTLINED_BUTTON,
+                      onPressed: () {
+                        _tabController.index = 2;
+                      },
+                    ),
                   )
                 : null,
           ),
@@ -139,21 +155,21 @@ class _SearchScreenState extends State<SearchScreen>
         ListHeader("Artists"),
         SliverToBoxAdapter(
           child: CustomTabContent(
-            widget.appController.searhResult.artists?.isNotEmpty == true
+            widget.appController.searhResult?.artists?.isNotEmpty == true
                 ? ArtistList(
-                    widget.appController.searhResult.artists?.take(5).toList(),
+                    widget.appController.searhResult?.artists?.take(5).toList(),
                     type: ArtistListType.ARTIST_GRID_LIST,
                     shrinkWrap: true,
+                    primary: false,
                   )
                 : Center(child: CustomText("No Artist found")),
-            trailing: widget.appController.searhResult.artists?.length
+            trailing: widget.appController.searhResult?.artists?.length
                         .isGreaterThan(6) ==
                     true
                 ? CustomButton(
                     "See more",
                     textSize: 13,
                     buttonType: ButtonType.TEXT_BUTTON,
-                    textColor: Colors.black,
                     onPressed: () {
                       _tabController.index = 3;
                     },
@@ -161,6 +177,7 @@ class _SearchScreenState extends State<SearchScreen>
                 : null,
           ),
         ),
+        const SliverToBoxAdapter(child: const SizedBox(height: 80))
       ],
     );
   }

@@ -25,6 +25,8 @@ class DownloadListItem extends StatefulWidget {
 class _DownloadListItemState extends State<DownloadListItem> {
   var downloadController = Get.find<DownloadController>();
   var downloadState = DownloadStatus.IN_PROGRESS;
+  var inActiveMenus = <String>[];
+  var inActiveIconsIndex = <int>[];
 
   List<String> get taskIds =>
       widget.downloadInfo.downloads.map((e) => e.taskId!).toList();
@@ -46,13 +48,26 @@ class _DownloadListItemState extends State<DownloadListItem> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(widget.downloadInfo.title,
-                  fontSize: 17, fontWeight: FontWeight.bold),
+                  textStyle: Theme.of(context).textTheme.titleMedium,
+                  fontWeight: FontWeight.bold),
               const SizedBox(height: 8),
-              CustomText(widget.downloadInfo.subtitle, fontSize: 15),
+              CustomText(
+                widget.downloadInfo.subtitle,
+                textStyle: Theme.of(context).textTheme.bodyMedium,
+              ),
               const SizedBox(height: 8),
               DownloadStatusIndicator(
                 downloadBatch: widget.downloadInfo.downloads,
                 size: 20,
+                onStatusUpdate: (st) {
+                  Future.delayed(Duration.zero, () {
+                    setState(() {
+                      var result = getRemovedMenus(st);
+                      inActiveMenus = result.values.toList();
+                      inActiveIconsIndex = result.keys.toList();
+                    });
+                  });
+                },
               )
             ],
           )),
@@ -61,6 +76,7 @@ class _DownloadListItemState extends State<DownloadListItem> {
             menuList: {
               "Pause download": () {
                 downloadController.pauseDownloads(taskIds);
+
                 setState(() {
                   downloadState = DownloadStatus.PAUSED;
                 });
@@ -73,10 +89,19 @@ class _DownloadListItemState extends State<DownloadListItem> {
                     .removeDownloads(widget.downloadInfo.downloads);
               }
             },
-            iconList: const [Icons.pause, Icons.play_arrow, Icons.close],
+            inActiveMenus: inActiveMenus,
           )
         ],
       ),
     );
+  }
+
+  Map<int, String> getRemovedMenus(DownloadStatus status) {
+    if (status == DownloadStatus.PAUSED)
+      return {0: "Pause download"};
+    else if (status == DownloadStatus.IN_PROGRESS)
+      return {1: "Resume download"};
+    else
+      return {0: "Pause download", 1: "Resume download"};
   }
 }

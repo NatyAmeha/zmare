@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:zmare/controller/app_controller.dart';
 import 'package:zmare/controller/download_controller.dart';
+import 'package:zmare/modals/exception.dart';
 import 'package:zmare/screens/downloaded_song_screen.dart';
 import 'package:zmare/utils/constants.dart';
 import 'package:zmare/utils/extension.dart';
@@ -21,7 +22,10 @@ class DownloadScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    downloadController.getAllDownloads();
+    Future.delayed(Duration.zero, () {
+      downloadController.getAllDownloads();
+    });
+
     return Scaffold(
       appBar: AppBar(title: CustomText("Downloads")),
       body: Obx(
@@ -48,16 +52,18 @@ class DownloadScreen extends StatelessWidget {
                     arguments: {
                       "title": downloadController.downloadResult![index].title,
                       "songs": songs
-                    });
+                    },
+                    navigatorId: UIHelper.bottomNavigatorKeyId);
               },
             ),
           )
         : ErrorPage(
-            message:
-                "Your downloaded songs, albums and playlist collected here",
+            exception: AppException(
+                title: "No download found",
+                message:
+                    "Your downloaded songs, albums and playlist collected here",
+                actionText: "Start download"),
             icon: Icons.hourglass_empty_outlined,
-            title: "No download found",
-            actionText: "Start download",
           );
   }
 }

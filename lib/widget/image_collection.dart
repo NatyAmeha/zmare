@@ -19,32 +19,41 @@ class GridImageCollection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var uniqueIMages = Set.from(images).toList();
     return Container(
       width: width,
       height: height,
-      child: (images.length == 1)
+      child: (images.isNotEmpty && images.length < 4)
           ? CustomImage(images[0],
-              width: width, height: height, roundImage: true)
+              width: width, height: height, roundImage: false)
           : StaggeredGrid.count(
               crossAxisCount: 2,
-              mainAxisSpacing: 4,
-              crossAxisSpacing: 4,
+              mainAxisSpacing: 1,
+              crossAxisSpacing: 1,
               children: [
                 StaggeredGridTile.count(
                   crossAxisCellCount: 1,
-                  mainAxisCellCount: 2,
-                  child: CustomImage(images[0],
+                  mainAxisCellCount: 1,
+                  child: CustomImage(uniqueIMages[0],
                       width: double.infinity,
                       height: double.infinity,
-                      roundImage: true),
+                      roundImage: false),
                 ),
                 StaggeredGridTile.count(
                   crossAxisCellCount: 1,
-                  mainAxisCellCount: images.length == 2 ? 2 : 1,
-                  child: CustomImage(images[1],
+                  mainAxisCellCount: 1,
+                  child: CustomImage(uniqueIMages[1],
                       width: double.infinity,
                       height: double.infinity,
-                      roundImage: true),
+                      roundImage: false),
+                ),
+                StaggeredGridTile.count(
+                  crossAxisCellCount: 1,
+                  mainAxisCellCount: 1,
+                  child: CustomImage(uniqueIMages[2],
+                      width: double.infinity,
+                      height: double.infinity,
+                      roundImage: false),
                 ),
                 StaggeredGridTile.count(
                   crossAxisCellCount: 1,
@@ -52,22 +61,21 @@ class GridImageCollection extends StatelessWidget {
                   child: Stack(
                     children: [
                       CustomImage(
-                        images[2],
+                        uniqueIMages[3],
                         width: double.infinity,
                         height: double.infinity,
-                        roundImage: true,
+                        roundImage: false,
                       ),
                       Positioned.fill(
                         child: Align(
                           alignment: Alignment.center,
                           child: CustomContainer(
                               width: 60,
-                              color: Colors.grey[200],
+                              color: Theme.of(context).backgroundColor,
                               borderRadius: 40,
                               child: CustomText(
-                                "+${images.length - 3}",
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
+                                "+${images.length - 4}",
+                                textStyle: Theme.of(context).textTheme.caption,
                               )),
                         ),
                       )
@@ -97,8 +105,10 @@ class CircleImageCollection extends StatelessWidget {
         (e) {
           var widget = Padding(
             padding: EdgeInsets.only(left: padding),
-            child:
-                CircleAvatar(radius: radius, backgroundImage: NetworkImage(e)),
+            child: CircleAvatar(
+                backgroundColor: Theme.of(context).backgroundColor,
+                radius: radius,
+                backgroundImage: NetworkImage(e)),
           );
           padding += (radius * 2) - radius;
           return widget;

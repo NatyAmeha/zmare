@@ -1,0 +1,64 @@
+{
+    "helloWorld": "Hello World!",
+    "select_language" : "Select Language",
+
+    "artist_you_like" : "Artists you might like",
+    "recommended_album" : "Recommended Albums",
+    "featured_playlist": "Featured playlists",
+    "for_you" : "For you",
+    "made_for_you" : "Made for you, charts and playlists",
+    "browse" : "Browse",
+    "search_text" : "Search music, albums and playlist",
+    "top_songs" : "Top songs",
+    "new_songs" : "New songs",
+    "most_liked_song" : "Most liked songs",
+    "top_albums" : "Top Albums",
+    "new_albums" : "New Albums",
+    "popular_artists" : "Popular Artists",
+    "new_artists" : "New Artists",
+    "create_playlist" :"Create Playlist",
+    "no_album_found" : "No Album found",
+    "no_artist_found" : "No Artist found",
+    "no_song_sound" : "No song found",
+    "my_account" : "Account",
+    "sign_in_description" : "Sign in to personalize your experiance",
+    "sign_in" : "Sign in",
+    "register" : "Register",
+    "manage_account" : "Manage account",
+    "liked_songs" : "Liked songs",
+    "favorite_albums" : "Favorite Albums",
+    "favorite_artists" : "Favroite Artists",
+    "your_playlist" : "Your Playlists",
+    "downloads" : "Downloads",
+
+    "album" : "Albums",
+    "playlist" : "Playlists",
+    "artist" : "Artists",
+
+
+    "onboarding_one" : "Gospel music in one place",
+    "onboarding_one_desc" : "Get all your favorite gosple musics at one place",
+
+    "onboarding_two" : "Personlized experiances",
+    "onboarding_two_desc" : "You will get curated playlists, music charts and artist radio stattions",
+
+    "onboarding_three" : "Offline playback",
+    "onboarding_three_desc" : "Download your favorite songs, albums and playlists for offline playback",
+
+    "onboarding_four" : "Sign up for better experiance",
+    "onboarding_four_desc" : "By signning up, you can like songs, albums and playlist, create your own playlist and much more",
+
+    "name" : "Name",
+    "phone_number" : "Phone number",
+    "register_with_phone" : "Register with your phone",
+    "sign_in_with_phone" : "Sign in with your phone",
+    "login" : "Login",
+    "continue_with_phone" : "Continue with Phone",
+    "continue_with_facebook" : "Continue with facebook",
+    "welcome" : "Welcome",
+
+    "continue_text" : "Continue",
+    "skip" : "Skip"
+
+
+}

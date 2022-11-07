@@ -1,3 +1,4 @@
+import 'package:zmare/modals/song.dart';
 import 'package:zmare/repo/repository.dart';
 
 class SongUsecase {
@@ -11,6 +12,24 @@ class SongUsecase {
 
   Future<bool> unlikeSong(List<String> songIds) async {
     var result = await repo!.update("/library/removelikesong", body: songIds);
+    return result;
+  }
+
+  Future<List<Song>> getSongIdFromChart(String playlistId) async {
+    var result = await repo!
+        .getAll<Song>("/chart/songs", queryParameters: {"id": playlistId});
+    return result;
+  }
+
+  Future<bool> updateStreamCount(String songId) async {
+    var result = await repo!.update<bool, dynamic>("/song/updatestream",
+        queryParameters: {"id": songId});
+    return result;
+  }
+
+  Future<List<Song>> getSongsByid(List<String> songIds) async {
+    var result = await repo!
+        .getAll<Song>("/songs/find", queryParameters: {"ids": songIds});
     return result;
   }
 

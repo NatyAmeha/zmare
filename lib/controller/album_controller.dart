@@ -8,11 +8,15 @@ import 'package:zmare/repo/api_repository.dart';
 import 'package:zmare/repo/db/db_repo.dart';
 import 'package:zmare/repo/db/download_db_repo.dart';
 import 'package:zmare/repo/local_audio_repo.dart';
+import 'package:zmare/screens/account_onboarding_screen.dart';
+import 'package:zmare/screens/account_screen.dart';
+import 'package:zmare/screens/browse_screen.dart';
 import 'package:zmare/usecase/album_usecase.dart';
 import 'package:zmare/usecase/download_usecase.dart';
 import 'package:zmare/usecase/home_usecase.dart';
 import 'package:zmare/usecase/user_usecase.dart';
 import 'package:zmare/utils/constants.dart';
+import 'package:zmare/utils/ui_helper.dart';
 
 class AlbumController extends GetxController {
   var appController = Get.find<AppController>();
@@ -27,6 +31,8 @@ class AlbumController extends GetxController {
   AppException get exception => _exception.value;
 
   Album? albumResult;
+  var _isAlbumDownloaded = false.obs;
+  bool get isAlbumDownloaded => _isAlbumDownloaded.value;
 
   var _isFavoriteAlbum = false.obs;
   bool get isFavoriteAlbum => _isFavoriteAlbum.value;
@@ -48,11 +54,17 @@ class AlbumController extends GetxController {
       var albumSongs = result?.songs?.map((e) => Song.fromJson(e)).toList();
       albumResult = result;
       albumResult!.songs = albumSongs;
-      _isDataLoading(false);
+      checkIsAlbumDownloaded();
     } catch (ex) {
       print("error ${ex.toString()}");
+      var exception = ex as AppException;
+      exception.action = () {
+        _exception(AppException());
+        getAlbum(albumId, src: src);
+      };
+      _exception(exception);
+    } finally {
       _isDataLoading(false);
-      _exception(ex as AppException);
     }
   }
 
@@ -82,6 +94,20 @@ class AlbumController extends GetxController {
       var result = await userUsecase.getUserLibrary<Album>("/library", "album");
       print(result);
       albumList = result;
+      if (result.isEmpty) {
+        _exception(
+          AppException(
+            message: "Your favorite albums will collected here",
+            title: "No album found",
+            actionText: "Browse Albums",
+            action: () {
+              UIHelper.moveBack();
+              UIHelper.moveToScreen(BrowseScreen.routeName,
+                  navigatorId: UIHelper.bottomNavigatorKeyId);
+            },
+          ),
+        );
+      }
     } catch (ex) {
       print("error ${ex.toString()}");
       _exception(ex as AppException);
@@ -92,35 +118,47 @@ class AlbumController extends GetxController {
 
   likeAlbum(String albumId) async {
     try {
-      _isLoading(true);
+      _isDataLoading(true);
       var albumUsecase = AlbumUsecase(repo: ApiRepository<Album>());
       var result = await albumUsecase.likeAlbum(albumId);
-      _isLoading(false);
       _isFavoriteAlbum(true);
     } catch (ex) {
       print("error ${ex.toString()}");
-      _isLoading(false);
-      _exception(ex as AppException);
+      var exception = ex as AppException;
+      if (exception.type == AppException.UNAUTORIZED_EXCEPTION) {
+        UIHelper.showSnackBar("Sign in to continue", actionText: "Sign in",
+            onclick: () {
+          UIHelper.moveToScreen(AccountOnboardingScreen.routName);
+        });
+      }
+    } finally {
+      _isDataLoading(false);
     }
   }
 
   unlikeAlbum(String albumId) async {
     try {
-      _isLoading(true);
+      _isDataLoading(true);
       var albumUsecase = AlbumUsecase(repo: ApiRepository<Album>());
       var result = await albumUsecase.unlikeAlbum(albumId);
-      _isLoading(false);
       _isFavoriteAlbum(false);
     } catch (ex) {
       print("error ${ex.toString()}");
-      _isLoading(false);
-      _exception(ex as AppException);
+      var exception = ex as AppException;
+      if (exception.type == AppException.UNAUTORIZED_EXCEPTION) {
+        UIHelper.showSnackBar("Sign in to continue", actionText: "Sign in",
+            onclick: () {
+          UIHelper.moveToScreen(AccountOnboardingScreen.routName);
+        });
+      }
+    } finally {
+      _isDataLoading(false);
     }
   }
 
   downloadAlbum(List<Song> albumSongs, String albumId, String albumName) async {
     try {
-      _isLoading(true);
+      _isDataLoading(true);
       var downloadUsecase = DownloadUsecase(repositroy: DownloadRepository());
       var result = await downloadUsecase.startDownload(
           albumSongs, "", DownloadType.ALBUM, albumId, albumName);
@@ -128,7 +166,7 @@ class AlbumController extends GetxController {
     } catch (ex) {
       _exception(ex as AppException);
     } finally {
-      _isLoading(false);
+      _isDataLoading(false);
     }
   }
 
@@ -142,7 +180,27 @@ class AlbumController extends GetxController {
     } catch (ex) {
       print("error ${ex.toString()}");
       _isLoading(false);
-      _exception(ex as AppException);
+      // _exception(ex as AppException);
+    }
+  }
+
+  checkIsAlbumDownloaded() async {
+    try {
+      _isDataLoading(true);
+      var downloadUsecase = DownloadUsecase(repositroy: DownloadRepository());
+      if (albumResult?.songs != null) {
+        var result =
+            await downloadUsecase.isPlaylistDownloaded(albumResult!.id!);
+        _isAlbumDownloaded(result);
+      } else {
+        UIHelper.showSnackBar("Unable to download playlist",
+            type: SnackbarType.ERROR_SNACKBAR);
+      }
+    } catch (ex) {
+      print("error ${ex.toString()}");
+      // _exception(ex as AppException);
+    } finally {
+      _isDataLoading(false);
     }
   }
 }

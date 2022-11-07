@@ -10,10 +10,15 @@ class ApiRepository<T> extends IRepositroy<T> {
   Future<R> create<R, S>(String path, S body,
       {Map<String, dynamic>? queryParameters}) async {
     try {
-      var result = await dioClient.post<R>(path,
+      var finalResult;
+      var result = await dioClient.post(path,
           data: body, queryParameters: queryParameters);
-      var finalResult = result.data.toObject(R.toString());
-      print(finalResult);
+      if (R.toString() == "String" || R.toString() == "bool") {
+        finalResult = result.data;
+      } else {
+        var mapResult = result.data as Map<String, dynamic>;
+        finalResult = mapResult.toObject(R.toString());
+      }
       return finalResult as R;
     } on DioError catch (ex) {
       print(ex);
@@ -34,7 +39,9 @@ class ApiRepository<T> extends IRepositroy<T> {
       var result = await dioClient.get(path, queryParameters: queryParameters);
 
       var mapResult = result.data as Map<String, dynamic>;
-      print(result.data);
+      var songs = result.data["songs"];
+
+      print("songs result ${songs}");
       var finalResult = await mapResult.toObject(R.toString());
       return finalResult as R?;
     } on DioError catch (ex) {

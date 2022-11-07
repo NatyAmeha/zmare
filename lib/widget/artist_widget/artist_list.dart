@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:zmare/controller/artist_controller.dart';
 import 'package:zmare/modals/artist.dart';
+import 'package:zmare/screens/artist/local_aritst_screen.dart';
 import 'package:zmare/utils/constants.dart';
 import 'package:zmare/utils/ui_helper.dart';
 import 'package:zmare/widget/circle_tile.dart';
@@ -15,12 +16,14 @@ class ArtistList extends StatefulWidget {
   ArtistListType type;
   bool shrinkWrap;
   AudioSrcType src;
+  bool primary;
   ListSelectionState selectionState;
   ArtistList(
     this.artistList, {
     this.type = ArtistListType.ARTIST_HORIZONTAL_LIST,
     this.shrinkWrap = false,
     this.height = 200,
+    this.primary = true,
     this.src = AudioSrcType.NETWORK,
     this.selectionState = ListSelectionState.SINGLE_SELECTION,
   });
@@ -40,6 +43,7 @@ class _ArtistListState extends State<ArtistList> {
         return SizedBox(
           height: widget.height,
           child: ListView.separated(
+            primary: widget.primary,
             itemCount: widget.artistList!.length,
             scrollDirection: Axis.horizontal,
             separatorBuilder: (context, index) => const SizedBox(width: 8),
@@ -50,14 +54,22 @@ class _ArtistListState extends State<ArtistList> {
               text: widget.artistList![index].name,
               radius: 70,
               onClick: () {
-                UIHelper.moveToScreen(
-                    "/artist/${widget.artistList![index].id}");
+                if (widget.src == AudioSrcType.LOCAL_STORAGE) {
+                  UIHelper.moveToScreen(LoccalArtistScreen.routeName,
+                      arguments: widget.artistList![index],
+                      navigatorId: UIHelper.bottomNavigatorKeyId);
+                } else {
+                  UIHelper.moveToScreen(
+                      "/artist/${widget.artistList![index].id}",
+                      navigatorId: UIHelper.bottomNavigatorKeyId);
+                }
               },
             ),
           ),
         );
       } else if (widget.type == ArtistListType.ARTIST_GRID_LIST) {
         return GridView.builder(
+          primary: widget.primary,
           itemCount: widget.artistList!.length,
           shrinkWrap: widget.shrinkWrap,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -75,7 +87,14 @@ class _ArtistListState extends State<ArtistList> {
             selectedArtistIds: selectedArtistId,
             src: widget.src,
             onClick: () {
-              UIHelper.moveToScreen("/artist/${widget.artistList![index].id}");
+              if (widget.src == AudioSrcType.LOCAL_STORAGE) {
+                UIHelper.moveToScreen(LoccalArtistScreen.routeName,
+                    arguments: widget.artistList![index],
+                    navigatorId: UIHelper.bottomNavigatorKeyId);
+              } else {
+                UIHelper.moveToScreen("/artist/${widget.artistList![index].id}",
+                    navigatorId: UIHelper.bottomNavigatorKeyId);
+              }
             },
             onMultiSelection: (artistId) {
               setState(() {
@@ -92,6 +111,7 @@ class _ArtistListState extends State<ArtistList> {
         return SizedBox(
           height: widget.height,
           child: ListView.builder(
+            primary: widget.primary,
             itemCount: widget.artistList!.length,
             // separatorBuilder: (context, index) => const SizedBox(height: 8),
             itemExtent: 100,
@@ -108,7 +128,15 @@ class _ArtistListState extends State<ArtistList> {
                 onPressed: () {},
               ),
               onClick: () {
-                Get.toNamed("/artist/${widget.artistList![index].id}");
+                if (widget.src == AudioSrcType.LOCAL_STORAGE) {
+                  UIHelper.moveToScreen(LoccalArtistScreen.routeName,
+                      arguments: widget.artistList![index],
+                      navigatorId: UIHelper.bottomNavigatorKeyId);
+                } else {
+                  UIHelper.moveToScreen(
+                      "/artist/${widget.artistList![index].id}",
+                      navigatorId: UIHelper.bottomNavigatorKeyId);
+                }
               },
             ),
           ),

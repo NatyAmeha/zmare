@@ -29,6 +29,12 @@ class HomeUsecase {
     return result;
   }
 
+  Future<BrowseViewmodel?> browseByTags(List<String> tags) async {
+    var result = await repo?.get<BrowseViewmodel>("/browsebytags",
+        queryParameters: {"tags": tags});
+    return result;
+  }
+
   Future<SearchViewmodel> getSearchResult(String query) async {
     var result = await repo?.get<SearchViewmodel>("/search",
         queryParameters: {"query": query}) as SearchViewmodel;

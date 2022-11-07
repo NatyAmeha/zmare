@@ -6,8 +6,9 @@ import 'package:zmare/service/ad/admob_helper.dart';
 
 class BannerAdWidget extends StatefulWidget {
   AdSize adSize;
+  String? adKey;
 
-  BannerAdWidget({this.adSize = AdSize.banner});
+  BannerAdWidget({this.adSize = AdSize.banner, this.adKey});
 
   @override
   State<BannerAdWidget> createState() => _BannerAdWidgetState();
@@ -38,7 +39,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
       return SizedBox(
         width: _bannerAd!.size.width.toDouble(),
         height: _bannerAd!.size.height.toDouble(),
-        child: AdWidget(ad: _bannerAd!),
+        child: AdWidget(key: Key(widget.adKey ?? "ad_key"), ad: _bannerAd!),
       );
     } else {
       return Container();

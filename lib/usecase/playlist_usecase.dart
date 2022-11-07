@@ -15,8 +15,37 @@ class PlaylistUsecase {
     return result;
   }
 
+  Future<List<Playlist>?> getUserPlaylists() async {
+    var result = await repo?.getAll<Playlist>("/playlist");
+    return result;
+  }
+
   Future<void> playPlaylist(List<Song> songs, AudioSrcType src) async {
     var duration = await player!.load(songs, src: src);
     player!.play();
+  }
+
+  Future<bool> likePlaylist(String playlistId) async {
+    var result = await repo!
+        .update("/playlist/follow", queryParameters: {"id": playlistId});
+    return result;
+  }
+
+  Future<bool> unlikePlaylist(String playlistId) async {
+    var result = await repo!
+        .update("/playlist/unfollow", queryParameters: {"id": playlistId});
+    return result;
+  }
+
+  Future<bool> isPlaylistInFavorite(String albumId) async {
+    var result = await repo!
+        .update("/playlist/checkfavorite", queryParameters: {"id": albumId});
+    return result;
+  }
+
+  Future<Playlist> createPlaylist(Playlist playlistInfo) async {
+    var result = await repo!
+        .create<Playlist, Playlist>("/playlist/create", playlistInfo);
+    return result;
   }
 }

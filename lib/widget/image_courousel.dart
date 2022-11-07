@@ -58,9 +58,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
               ? widget.images!
                   .map(
                     (e) => Container(
-                      padding: const EdgeInsets.all(1),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: CustomImage(e,
-                          fit: BoxFit.fitWidth,
+                          fit: BoxFit.cover,
                           height: widget.height,
                           roundImage: true,
                           width: double.infinity),

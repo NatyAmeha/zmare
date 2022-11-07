@@ -13,6 +13,7 @@ import 'package:zmare/widget/custom_image.dart';
 import 'package:zmare/widget/custom_text.dart';
 import 'package:zmare/widget/custom_text_field.dart';
 import 'package:zmare/widget/loading_progressbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const routeName = "/register";
@@ -30,91 +31,112 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: Colors.grey[500],
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             UIHelper.moveBack();
           },
         ),
-        title: CustomText("Register", color: Colors.black),
-        backgroundColor: Colors.white,
+        title: CustomText(AppLocalizations.of(context)!.register),
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
+      body: Stack(
+        children: [
+          CustomImage(
+            "assets/images/offline.jpg",
+            height: double.infinity,
+            width: double.infinity,
+            srcLocation: "assets",
+          ),
+          CustomContainer(
+            height: double.infinity,
+            width: double.infinity,
+            gradientColor: [
+              Colors.transparent,
+              Theme.of(context).scaffoldBackgroundColor,
+              Theme.of(context).scaffoldBackgroundColor
+            ],
+            child: Container(),
+          ),
+          SingleChildScrollView(
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              height: MediaQuery.of(context).size.height * 0.8,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   CustomImage(
-                    "assets/images/music_placeholder.png",
-                    srcLocation: "assets",
-                    width: 150,
-                    height: 150,
+                    "assets/images/app_icon.png",
+                    srcLocation: "asset",
+                    width: 70,
+                    height: 70,
                   ),
                   const SizedBox(height: 24),
-                  CustomText("Register with your phone",
-                      fontSize: 19, fontWeight: FontWeight.bold),
+                  CustomText(AppLocalizations.of(context)!.register_with_phone,
+                      textStyle: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 32),
                   IntlPhoneField(
                     autofocus: false,
                     disableLengthCheck: true,
                     controller: widget.phoneNumberController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       fillColor: Colors.grey,
-                      labelText: 'Phone Number',
-                      border: OutlineInputBorder(borderSide: BorderSide()),
+                      labelText: AppLocalizations.of(context)!.phone_number,
+                      border:
+                          const OutlineInputBorder(borderSide: BorderSide()),
                     ),
                     initialCountryCode: 'ET',
                     onChanged: (phone) {
-                      completePhoneNumber = phone.completeNumber;
+                      setState(() {
+                        completePhoneNumber = phone.completeNumber;
+                      });
                     },
                   ),
                   const SizedBox(height: 24),
                   CustomTextField(
-                    label: "Name",
+                    label: AppLocalizations.of(context)!.name,
                     autoFocus: false,
                     controller: widget.userNameController,
-                    onchanged: (value) {},
+                    onchanged: (value) {
+                      setState(() {});
+                    },
                   ),
                   const SizedBox(height: 32),
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: CustomButton(
+                      enabled: widget.userNameController.text.isNotEmpty &&
+                          completePhoneNumber.length >= 10,
+                      AppLocalizations.of(context)!.register,
+                      buttonType: ButtonType.ROUND_ELEVATED_BUTTON,
+                      onPressed: () async {
+                        var user = User(
+                          username: widget.userNameController.text,
+                          phoneNumber: completePhoneNumber,
+                          category: ["GOSPEL"],
+                        );
+                        userController.userInfo = user;
+                        userController.sendCode(false);
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.center,
-                child: Obx(
-                  () => LoadingProgressbar(
-                      loadingState: userController.isDataLoading),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-      persistentFooterButtons: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: CustomButton(
-            "Register",
-            buttonType: ButtonType.NORMAL_ELEVATED_BUTTON,
-            onPressed: () async {
-              var user = User(
-                username: widget.userNameController.text,
-                phoneNumber: completePhoneNumber,
-                category: ["GOSPEL"],
-              );
-              userController.userInfo = user;
-              userController.sendCode(false);
-            },
           ),
-        ),
-      ],
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Obx(
+                () => LoadingProgressbar(
+                    loadingState: userController.isDataLoading),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:zmare/utils/constants.dart';
@@ -25,7 +26,7 @@ class AlbumPlayListHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: size + 100,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -43,8 +44,7 @@ class AlbumPlayListHeader extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: CustomText(
               title,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              textStyle: Theme.of(context).textTheme.titleLarge,
               maxLine: 2,
               alignment: TextAlign.center,
               overflow: TextOverflow.ellipsis,

@@ -35,6 +35,7 @@ class DatabaseManager {
             type TEXT ,
             typeId TEXT ,
             image TEXT,
+            progress INTEGER,
             date INTEGER,            
             typeName TEXT,
             artistNames TEXT

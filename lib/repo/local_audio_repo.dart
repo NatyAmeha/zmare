@@ -112,23 +112,34 @@ class LocalAudioRepo extends ILocalAudioRepo {
   Future<List<Song>> querySongsFrom(String id, AudiosFromType type) async {
     try {
       late List<SongModel> result;
-      switch (type) {
-        case AudiosFromType.ALBUM:
-          result = await audioQuery.queryAudiosFrom(
-            type, id, sortType: SongSortType.TITLE, // Default
-            orderType: OrderType.ASC_OR_SMALLER,
-          );
-          break;
-        case AudiosFromType.PLAYLIST:
-          result = await audioQuery.queryAudiosFrom(
-            type, id, sortType: SongSortType.TITLE, // Default
-            orderType: OrderType.ASC_OR_SMALLER,
-          );
-          break;
+      // switch (type) {
+      //   case AudiosFromType.ALBUM_ID:
+      //     result = await audioQuery.queryAudiosFrom(
+      //       type, id, sortType: SongSortType.TITLE, // Default
+      //       orderType: OrderType.ASC_OR_SMALLER,
+      //     );
+      //     break;
+      //   case AudiosFromType.PLAYLIST:
+      //     result = await audioQuery.queryAudiosFrom(
+      //       type, id, sortType: SongSortType.TITLE, // Default
+      //       orderType: OrderType.ASC_OR_SMALLER,
+      //     );
+      //     break;
+      //   case AudiosFromType.ARTIST_ID:
+      //     result = await audioQuery.queryAudiosFrom(
+      //       type, id, sortType: SongSortType.TITLE, // Default
+      //       orderType: OrderType.ASC_OR_SMALLER,
+      //     );
+      //     break;
 
-        default:
-          result = await audioQuery.querySongs();
-      }
+      //   default:
+      //     result = await audioQuery.querySongs();
+      // }
+      result = await audioQuery.queryAudiosFrom(
+        type, id, sortType: SongSortType.TITLE, // Default
+        orderType: OrderType.ASC_OR_SMALLER,
+      );
+
       var songResult = result
           .map((e) => Song(
                 songFilePath: e.uri,

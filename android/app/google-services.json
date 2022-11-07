@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "255551597191-h2rauphq21ae62ejt80m9e7ni1bkk87u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.savvy.zmare",
+            "certificate_hash": "9ae92a926859ae45320681fbd54f7c79c404d781"
+          }
+        },
+        {
           "client_id": "255551597191-485m3pjjtlk3jcfpq91crjgt7a5nhrmm.apps.googleusercontent.com",
           "client_type": 3
         }

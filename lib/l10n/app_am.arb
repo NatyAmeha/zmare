@@ -1,0 +1,63 @@
+{
+    "helloWorld": "Hello World!",
+    "select_language" : "ቋንቋ ይምረጡ",
+
+    "artist_you_like" : "ሊወዷቸው የሚችሉ አርቲስቶች",
+    "recommended_album" : "የሚመከሩ አልበሞች",
+    "featured_playlist": "ተለይተው የቀረቡ ፕሌይሊስቶች",
+    "for_you" : "ለእርስዎ",
+    "made_for_you" : "ለእርስዎ የተዘጋጀ፣ ፕሌይሊስት ዝርዝሮች",
+    "browse" : "ይፈልጉ",
+    "search_text" : "ሙዚቃ፣ አልበሞች እና ፕሌይሊስቶችን ይፈልጉ",
+    "top_songs" : "ምርጥ መዝሙሮች",
+    "new_songs" : "አዳዲስ መዝሙሮች",
+    "most_liked_song" : "የተወደዱ መዝሙሮች",
+    "top_albums" : "ምርጥ አልበሞች",
+    "new_albums" : "አዳዲስ አልበሞች",
+    "popular_artists" : "ታዋቂ አርቲስቶች",
+    "new_artists" : "አዲስ አርቲስቶች",
+    "create_playlist" :"ፕሌይሊስት ይፍጠሩ",
+    "no_album_found" : "ምንም አልበም አልተገኘም።",
+    "no_artist_found" : "ምንም አርቲስት አልተገኘም።",
+    "no_song_sound" : "ምንም መዝሙር አልተገኘም።",
+    "my_account" : "መለያ",
+    "sign_in_description" : "የተመረጡ መዝሙሮችን ለማኘት ይግቡ",
+    "sign_in" : "ይግቡ",
+    "register" : "ይመዝገቡ",
+    "manage_account" : "መለያዎትን ያስተዳድሩ",
+    "liked_songs" : "የተወደዱ መዝሙሮች",
+    "favorite_albums" : "ተወዳጅ አልበሞች",
+    "favorite_artists" : "ተወዳጅ አርቲስቶች",
+    "your_playlist" : "የእርስዎ ፕሌይሊስቶች",
+    "downloads" : "የወረዱ መዝሙሮች",
+
+    "album" : "አልበሞች",
+    "playlist" : "ፕሌይሊስቶች",
+    "artist" : "አርቲስቶች",
+
+
+    "onboarding_one" : "መዝሙሮች በአንድ ቦታ",
+    "onboarding_one_desc" : "ሁሉንም ተወዳጅ መዝሙሮችዎን በአንድ ቦታ ያግኙ",
+
+    "onboarding_two" : "ለእርሶ የተበጀ የማዳመጥ ልምምድ",
+    "onboarding_two_desc" : "የተመረጡ ፕሌይሊስቶች፣ የሙዚቃ ገበታዎች እና አርቲስቶችን ያገኛሉ",
+
+    "onboarding_three" : "ያለ ኢንተርኔት ያዳምጡ",
+    "onboarding_three_desc" : "የፈለጉትን መዝሙሮች፣ አልበሞች እና ፕሌይሊስት ዝርዝሮች አውርደው ያለ ኢንተርኔት ያዳምጡ",
+
+    "onboarding_four" : "ለእርሶ የተበጀ የማዳመጥ ልምምድ እንዲኖሮት ይግቡ",
+    "onboarding_four_desc" : "በመመዝገብ፣ መዝሙሮችን፣ አልበሞችን እና ፕሌይሊስቶችን መውደድ፣ የራስዎን አጫዋች ዝርዝር መፍጠር እና ሌሎችንም ማድረግ ይችላሉ።",
+
+    "name" : "ስም",
+    "phone_number" : "ስልክ ቁጥር",
+    "register_with_phone" : "በስልክዎ ይመዝገቡ",
+    "sign_in_with_phone" : "በስልክዎ ይግቡ",
+    "login" : "ይግቡ",
+    "continue_with_phone" : "በስልክ ቁጥሮ ይግቡ",
+    "continue_with_facebook" : "በፌስቡክ አካውንቶ ይግቡ",
+    "welcome" : "እንኳን ደህና መጡ",
+    
+    "continue_text" : "ይቀጥሉ",
+    "skip" : "ለ አሁን ይቅር"
+
+}

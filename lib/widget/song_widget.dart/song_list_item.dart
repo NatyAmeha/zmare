@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:get/get.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:zmare/controller/app_controller.dart';
@@ -29,29 +28,34 @@ class SongListItem extends StatelessWidget {
   ListSelectionState selectionState;
   Function(Song)? onMoreclicked;
   Widget? leading;
-  Function? onTap;
-  Function(Song)? onMultiSelection;
+  Function(int?)? onTap;
+  Function(Song)? onLongPress;
 
   var songMenus = [
     MenuViewmodel(
       text: "Like song",
       icon: Icons.favorite_outline,
-      type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+      type: MenuViewmodel.MENU_TYPE_LIKE_SONG,
     ),
     MenuViewmodel(
       text: "Unlike song",
       icon: Icons.favorite,
-      type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+      type: MenuViewmodel.MENU_TYPE_UNLIKE_SONG,
     ),
     MenuViewmodel(
       text: "Download",
       icon: Icons.download,
-      type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+      type: MenuViewmodel.MENU_TYPE_DOWNLOAD_SONG,
     ),
     MenuViewmodel(
       text: "Remove Download",
       icon: Icons.remove,
-      type: MenuViewmodel.MENU_TYPE_LIKE_UNLIKE_SONG,
+      type: MenuViewmodel.MENU_TYPE_REMOVE_DOWNLOAD_SONG,
+    ),
+    MenuViewmodel(
+      text: "Add to queue",
+      icon: Icons.queue_music,
+      type: MenuViewmodel.MENU_TYPE_ADD_TO_QUEUE,
     ),
     MenuViewmodel(
         text: "Go to Album",
@@ -61,6 +65,25 @@ class SongListItem extends StatelessWidget {
         text: "Go to Artist",
         icon: Icons.mic,
         type: MenuViewmodel.MENU_TYPE_GO_TO_ARTIST),
+  ];
+
+  var localSongMenus = [
+    MenuViewmodel(
+        text: "Play",
+        icon: Icons.play_circle,
+        type: MenuViewmodel.MENU_TYPE_PLAY_SONG),
+  ];
+
+  var downloadedSongMenus = [
+    MenuViewmodel(
+        text: "Play",
+        icon: Icons.play_circle,
+        type: MenuViewmodel.MENU_TYPE_PLAY_SONG),
+    MenuViewmodel(
+      text: "Remove Download",
+      icon: Icons.remove,
+      type: MenuViewmodel.MENU_TYPE_REMOVE_DOWNLOAD_SONG,
+    ),
   ];
 
   SongListItem(
@@ -79,37 +102,42 @@ class SongListItem extends StatelessWidget {
     this.selectedSongIds = const [],
     this.selectionState = ListSelectionState.SINGLE_SELECTION,
     this.onTap,
-    this.onMultiSelection,
+    this.onLongPress,
     this.onMoreclicked,
   });
+
+  var appController = Get.find<AppController>();
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      key: key,
+      // key: key,
       selected: isSelected,
       // selectedColor: Colors.black,
-      selectedTileColor: Colors.grey[200],
+      selectedTileColor: Theme.of(context).backgroundColor,
       contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       minVerticalPadding: 0,
       onTap: () {
-        onClick();
+        onTap?.call(null);
       },
-      onLongPress: () {
-        onMultiSelection?.call(songInfo);
-      },
+      // onLongPress: () {
+      //   onLongPress?.call(songInfo);
+      // },
       leading: buildLeading(),
       title: CustomText(
         songInfo.title ?? "",
-        fontWeight: FontWeight.bold,
-        fontSize: 17,
+        textStyle: Theme.of(context).textTheme.titleSmall,
         maxLine: 1,
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
-        child: CustomText(songInfo.artistsName?.first ?? "",
-            fontSize: 13, maxLine: 1, overflow: TextOverflow.ellipsis),
+        child: CustomText(
+          songInfo.artistsName?.first ?? "",
+          textStyle: Theme.of(context).textTheme.bodySmall,
+          maxLine: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
       trailing: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -124,7 +152,7 @@ class SongListItem extends StatelessWidget {
             const SizedBox(width: 10),
           ],
           if (showDragIcon) ...[
-            const Icon(Icons.drag_handle),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.drag_handle)),
             const SizedBox(width: 16),
           ],
           if (showPlayPauseIcon) ...[
@@ -138,7 +166,22 @@ class SongListItem extends StatelessWidget {
           if (showMore)
             IconButton(
               onPressed: () async {
-                onMoreclicked?.call(songInfo) ?? showSongMenu();
+                List<MenuViewmodel> selectedMenus = [];
+                var checkLikeStatus = false;
+                var checkDownloadStatus = false;
+                if (src == AudioSrcType.LOCAL_STORAGE) {
+                  selectedMenus = localSongMenus;
+                } else if (src == AudioSrcType.DOWNLOAD) {
+                  selectedMenus = downloadedSongMenus;
+                } else {
+                  selectedMenus = [...songMenus];
+                  checkLikeStatus = true;
+                  checkDownloadStatus = true;
+                }
+                onMoreclicked?.call(songInfo) ??
+                    showSongMenu(selectedMenus,
+                        checkLikeStatus: checkLikeStatus,
+                        checkDownloadstatus: checkDownloadStatus);
               },
               icon: const Icon(Icons.more_vert),
             ),
@@ -185,51 +228,48 @@ class SongListItem extends StatelessWidget {
           );
   }
 
-  Future<bool> sampleFuture(bool returnVAlue) {
-    return Future.delayed(const Duration(seconds: 5), () {
-      return returnVAlue;
-    });
-  }
-
-  Future<void> showSongMenu() async {
+  Future<void> showSongMenu(List<MenuViewmodel> menus,
+      {bool checkLikeStatus = true, bool checkDownloadstatus = true}) async {
     UIHelper.showBottomSheet(
       SongMenuModal(
+        songInfo: songInfo,
         headerTitle: songInfo.title,
         headerSubtitle: songInfo.artistsName?.join(","),
         headerImage: songInfo.thumbnailPath,
         menuList: [],
+        onclick: (selectedAction) {
+          onTap?.call(selectedAction);
+        },
       ),
       scrollControlled: true,
     );
-    var downloadResult = await sampleFuture(true);
-    var isLiked = await sampleFuture(false);
+    if (checkLikeStatus) {
+      var isSongLiked = await appController.isSongLiked(songInfo.id!);
+      if (isSongLiked)
+        menus.removeWhere((e) => e.type == MenuViewmodel.MENU_TYPE_LIKE_SONG);
+      else
+        menus.removeWhere((e) => e.type == MenuViewmodel.MENU_TYPE_UNLIKE_SONG);
+    }
+    if (checkDownloadstatus) {
+      var downloadResult = await appController.isSongDownloaded(songInfo.id!);
+      if (downloadResult)
+        menus.removeWhere(
+            (e) => e.type == MenuViewmodel.MENU_TYPE_DOWNLOAD_SONG);
+      else
+        menus.removeWhere(
+            (e) => e.type == MenuViewmodel.MENU_TYPE_REMOVE_DOWNLOAD_SONG);
+    }
 
-    if (downloadResult)
-      songMenus.removeAt(2);
-    else
-      songMenus.removeAt(3);
-
-    if (isLiked)
-      songMenus.removeAt(0);
-    else
-      songMenus.removeAt(1);
     UIHelper.moveBack();
     UIHelper.showBottomSheet(
       SongMenuModal(
+        songInfo: songInfo,
         headerTitle: songInfo.title,
         headerSubtitle: songInfo.artistsName?.join(","),
         headerImage: songInfo.thumbnailPath,
-        menuList: songMenus,
+        menuList: menus,
       ),
       scrollControlled: true,
     );
-  }
-
-  onClick() {
-    if (selectionState == ListSelectionState.MULTI_SELECTION) {
-      onMultiSelection?.call(songInfo);
-    } else {
-      onTap?.call();
-    }
   }
 }

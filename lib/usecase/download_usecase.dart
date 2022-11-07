@@ -36,13 +36,13 @@ class DownloadUsecase {
     var permissionResult =
         await permission.requestPermission(Permission.storage);
     if (permissionResult) {
-      await Future.forEach(songs, (song) async {
+      var a = await Future.forEach(songs, (song) async {
         var taskId = await downloadService.startSingle(song, path);
-
+        print("download rs $taskId");
         if (taskId != null) {
           var dbInsertResult = await repositroy!.create<int, Download>(
             DatabaseManager.DB_TABLE_DOWNLOAD,
-            song.toDownload(taskId, type, typeId, typeName),
+            song.toDowwnload(taskId, type, typeId, typeName),
           );
         }
       });
@@ -53,6 +53,16 @@ class DownloadUsecase {
           type: AppException.PERMISSION_DENIED_EXCEPTION,
           message: "Permission denied"));
     }
+  }
+
+  Future<bool> isPlaylistDownloaded(String playlistId) async {
+    var result = await repositroy!.isPlaylistorAlbumDownloaded(playlistId);
+    return result;
+  }
+
+  Future<bool> isSongDownloaded(String songId) async {
+    var result = await repositroy!.isDownloaded(songId);
+    return result;
   }
 
   Future<bool> pauseDownloads(List<String> ids) async {
@@ -72,6 +82,12 @@ class DownloadUsecase {
       }
     });
     return true;
+  }
+
+  Future<Download?> getDownload(String songId) async {
+    var result = await repositroy!
+        .get<Download>("fileId", queryParameters: {"arg1": songId});
+    return result;
   }
 
   Future<bool> removeDownloads(List<Download> downloads) async {

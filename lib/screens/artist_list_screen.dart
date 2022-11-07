@@ -13,26 +13,31 @@ import '../controller/album_controller.dart';
 
 class ArtistListScreen extends StatelessWidget {
   static const routeName = "/artist_list";
+
+  Map<String, dynamic>? args;
+  ArtistListScreen({super.key, this.args});
+
   var artistController = Get.put(ArtistController());
-
-  ArtistListScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     // array of AlbumListDatatype , list of Album
-    var args = Get.arguments as List<dynamic>;
-    var type = args.elementAt(0) as ArtistListDataType;
-    var artists = args.length > 1 ? args[1] as List<Artist> : null;
-    getArtistList(type);
+
+    var type = args?["type"] as ArtistListDataType?;
+    var artists = args?["artists"] as List<Artist>?;
+    if (type != null) {
+      Future.delayed(Duration.zero, () {
+        getArtistList(type);
+      });
+    }
     return Scaffold(
       appBar: AppBar(
-          title: CustomText("Artists", color: Colors.black),
-          backgroundColor: Colors.white),
+        title: CustomText("Artists"),
+      ),
       body: artists?.isNotEmpty == true
           ? ArtistList(artists, type: ArtistListType.ARTIST_GRID_LIST)
           : Obx(
               () => UIHelper.displayContent(
-                showWhen: true,
+                showWhen: artistController.artistList != null,
                 exception: artistController.exception,
                 isDataLoading: artistController.isDataLoading,
                 content: ArtistList(artistController.artistList,

@@ -10,14 +10,16 @@ class AlbumList extends StatelessWidget {
   double height;
   bool isSliver;
   bool shrinkWrap;
+  bool primary;
   AudioSrcType src;
 
   AlbumList(this.albums,
       {this.listType = AlbumListType.ALBUM_GRID_LIST,
       this.width = double.infinity,
       this.height = 300,
-      this.isSliver = true,
+      this.isSliver = false,
       this.shrinkWrap = false,
+      this.primary = true,
       this.src = AudioSrcType.NETWORK});
 
   @override
@@ -31,6 +33,7 @@ class AlbumList extends StatelessWidget {
             return GridView.builder(
               itemCount: albums!.length,
               shrinkWrap: shrinkWrap,
+              primary: primary,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 8,

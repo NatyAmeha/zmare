@@ -6,21 +6,30 @@ class PopupMenu extends StatelessWidget {
   Map<String, Function?> menuList;
   List<IconData>? iconList;
   List<int> inActiveMenuIndexes;
+  List<String> inActiveMenus;
   IconData? indicator;
+  Color? indicatorColor;
   PopupMenu(
       {required this.menuList,
       this.iconList,
       this.indicator,
+      this.inActiveMenus = const [],
+      this.indicatorColor,
       this.inActiveMenuIndexes = const []});
 
   @override
   Widget build(BuildContext context) {
+    menuList.removeWhere((key, value) => inActiveMenus.contains(key));
     return PopupMenuButton(
-      child: Icon(indicator ?? Icons.more_vert),
+      icon: Icon(
+        indicator ?? Icons.more_vert,
+        color: indicatorColor,
+        size: 30,
+      ),
       itemBuilder: (context) => List.generate(
         menuList.length,
         (index) => PopupMenuItem(
-          enabled: !inActiveMenuIndexes.contains(index),
+          // enabled: !inActiveMenuIndexes.contains(index),
           onTap: () {
             menuList.values.toList()[index]?.call();
           },

@@ -17,14 +17,18 @@ class DownloadStatusIndicator extends StatelessWidget {
 
   double size;
   List<Download> downloadBatch;
+  Function(DownloadStatus)? onStatusUpdate;
 
-  DownloadStatusIndicator({required this.downloadBatch, this.size = 30}) {
+  DownloadStatusIndicator(
+      {required this.downloadBatch, this.size = 30, this.onStatusUpdate}) {
     incompleteDownloads = downloadBatch
         .map((e) => e.progress ?? 0)
         .where((pr) => pr < 100)
         .toList();
   }
   List<String?> get ids => downloadBatch.map((e) => e.taskId).toList();
+  List<DownloadStatus?> get downloadStatus =>
+      downloadBatch.map((e) => e.status).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -36,33 +40,43 @@ class DownloadStatusIndicator extends StatelessWidget {
             return Row(
               children: [
                 if (computeStatus(snapshot.data!) == DownloadStatus.NOT_STARTED)
-                  const Icon(Icons.download, color: Colors.blue),
+                  const Icon(Icons.download, color: Colors.green),
                 if (computeStatus(snapshot.data!) == DownloadStatus.FAILED)
                   const Icon(Icons.error_outline, color: Colors.red),
                 if (computeStatus(snapshot.data!) == DownloadStatus.COMPLETED)
-                  const Icon(Icons.download_done_sharp, color: Colors.blue),
+                  const Icon(Icons.download_done_sharp, color: Colors.green),
                 if (computeStatus(snapshot.data!) == DownloadStatus.PAUSED)
-                  const Icon(Icons.pause, color: Colors.blue),
+                  const Icon(Icons.pause, color: Colors.green),
                 if (computeStatus(snapshot.data!) == DownloadStatus.IN_PROGRESS)
                   SizedBox(
                     height: size,
                     width: size,
-                    child: CircularProgressIndicator.adaptive(
-                      value: (computeProgress(snapshot.data!)) / 100,
+                    child: const CircularProgressIndicator.adaptive(
+                      value: 1.0, // (computeProgress(snapshot.data!)) / 100,
                       strokeWidth: 3,
                       backgroundColor: Colors.grey,
                       valueColor:
-                          const AlwaysStoppedAnimation<Color>(Colors.blue),
+                          const AlwaysStoppedAnimation<Color>(Colors.green),
                     ),
                   ),
                 const SizedBox(width: 8),
                 if (computeStatus(snapshot.data!) == DownloadStatus.COMPLETED)
-                  CustomText("completed", fontSize: 11),
+                  CustomText(
+                    "completed",
+                    textStyle: Theme.of(context).textTheme.caption,
+                  ),
                 if (computeStatus(snapshot.data!) == DownloadStatus.PAUSED)
-                  CustomText("Paused", fontSize: 11),
+                  CustomText(
+                    "Paused",
+                    textStyle: Theme.of(context).textTheme.caption,
+                  ),
                 if (computeStatus(snapshot.data!) == DownloadStatus.IN_PROGRESS)
-                  CustomText("${(computeProgress(snapshot.data!))}%",
-                      fontSize: 11),
+                  // CustomText("${(computeProgress(snapshot.data!))}%",
+                  //     fontSize: 11),
+                  CustomText(
+                    "Downloading...",
+                    textStyle: Theme.of(context).textTheme.caption,
+                  ),
               ],
             );
           } else {
@@ -88,9 +102,12 @@ class DownloadStatusIndicator extends StatelessWidget {
 
   DownloadStatus computeStatus(DownloadProgress status) {
     if (ids.contains(status.id)) {
+      // if(downloadStatus.any((element) => element == DownloadStatus.IN_PROGRESS))
       var newStatus = status.status;
+      onStatusUpdate?.call(newStatus);
       return newStatus;
     } else {
+      onStatusUpdate?.call(buildInitial().status);
       return buildInitial().status;
     }
   }

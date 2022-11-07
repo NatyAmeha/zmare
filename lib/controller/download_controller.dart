@@ -57,7 +57,6 @@ class DownloadController extends GetxController {
       _isDataLoading(true);
       var downloadUsecase = DownloadUsecase(repositroy: DownloadRepository());
       var result = await downloadUsecase.getDownloads();
-      print(result.map((e) => e.typeName).toList());
       var downloadInfos =
           groupBy(result, (download) => download.typeId).entries.map((entry) {
         var type = DownloadType.SINGLE;
@@ -75,9 +74,14 @@ class DownloadController extends GetxController {
       }).toList();
       downloadResult = downloadInfos;
     } catch (ex) {
-      print("fetch data error");
       print(ex.toString());
-      _exception(ex as AppException);
+      _exception(
+        AppException(
+            title: "No download found",
+            message:
+                "Your downloaded songs, albums and playlist collected here",
+            actionText: "Start download"),
+      );
     } finally {
       _isDataLoading(false);
     }

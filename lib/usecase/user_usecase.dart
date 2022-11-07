@@ -4,6 +4,7 @@ import 'package:zmare/repo/repository.dart';
 import 'package:zmare/repo/shared_pref_repo.dart';
 import 'package:zmare/service/account_service.dart';
 import 'package:zmare/utils/constants.dart';
+import 'package:zmare/viewmodels/fb_auth.dart';
 
 class UserUsecase {
   IRepositroy? repo;
@@ -34,16 +35,38 @@ class UserUsecase {
   Future<User> registerOrAuthenticatewithPhone(User userInfo) async {
     var tokenResult =
         await repo!.create<String, User>("/auth/registerwithphone", userInfo);
+
     var userResult = await accountService!.decodeToken(tokenResult);
-    print("${userResult.username} , ${userResult.phoneNumber}");
+
     var preferenceSaveResult =
         await sharedPrefRepo!.saveUserInfo(userResult, tokenResult);
     print("${userResult.username}  ${preferenceSaveResult}");
     return userResult;
   }
 
+  Future<Map<String, dynamic>> signInWithFacebook() async {
+    var fbAuthREsult = await accountService!.signInWithFacebook();
+    var apiResult =
+        await repo!.create<FBAuth, User>("/auth/signinfacebook", fbAuthREsult);
+    var userResult = await accountService!.decodeToken(apiResult.token!);
+
+    // save result to preference
+    await sharedPrefRepo!.saveUserInfo(userResult, apiResult.token!);
+    return {"user": userResult, "isNew": apiResult.isNewUser};
+  }
+
+  Future<bool> registerFCMToken() async {
+    try {
+      var token = await accountService!.getFCMToken(null);
+      var result = await repo!.update<bool, dynamic>("/user/fcmtoken/add",
+          queryParameters: {"fcmtoken": token});
+      return result;
+    } catch (ex) {
+      return false;
+    }
+  }
+
   Future<String?> sendVerificationCode(String phoneNumber) async {
-    print("phone number $phoneNumber");
     var result = await accountService!.sendVerificationCode(phoneNumber);
     return result;
   }

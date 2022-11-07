@@ -56,12 +56,16 @@ class CustomImage extends StatelessWidget {
                 width: width,
                 height: height,
                 fit: fit,
+                errorBuilder: (context, error, stackTrace) =>
+                    Image.asset(placeholder),
               ))
           : Image.asset(
               image ?? placeholder,
               width: width,
               height: height,
               fit: fit,
+              errorBuilder: (context, exception, stack) =>
+                  Image.asset(placeholder),
             );
     }
   }

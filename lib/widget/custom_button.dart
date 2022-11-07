@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+
 import 'package:zmare/utils/constants.dart';
 import 'package:zmare/widget/custom_text.dart';
 
@@ -11,17 +10,21 @@ class CustomButton extends StatelessWidget {
   Color? iconColor;
   Function onPressed;
   bool enabled;
+
   bool wrapContent;
-  Color textColor;
+
   double textSize;
+  Color? textColor;
+  Color? buttonColor;
   CustomButton(this.text,
       {required this.buttonType,
       this.icon,
       this.iconColor,
       this.enabled = true,
       this.wrapContent = false,
-      this.textColor = Colors.white,
       required this.onPressed,
+      this.textColor,
+      this.buttonColor,
       this.textSize = 14});
 
   @override
@@ -46,7 +49,6 @@ class CustomButton extends StatelessWidget {
                 // const SizedBox(width: 32),
                 CustomText(
                   text,
-                  color: textColor,
                   fontSize: textSize,
                 ),
                 if (icon != null) const SizedBox(width: 16)
@@ -73,7 +75,6 @@ class CustomButton extends StatelessWidget {
                   if (icon != null) Icon(icon, color: iconColor),
                   CustomText(
                     text,
-                    color: textColor,
                     fontSize: textSize,
                   ),
                 ],
@@ -98,8 +99,8 @@ class CustomButton extends StatelessWidget {
                   if (icon != null) Icon(icon, color: iconColor),
                   CustomText(
                     text,
-                    color: textColor,
                     fontSize: textSize,
+                    color: textColor,
                   ),
                 ],
               ),
@@ -107,11 +108,10 @@ class CustomButton extends StatelessWidget {
 
       case ButtonType.ROUND_ELEVATED_BUTTON:
         return ElevatedButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: buttonColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(32),
               ),
             ),
             onPressed: enabled
@@ -123,28 +123,21 @@ class CustomButton extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Row(
                 mainAxisSize: wrapContent ? MainAxisSize.min : MainAxisSize.max,
-                mainAxisAlignment: icon != null
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   if (icon != null) Icon(icon, color: iconColor),
                   if (icon != null) const SizedBox(width: 16),
-                  CustomText(
-                    text,
-                    color: textColor,
-                    fontSize: textSize,
-                  ),
+                  CustomText(text, fontSize: textSize, color: textColor),
                 ],
               ),
             ));
 
       case ButtonType.ROUND_OUTLINED_BUTTON:
         return OutlinedButton(
-            style: ButtonStyle(
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                ),
+            style: OutlinedButton.styleFrom(
+              backgroundColor: buttonColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(32),
               ),
             ),
             onPressed: enabled
@@ -188,7 +181,6 @@ class CustomButton extends StatelessWidget {
                   if (icon != null) Icon(icon, color: iconColor),
                   CustomText(
                     text,
-                    color: textColor,
                     fontSize: textSize,
                   ),
                 ],

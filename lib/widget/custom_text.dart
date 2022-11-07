@@ -4,25 +4,28 @@ import 'package:flutter/src/widgets/framework.dart';
 
 class CustomText extends StatelessWidget {
   String text;
-  double fontSize;
+  double? fontSize;
   FontWeight? fontWeight;
   Color? color;
   TextAlign? alignment;
   int maxLine;
   TextOverflow? overflow;
-  CustomText(this.text,
-      {this.fontSize = 16,
-      this.fontWeight,
-      this.color,
-      this.alignment,
-      this.maxLine = 10,
-      this.overflow});
+  TextStyle? textStyle;
+  CustomText(
+    this.text, {
+    this.fontSize,
+    this.fontWeight,
+    this.color,
+    this.alignment,
+    this.maxLine = 10,
+    this.overflow,
+    this.textStyle,
+  });
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
-      style:
-          TextStyle(fontSize: fontSize, fontWeight: fontWeight, color: color),
+      style: textStyle?.copyWith(color: color, fontSize: fontSize),
       textAlign: alignment,
       maxLines: maxLine,
       overflow: overflow,

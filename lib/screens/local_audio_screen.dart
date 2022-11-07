@@ -13,6 +13,7 @@ import 'package:zmare/widget/custom_text.dart';
 import 'package:zmare/widget/playlist_widget/playlist_list.dart';
 import 'package:zmare/widget/song_widget.dart/local_song_list_item.dart';
 import 'package:zmare/widget/song_widget.dart/song_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocalAudioScreen extends StatelessWidget {
   static const routeName = "/local_audio";
@@ -32,16 +33,20 @@ class LocalAudioScreen extends StatelessWidget {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          title: CustomText("Local audios"),
+          title: CustomText("Local audios", fontSize: 20),
+          leading: const Icon(Icons.library_books),
           bottom: TabBar(
-            labelColor: Colors.black,
-            unselectedLabelColor: Colors.grey[400],
             isScrollable: true,
-            tabs: const [
-              Tab(text: "Playlists"),
-              Tab(text: "Albums"),
-              Tab(text: "Artists"),
-              Tab(text: "Songs")
+            labelColor: Theme.of(context).colorScheme.primary,
+            indicatorColor: Colors.green,
+            unselectedLabelColor: Colors.grey,
+            tabs: [
+              Tab(
+                text: AppLocalizations.of(context)!.album,
+              ),
+              Tab(text: AppLocalizations.of(context)!.artist),
+              Tab(text: "Songs"),
+              Tab(text: AppLocalizations.of(context)!.playlist),
             ],
           ),
         ),
@@ -51,28 +56,18 @@ class LocalAudioScreen extends StatelessWidget {
             isDataLoading: appController.isDataLoading,
             exception: appController.exception,
             content: TabBarView(
+              physics: const BouncingScrollPhysics(),
               children: [
-                buildTabItem(
-                    PlaylistList(
-                      appController.localAudioFiles?.playlists,
-                      src: AudioSrcType.LOCAL_STORAGE,
-                      listType: PlaylistListType.GRID,
-                      height: 200,
-                    ),
-                    appController.localAudioFiles?.playlists?.length ?? 0,
-                    "Create Playlist",
-                    iconData: Icons.add,
-                    onActionClick: () {}),
                 buildTabItem(
                     AlbumList(
                       appController.localAudioFiles?.albums,
-                      isSliver: false,
+                      primary: false,
                       listType: AlbumListType.ALBUM_GRID_LIST,
                       src: AudioSrcType.LOCAL_STORAGE,
                       height: 250,
                     ),
                     appController.localAudioFiles?.albums?.length ?? 0,
-                    "No Album found",
+                    AppLocalizations.of(context)!.no_album_found,
                     onActionClick: () {}),
                 buildTabItem(
                     ArtistList(
@@ -81,13 +76,29 @@ class LocalAudioScreen extends StatelessWidget {
                       src: AudioSrcType.LOCAL_STORAGE,
                     ),
                     appController.localAudioFiles?.albums?.length ?? 0,
-                    "No Artist found",
+                    AppLocalizations.of(context)!.no_artist_found,
                     onActionClick: () {}),
                 buildTabItem(
-                    SongList(appController.localAudioFiles?.songs,
-                        isSliver: false),
+                    SongList(
+                      appController.localAudioFiles?.songs,
+                      isSliver: false,
+                      src: AudioSrcType.LOCAL_STORAGE,
+                      adIndexs: UIHelper.selectAdIndex(
+                          appController.localAudioFiles?.songs?.length ?? 0),
+                    ),
                     appController.localAudioFiles?.albums?.length ?? 0,
-                    "No Song found",
+                    AppLocalizations.of(context)!.no_song_sound,
+                    onActionClick: () {}),
+                buildTabItem(
+                    PlaylistList(
+                      appController.localAudioFiles?.playlists,
+                      src: AudioSrcType.LOCAL_STORAGE,
+                      listType: PlaylistListType.GRID,
+                      height: 200,
+                    ),
+                    appController.localAudioFiles?.playlists?.length ?? 0,
+                    "No playlist found",
+                    iconData: Icons.add,
                     onActionClick: () {}),
               ],
             ),
@@ -104,18 +115,20 @@ class LocalAudioScreen extends StatelessWidget {
     } else {
       return Center(
         child: CustomContainer(
-          color: Colors.grey[200],
           height: 200,
           width: 200,
           onTap: () {
             onActionClick?.call();
           },
           borderRadius: 16,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Icon(iconData, size: 60),
-            const SizedBox(height: 16),
-            CustomText(actionText, fontSize: 16)
-          ]),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.hourglass_empty, size: 60),
+              const SizedBox(height: 16),
+              CustomText(actionText, fontSize: 16)
+            ],
+          ),
         ),
       );
     }

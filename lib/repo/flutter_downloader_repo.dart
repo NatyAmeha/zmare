@@ -41,7 +41,6 @@ class FlutterDownloaderRepo implements IDownloadRepo {
   Future<List<R>> getAll<R>(String path,
       {Map<String, dynamic>? queryParameters}) async {
     var downloadTasks = await FlutterDownloader.loadTasks();
-    var b = downloadTasks?.elementAt(1).filename;
     var downloadResult = downloadTasks
         ?.map(
           (e) => Download(

@@ -29,17 +29,18 @@ class AlbumListItem extends StatelessWidget {
       onTap: () {
         if (src == AudioSrcType.NETWORK) {
           // Get.toNamed("/album/${albumInfo.id}");
-          UIHelper.moveToScreen("/album/${albumInfo.id}", arguments: {
-            "src": AudioSrcType.NETWORK,
-          });
+          UIHelper.moveToScreen("/album/${albumInfo.id}",
+              arguments: {
+                "src": AudioSrcType.NETWORK,
+              },
+              navigatorId: UIHelper.bottomNavigatorKeyId);
         } else if (src == AudioSrcType.LOCAL_STORAGE) {
-          UIHelper.moveToScreen(
-            "/album/${albumInfo.id}",
-            arguments: {
-              "src": AudioSrcType.LOCAL_STORAGE,
-              "album_info": albumInfo
-            },
-          );
+          UIHelper.moveToScreen("/album/${albumInfo.id}",
+              arguments: {
+                "src": AudioSrcType.LOCAL_STORAGE,
+                "album_info": albumInfo
+              },
+              navigatorId: UIHelper.bottomNavigatorKeyId);
         }
       },
       borderRadius: 16,
@@ -69,46 +70,62 @@ class AlbumListItem extends StatelessWidget {
               ),
             ),
           Positioned.fill(
+              child: CustomContainer(
+            gradientColor: [Colors.transparent, Colors.grey],
+            child: Container(),
+          )),
+          Positioned.fill(
+            left: 8,
+            right: 8,
+            bottom: 8,
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: CustomContainer(
-                borderRadius: 0,
-                borderColor: Colors.grey[200],
-                padding: 8,
-                margin: 0,
-                gradientColor: [Colors.grey[200]!, Colors.grey[200]!],
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomText(albumInfo.name ?? "",
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                              maxLine: 1,
-                              overflow: TextOverflow.ellipsis),
-                          CustomText(
-                            albumInfo.artistsName?.join(",") ?? "",
-                            fontSize: 12,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(albumInfo.name ?? "",
+                            textStyle: Theme.of(context).textTheme.titleLarge,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                             maxLine: 1,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        ],
-                      ),
+                            overflow: TextOverflow.ellipsis),
+                        const SizedBox(height: 4),
+                        CustomText(
+                          albumInfo.artistsName?.join(",") ?? "",
+                          textStyle: Theme.of(context).textTheme.bodySmall,
+                          color: Colors.white,
+                          maxLine: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 24),
+                      ],
                     ),
-                    PlayPauseIcon(
-                      isPlaying: true,
-                      size: 30,
-                    )
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          )
+          ),
+          if (src == AudioSrcType.NETWORK)
+            Positioned.fill(
+                bottom: 8,
+                right: 8,
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: PlayPauseIcon(
+                    size: 50,
+                    playlistOrAlbumId: albumInfo.id,
+                    songs: albumInfo.songs,
+                    color: Theme.of(context).colorScheme.primary,
+                    src: src,
+                  ),
+                ))
         ],
       ),
     );

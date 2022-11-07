@@ -57,6 +57,7 @@ class CircleTile extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: radius,
+                    backgroundColor: Theme.of(context).backgroundColor,
                     backgroundImage: NetworkImage(image!),
                   ),
                   if (selectionState == ListSelectionState.MULTI_SELECTION &&
@@ -64,8 +65,7 @@ class CircleTile extends StatelessWidget {
                     Positioned.fill(
                       child: Align(
                         alignment: Alignment.center,
-                        child: Icon(Icons.check_circle,
-                            color: Colors.blue, size: radius),
+                        child: Icon(Icons.check_circle, size: radius),
                       ),
                     )
                 ],
@@ -88,7 +88,7 @@ class CircleTile extends StatelessWidget {
           if (text != null)
             CustomText(
               text!,
-              fontSize: 16,
+              textStyle: Theme.of(context).textTheme.titleSmall,
               fontWeight: FontWeight.bold,
               alignment: TextAlign.center,
               maxLine: 1,
@@ -120,7 +120,7 @@ class CircleVerticalListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
-        height: (radius * 2) + 30,
+        height: (radius * 2) + 20,
         onTap: () {
           onClick?.call();
         },
@@ -128,6 +128,7 @@ class CircleVerticalListTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CircleAvatar(
+              backgroundColor: Theme.of(context).backgroundColor,
               backgroundImage: NetworkImage(image),
               radius: radius,
             ),
@@ -139,7 +140,7 @@ class CircleVerticalListTile extends StatelessWidget {
                 children: [
                   CustomText(
                     text!,
-                    fontSize: 17,
+                    textStyle: Theme.of(context).textTheme.titleMedium,
                     fontWeight: FontWeight.bold,
                     maxLine: 1,
                     overflow: TextOverflow.ellipsis,
@@ -147,12 +148,15 @@ class CircleVerticalListTile extends StatelessWidget {
                   if (subtitle != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
-                      child: CustomText(subtitle!, fontSize: 14),
+                      child: CustomText(
+                        subtitle!,
+                        textStyle: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ),
                 ],
               ),
             ),
-            if (trailing != null) trailing!
+            if (trailing != null) const Icon(Icons.arrow_forward_ios)
           ],
         ));
   }
@@ -164,7 +168,7 @@ class CircleTileList extends StatelessWidget {
   List<String>? subtitle;
   List<String> image;
   AudioSrcType src;
-  Function(String?)? onclick;
+  Function(String?, int)? onclick;
   double circleRadius;
   double height;
   ArtistListType? listType;
@@ -211,7 +215,7 @@ class CircleTileList extends StatelessWidget {
                   radius: circleRadius,
                   src: src,
                   onClick: () {
-                    onclick?.call(id![index]);
+                    onclick?.call(id![index], index);
                   },
                 ),
         ),
@@ -241,7 +245,7 @@ class CircleTileList extends StatelessWidget {
                 radius: circleRadius,
                 src: src,
                 onClick: () {
-                  onclick?.call(id![index]);
+                  onclick?.call(id![index], index);
                 },
               ),
       );

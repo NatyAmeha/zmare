@@ -35,36 +35,57 @@ class UserController extends GetxController {
       var verificationidResult =
           await userUsecase.sendVerificationCode(userInfo!.phoneNumber!);
       if (verificationidResult != null) {
-        var submittedCode = await UIHelper.moveToScreen(
-            VerificationScreen.routeName,
-            waitForRespnse: true);
-
-        // compare the above code and check verification using firebase auth
-        var verificationResult = await userUsecase.verifySmsCode(
-            verificationidResult, submittedCode);
-
-        if (verificationResult) {
-          //move to artist selection list
-          if (isPreviouslyLoggedIn) {
-            await signupWithPhone(true, []);
-            UIHelper.moveToScreen(MainScreen.routName);
-          } else {
-            UIHelper.moveToScreen(ArtistSelectionListScreen.routeName);
-          }
-        } else {
-          UIHelper.showSnackBar("Unable to verify phone number",
-              type: SnackbarType.ERROR_SNACKBAR);
-        }
+        // phone is not auto verified
+        print("code sent ${verificationidResult}");
+        await UIHelper.moveToScreen(VerificationScreen.routeName, arguments: {
+          "verificationId": verificationidResult,
+          "isLoggedinBefore": isPreviouslyLoggedIn
+        });
       } else {
         // phone is auto verified
-        // move to artist selection list
-        UIHelper.moveToScreen(ArtistSelectionListScreen.routeName);
+
+        if (isPreviouslyLoggedIn) {
+          await signupWithPhone(true, []);
+          UIHelper.removeBackstackAndmoveToScreen(MainScreen.routName);
+        } else {
+          UIHelper.moveToScreen(ArtistSelectionListScreen.routeName);
+        }
       }
     } catch (ex) {
       print(ex.toString());
-      UIHelper.showSnackBar("Unable to verify phone number",
+      UIHelper.showSnackBar("Unable to send verificatin code",
           type: SnackbarType.ERROR_SNACKBAR);
       // _exception(ex as AppException);
+    } finally {
+      _isDataLoading(false);
+    }
+  }
+
+  verifySmsCode(String verificationId, String submittedCode,
+      bool isPreviouslyLoggedIn) async {
+    try {
+      _isDataLoading(true);
+      // compare the above code and check verification using firebase auth
+      var userUsecase = UserUsecase(
+          repo: ApiRepository<User>(), accountService: FirebaseAuthService());
+      var verificationResult =
+          await userUsecase.verifySmsCode(verificationId, submittedCode);
+
+      if (verificationResult) {
+        //move to artist selection list
+        if (isPreviouslyLoggedIn) {
+          await signupWithPhone(true, []);
+          UIHelper.removeBackstackAndmoveToScreen(MainScreen.routName);
+        } else {
+          UIHelper.moveToScreen(ArtistSelectionListScreen.routeName, pop: true);
+        }
+      } else {
+        UIHelper.showSnackBar("Input is not correct",
+            type: SnackbarType.ERROR_SNACKBAR);
+      }
+    } catch (ex) {
+      UIHelper.showSnackBar("Sorry unable to verify phone number",
+          type: SnackbarType.ERROR_SNACKBAR);
     } finally {
       _isDataLoading(false);
     }
@@ -80,6 +101,9 @@ class UserController extends GetxController {
           repo: ApiRepository<User>(), accountService: FirebaseAuthService());
       var userResult =
           await userUsecase.registerOrAuthenticatewithPhone(userInfo!);
+
+      var tokenSaveResult = await userUsecase.registerFCMToken();
+      print("token save result $tokenSaveResult");
       appController.loggedInUser(userResult);
       if (!isPreviouslyLOggedin && selectedArtistId.isNotEmpty) {
         var artistUsecase = ArtistUsecase(repo: ApiRepository());
@@ -87,7 +111,32 @@ class UserController extends GetxController {
             await artistUsecase.followArtists(selectedArtistId);
       }
 
-      UIHelper.moveToScreen(MainScreen.routName);
+      UIHelper.removeBackstackAndmoveToScreen(MainScreen.routName);
+    } catch (ex) {
+      print(ex.toString());
+      _exception(ex as AppException);
+    } finally {
+      _isDataLoading(false);
+    }
+  }
+
+  continueWithFacebook() async {
+    try {
+      _isDataLoading(true);
+      var userUsecase = UserUsecase(
+          repo: ApiRepository<User>(), accountService: FirebaseAuthService());
+      var authResult = await userUsecase.signInWithFacebook();
+
+      var tokenSaveResult = await userUsecase.registerFCMToken();
+      print("token save result $tokenSaveResult");
+      appController.loggedInUser(authResult["user"] as User);
+      var isNewUser = authResult["isNew"] as bool;
+      if (isNewUser) {
+        // UIHelper.moveToScreen(ArtistSelectionListScreen.routeName);
+
+      }
+
+      UIHelper.removeBackstackAndmoveToScreen(MainScreen.routName);
     } catch (ex) {
       print(ex.toString());
       _exception(ex as AppException);

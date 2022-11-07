@@ -68,7 +68,7 @@ class CustomTextField<T> extends StatelessWidget {
                   // borderRadius: BorderRadius.circular(10),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blue),
+                  borderSide: const BorderSide(),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
@@ -103,7 +103,7 @@ class CustomTextField<T> extends StatelessWidget {
                   // borderRadius: BorderRadius.circular(10),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.blue),
+                  // borderSide: const BorderSide(color: Colors.blue),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,

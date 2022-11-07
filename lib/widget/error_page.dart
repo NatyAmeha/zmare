@@ -11,21 +11,14 @@ import 'package:zmare/widget/custom_text.dart';
 class ErrorPage extends StatelessWidget {
   var appController = Get.find<AppController>();
 
-  String title;
   AppException? exception;
   IconData icon;
-  String? message;
-  String actionText;
-  Function? action;
+  bool showIcon;
 
-  ErrorPage({
-    this.title = "Error occured",
-    this.exception,
-    this.icon = Icons.error_outline_outlined,
-    this.message,
-    this.actionText = "try again",
-    this.action,
-  });
+  ErrorPage(
+      {this.exception,
+      this.icon = Icons.error_outline_outlined,
+      this.showIcon = true});
 
   @override
   Widget build(BuildContext context) {
@@ -48,17 +41,17 @@ class ErrorPage extends StatelessWidget {
         };
         break;
       case AppException.SERVER_EXCEPTION:
-        btnText = "Try again";
+        btnText = "  Try again  ";
         errorMessage = "Server error ${exception?.message}";
         onClick = () {
           Get.back();
         };
         break;
       default:
-        btnText = actionText;
-        errorMessage = message ?? exception?.message ?? "";
+        btnText = exception?.actionText ?? "  Try again  ";
+        errorMessage = exception?.message ?? "";
         onClick = () {
-          action?.call();
+          exception?.action?.call();
         };
         break;
     }
@@ -66,23 +59,18 @@ class ErrorPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            icon,
-            size: 100,
-          ),
-          const SizedBox(
-            height: 24,
-          ),
+          if (showIcon) Icon(icon, size: 100),
+          const SizedBox(height: 24),
           CustomText(
-            title,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+            exception?.title ?? "",
+            textStyle: Theme.of(context).textTheme.titleLarge,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             child: CustomText(
               errorMessage,
               alignment: TextAlign.center,
+              textStyle: Theme.of(context).textTheme.bodyLarge,
             ),
           ),
           // if (message != null || exception?.message != null)
@@ -92,7 +80,6 @@ class ErrorPage extends StatelessWidget {
               btnText,
               buttonType: ButtonType.ROUND_ELEVATED_BUTTON,
               wrapContent: true,
-              icon: Icons.try_sms_star,
               onPressed: () {
                 onClick();
               },

@@ -21,6 +21,7 @@ Download _$DownloadFromJson(Map<String, dynamic> json) => Download(
       image: json['image'] as String?,
       date:
           json['date'] == null ? null : DateTime.parse(json['date'] as String),
+      progress: json['progress'] as int?,
     );
 
 Map<String, dynamic> _$DownloadToJson(Download instance) => <String, dynamic>{
@@ -36,6 +37,7 @@ Map<String, dynamic> _$DownloadToJson(Download instance) => <String, dynamic>{
       'typeName': instance.typeName,
       'image': instance.image,
       'artistNames': instance.artistNames,
+      'progress': instance.progress,
       'date': instance.date?.toIso8601String(),
     };
 

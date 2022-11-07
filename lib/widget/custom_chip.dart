@@ -17,9 +17,10 @@ class CustomChip extends StatelessWidget {
     return InputChip(
       label: CustomText(label, fontSize: 12),
       labelPadding: const EdgeInsets.all(8),
-      avatar: const CircleAvatar(
+      avatar: CircleAvatar(
+          backgroundColor: Theme.of(context).backgroundColor,
           radius: 10,
-          child: Icon(
+          child: const Icon(
             Icons.check_circle,
             size: 15,
           )),

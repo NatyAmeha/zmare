@@ -46,22 +46,45 @@ class DBRepo implements IRepositroy {
   }
 
   @override
-  Future<R?> get<R>(String path, {Map<String, dynamic>? queryParameters}) {
-    // TODO: implement get
-    throw UnimplementedError();
+  Future<R?> get<R>(String path,
+      {Map<String, dynamic>? queryParameters}) async {
+    // where = field of downlod table
+    // value = send via arg1, arg2 etc
+    try {
+      var database = await DatabaseManager.getInstance().database;
+      switch (R) {
+        case Download:
+          var result = await database.query(DatabaseManager.DB_TABLE_DOWNLOAD,
+              where: "$path=?",
+              whereArgs: [queryParameters?["arg1"]],
+              distinct: true,
+              limit: 1);
+          var downloadResult = result.map((e) => Download.fromJson(e)).toList();
+          return downloadResult.first as R?;
+      }
+    } catch (ex) {
+      print("query ${ex.toString()}");
+      return Future.error(AppException(
+          type: AppException.DOWNLOAD_EXCEPTION,
+          message: "unable to check downloade"));
+    }
   }
 
   @override
   Future<List<R>> getAll<R>(String path,
       {Map<String, dynamic>? queryParameters}) async {
     try {
+      var database = await DatabaseManager.getInstance().database;
       switch (R) {
         case Download:
-          var database = await DatabaseManager.getInstance().database;
           var result = await database.query(path);
+          print("downlaod result ${result.length}");
           var flutterDownloader = const FlutterDownloaderRepo();
           var moreDownloadINfo = await flutterDownloader.getAll<Download>("");
+          print(moreDownloadINfo.length);
           var downloadResult = result.map((e) => Download.fromJson(e)).toList();
+          print(downloadResult.length);
+
           for (var e in downloadResult) {
             var additionalDownloadInfo = moreDownloadINfo
                 .firstWhere((element) => element.name == e.name);

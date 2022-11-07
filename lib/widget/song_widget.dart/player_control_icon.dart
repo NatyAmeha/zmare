@@ -14,14 +14,15 @@ class PlayerControlIcon extends StatelessWidget {
     return SizedBox(
       height: size,
       width: size,
-      child: IconButton(
-          onPressed: () {
-            onclick?.call();
-          },
-          icon: Icon(
-            icon,
-            size: size,
-          )),
+      child: InkWell(
+        onTap: () {
+          onclick?.call();
+        },
+        child: Icon(
+          icon,
+          size: size,
+        ),
+      ),
     );
   }
 }

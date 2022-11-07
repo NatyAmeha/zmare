@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:zmare/modals/album.dart';
 import 'package:zmare/modals/artist.dart';
@@ -39,11 +40,23 @@ class BrowseViewmodel {
 @JsonSerializable(explicitToJson: true)
 class BrowseCommand {
   String? name;
+  String? subtitle;
   String? category;
   String? contentType;
+  List<String> tags;
   String? imagePath;
+  @JsonKey(ignore: true)
+  IconData? icon;
 
-  BrowseCommand({this.name, this.category, this.contentType, this.imagePath});
+  BrowseCommand({
+    this.name,
+    this.subtitle,
+    this.category,
+    this.contentType,
+    this.imagePath,
+    this.tags = const [],
+    this.icon,
+  });
 
   factory BrowseCommand.fromJson(Map<String, dynamic> json) =>
       _$BrowseCommandFromJson(json);

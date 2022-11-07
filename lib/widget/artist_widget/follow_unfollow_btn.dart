@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
@@ -16,8 +17,9 @@ class FollowUnfollowArtistBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     artistController.isArtistInFavorite(artistId);
     return Obx(() => artistController.isFollowing.value
-        ? CustomButton("Unfollow", buttonType: ButtonType.ROUND_OUTLINED_BUTTON,
-            onPressed: () {
+        ? CustomButton("Unfollow",
+            buttonType: ButtonType.ROUND_OUTLINED_BUTTON,
+            buttonColor: Colors.white, onPressed: () {
             artistController.unfollowArtist(artistId);
           })
         : CustomButton("Follow", buttonType: ButtonType.ROUND_ELEVATED_BUTTON,

@@ -7,6 +7,7 @@ import 'db_manager.dart';
 abstract class IDownloadRepository extends IRepositroy {
   Future<int> updateDownloadTaskId(String oldTAskId, String newTaskId);
   Future<bool> isDownloaded(String id);
+  Future<bool> isPlaylistorAlbumDownloaded(String id);
 }
 
 class DownloadRepository extends DBRepo implements IDownloadRepository {
@@ -26,15 +27,35 @@ class DownloadRepository extends DBRepo implements IDownloadRepository {
   }
 
   @override
-  Future<bool> isDownloaded(String taskId) async {
+  Future<bool> isDownloaded(String songId) async {
     try {
       var database = await DatabaseManager.getInstance().database;
       var downloadResult = await database.query(
           DatabaseManager.DB_TABLE_DOWNLOAD,
-          where: "taskId",
-          whereArgs: [taskId],
+          where: "fileId=?",
+          whereArgs: [songId],
           distinct: true,
           limit: 1);
+
+      return (downloadResult.isNotEmpty);
+    } catch (ex) {
+      print("query ${ex.toString()}");
+      return Future.error(AppException(
+          type: AppException.DOWNLOAD_EXCEPTION,
+          message: "unable to check downloade"));
+    }
+  }
+
+  @override
+  Future<bool> isPlaylistorAlbumDownloaded(String id) async {
+    try {
+      var database = await DatabaseManager.getInstance().database;
+      var downloadResult = await database.query(
+        DatabaseManager.DB_TABLE_DOWNLOAD,
+        where: "typeId =?",
+        whereArgs: [id],
+        distinct: true,
+      );
 
       return (downloadResult.isNotEmpty);
     } catch (ex) {

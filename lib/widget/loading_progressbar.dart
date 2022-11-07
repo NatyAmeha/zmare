@@ -16,7 +16,8 @@ class LoadingProgressbar extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-              color: Colors.grey[200], borderRadius: BorderRadius.circular(10)),
+              color: Theme.of(context).backgroundColor,
+              borderRadius: BorderRadius.circular(10)),
           child: const CircularProgressIndicator(),
         ),
       ),

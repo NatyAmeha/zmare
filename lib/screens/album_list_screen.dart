@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -13,56 +15,66 @@ import 'package:zmare/widget/custom_text.dart';
 
 class AlbumListScreen extends StatelessWidget {
   static const routeName = "/album_list";
-  var albumController = Get.put(AlbumController());
+  Map<String, dynamic>? args;
 
-  AlbumListScreen();
+  AlbumListScreen({this.args});
+  var albumController = Get.put(AlbumController());
 
   @override
   Widget build(BuildContext context) {
     // array of AlbumListDatatype , list of Album
-    var args = Get.arguments as List<dynamic>;
-    var type = args.elementAt(0) as AlbumListDataType;
-    var albums = args.length > 1 ? args[1] as List<Album> : null;
+
+    var type = args?["type"] as AlbumListDataType?;
+    var albums = args?["albums"] as List<Album>?;
 
     getAlbumList(type);
     return Scaffold(
       appBar: AppBar(
-          title: CustomText("Albums", color: Colors.black),
-          backgroundColor: Colors.white),
+        title: CustomText("Albums"),
+      ),
       body: albums?.isNotEmpty == true
           ? Column(
               children: [
                 BannerAdWidget(adSize: AdSize.banner),
                 Expanded(
-                    child: AlbumList(albums,
-                        isSliver: false, height: double.infinity)),
+                    child: AlbumList(
+                  albums,
+                  height: 250,
+                )),
               ],
             )
           : Obx(
               () => UIHelper.displayContent(
-                  showWhen: true,
+                  showWhen: albumController.albumList != null,
                   exception: albumController.exception,
                   isDataLoading: albumController.isDataLoading,
                   content: Column(
                     children: [
-                      BannerAdWidget(adSize: AdSize.banner),
+                      BannerAdWidget(adSize: AdSize.fullBanner),
                       Expanded(
-                        child: AlbumList(albumController.albumList,
-                            isSliver: false),
+                        child: AlbumList(
+                          albumController.albumList,
+                          height: 250,
+                        ),
                       ),
                     ],
                   )),
             ),
+      persistentFooterButtons: [
+        BannerAdWidget(adSize: AdSize.fullBanner),
+      ],
     );
   }
 
-  getAlbumList(AlbumListDataType type) {
-    switch (type) {
-      case AlbumListDataType.USER_FAVORITE_ALBUM_LIST:
-        albumController.getUserFavoriteAlbums();
-        break;
-      default:
-        break;
+  getAlbumList(AlbumListDataType? type) {
+    if (type != null) {
+      switch (type) {
+        case AlbumListDataType.USER_FAVORITE_ALBUM_LIST:
+          albumController.getUserFavoriteAlbums();
+          break;
+        default:
+          break;
+      }
     }
   }
 }

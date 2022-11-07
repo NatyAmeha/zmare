@@ -25,7 +25,7 @@ class Song {
   String? songFilePath;
   String? lyrics;
 
-  dynamic? album;
+  dynamic album;
   String? albumName;
 
   List<String>? artists;

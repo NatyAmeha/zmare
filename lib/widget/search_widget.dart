@@ -22,7 +22,7 @@ class SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomContainer(
-      color: Colors.grey[300],
+      color: Theme.of(context).backgroundColor,
       padding: 16,
       borderRadius: borderRadius,
       child: Row(

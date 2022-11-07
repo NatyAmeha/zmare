@@ -9,12 +9,11 @@ class ListHeader extends StatelessWidget {
   bool? isSliver;
   String headerText;
   String? subtitle;
-  String? actionText;
   double topPadding;
   double bottomPadding;
   double startPadding;
-  Widget? child;
   bool showMore;
+  Widget? trailing;
   double? fontSize;
   Function? onClick;
 
@@ -22,13 +21,12 @@ class ListHeader extends StatelessWidget {
     this.headerText, {
     this.subtitle,
     this.isSliver = true,
-    this.child,
-    this.fontSize = 22,
+    this.showMore = false,
+    this.trailing = const Icon(Icons.arrow_forward),
+    this.fontSize = 21,
     this.topPadding = 24,
     this.bottomPadding = 8,
     this.startPadding = 16,
-    this.showMore = false,
-    this.actionText = "see more",
     this.onClick,
   });
 
@@ -52,59 +50,61 @@ class ListHeader extends StatelessWidget {
                   children: [
                     CustomText(
                       headerText,
-                      fontSize: fontSize ?? 19,
-                      fontWeight: FontWeight.bold,
+                      textStyle: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 4),
                     if (subtitle != null)
-                      Text(
+                      CustomText(
                         subtitle!,
-                        style: const TextStyle(fontSize: 15),
-                        maxLines: 1,
+                        textStyle: Theme.of(context).textTheme.bodyLarge,
+                        maxLine: 1,
                       )
                   ],
                 ),
               ),
               if (showMore)
-                CustomContainer(
-                  child: CustomText(
-                    "See more",
-                    fontSize: 13,
-                  ),
-                )
+                InkWell(
+                    onTap: () {
+                      onClick!();
+                    },
+                    child: trailing),
             ],
           ),
         ),
       );
     } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(
-                headerText,
-                fontSize: fontSize ?? 19,
-                fontWeight: FontWeight.bold,
-              ),
-              const SizedBox(height: 8),
-              if (subtitle != null) CustomText(subtitle!, fontSize: 15)
-            ],
-          ),
-          if (showMore)
-            InkWell(
-              onTap: () {
-                onClick!();
-              },
-              child: child ??
-                  Text(
-                    actionText!,
-                    style: const TextStyle(
-                        fontSize: 13, fontWeight: FontWeight.normal),
-                  ),
+      return Padding(
+        padding: EdgeInsets.only(
+            left: startPadding,
+            top: topPadding,
+            bottom: bottomPadding,
+            right: startPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(
+                  headerText,
+                  textStyle: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                if (subtitle != null)
+                  CustomText(
+                    subtitle!,
+                    textStyle: Theme.of(context).textTheme.bodyMedium,
+                  )
+              ],
             ),
-        ],
+            if (showMore)
+              InkWell(
+                  onTap: () {
+                    onClick!();
+                  },
+                  child: trailing),
+          ],
+        ),
       );
     }
   }
